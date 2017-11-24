@@ -91,6 +91,11 @@
         templateUrl:"tpl/userAmount.html",
         controller:"userAmountCtrl"
       })
+      //用户宝驹额度列表页面
+      .when("/userBolgAmount",{
+        templateUrl:"tpl/userBolgAmount.html",
+        controller:"userBolgAmountCtrl"
+      })
       //支付密码页面
       .when("/userPayPwd",{
         templateUrl:"tpl/userPayPwd.html",
@@ -1444,7 +1449,7 @@
   });
 
   // 用户额度页面
-  horseApp.controller("userAmountCtrl",function($scope,$http){
+  horseApp.controller("userAmountCtrl",function($scope,$http,$location){
     var token=sessionStorage["ponyUserToken"];
 
     // 充值列表信息
@@ -1466,7 +1471,12 @@
       alertMsg("确定","剩余信用额度",function(){}); 
     }
 
-    
+    //去宝驹额度列表页面
+    $scope.toBolgAmount=function(){
+      // console.log(123);
+      $location.path("/userBolgAmount");
+    }
+
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
@@ -1496,7 +1506,7 @@
             window.location.href="index.html#/login";
           });
         }else{
-
+          console.log(data.message);
         }
       }).error(function(err){
         console.log(err)
@@ -1532,6 +1542,44 @@
 
     });
 
+
+  });
+
+  //用户宝驹额度列表页面
+  horseApp.controller("userBolgAmountCtrl",function($scope,$http,$location){
+    $scope.height=vHeight;
+
+    var token=sessionStorage["ponyUserToken"];
+
+    //宝驹额度列表数据
+    $scope.bolgAmountList=[];
+
+    //获取数据
+    $http({
+      method:"post",
+      url:"http://180.76.243.205:8383/_API/_carCredit/get",
+      data:"user_id="+ponyUserData.id+"&token="+token
+    }).success(function(data){
+      // console.log(data);
+      if(data.code=="E0000"){
+        if(data.data.userCar_info){
+          $scope.bolgAmountList=data.data.userCar_info;
+        }
+      }else if(data.code=="E0014"){
+        alertMsg("确定",data.message,function(){
+          window.location.href="index.html#/login";
+        });
+      }else{
+        console.log(data.message);
+      }
+    });
+
+
+
+    //监听页面加载
+    $scope.$watch('$viewContentLoaded',function(){
+
+    });
 
   });
 
@@ -3759,6 +3807,11 @@
           alertMsg("确定","请输入您的车牌号",function(){}); 
           return;
         }
+        // console.log(carOther.length);
+        if(carOther.length<5){
+          alertMsg("确定","请输入合法车牌号",function(){}); 
+          return;
+        }
         if(!carTypeId){
           alertMsg("确定","请选择您的车型",function(){}); 
           return;
@@ -3855,6 +3908,11 @@
         // 验证
         if(!carOther){
           alertMsg("确定","请输入您的车牌号",function(){}); 
+          return;
+        }
+        // console.log(carOther.length);
+        if(carOther.length<5){
+          alertMsg("确定","请输入合法车牌号",function(){}); 
           return;
         }
         if(!carTypeId){
@@ -6290,7 +6348,7 @@
       if(!userTime){
         alertMsg("确定","请选取联系时间",function(){});
         return;
-      }else if((new Date(userTime)+57600000)<=new Date()){
+      }else if(Date.parse(new Date(userTime))+57600000<=new Date()){
         alertMsg("确定","您选择的预约时间不正确，请重新选择",function(){});
         return;
       }
@@ -6313,7 +6371,8 @@
             window.location.href="index.html#/login";
           });
         }else{
-          console.log(data.message);
+          // console.log(data.message);
+          alertMsg("确定",data.message,function(){});
         }
       });
     }
@@ -6695,7 +6754,7 @@
       if(!userServerTime){
         alertMsg("确定","请选取预约服务时间",function(){});
         return;
-      }else if((new Date(userServerTime)+57600000)<=new Date()){
+      }else if(Date.parse(new Date(userServerTime))+57600000<=new Date()){
         alertMsg("确定","预约时间不正确",function(){});
         return;
       }
@@ -7829,9 +7888,9 @@
 
       // ***********************
       //保养服务项目
-      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.upkeepList").on("click",".item",function(){
+      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.upkeepList").on("click",".itemTit",function(){
         //所有的项目要对其是否有依赖商品进行判断，有则进行依赖商品选择页面（商品选择完成后会对他的金额进行判断，为0的话不对该服务进行勾选，否则勾选），没有则对其本身进行判断来进行勾选
-        var target=$(this);
+        var target=$(this).parent();
         console.log(target.attr("data-serverid"),target.attr("data-arrindex"));
         //所选择的服务项目ID
         var serverId=target.attr("data-serverid");
@@ -7949,9 +8008,9 @@
 
       // ***********************
       //美容清洗服务项目
-      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.cleanList").on("click",".item",function(){
+      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.cleanList").on("click",".itemTit",function(){
         //所有的项目要对其是否有依赖商品进行判断，有则进行依赖商品选择页面（商品选择完成后会对他的金额进行判断，为0的话不对该服务进行勾选，否则勾选），没有则对其本身进行判断来进行勾选
-        var target=$(this);
+        var target=$(this).parent();
         console.log(target.attr("data-serverid"),target.attr("data-arrindex"));
         //所选择的服务项目ID
         var serverId=target.attr("data-serverid");
@@ -8068,9 +8127,9 @@
 
       // ***********************
       //安装服务项目
-      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.installList").on("click",".item",function(){
+      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.installList").on("click",".itemTit",function(){
         //所有的项目要对其是否有依赖商品进行判断，有则进行依赖商品选择页面（商品选择完成后会对他的金额进行判断，为0的话不对该服务进行勾选，否则勾选），没有则对其本身进行判断来进行勾选
-        var target=$(this);
+        var target=$(this).parent();
 
         console.log(target.attr("data-serverid"),target.attr("data-arrindex"));
         //所选择的服务项目ID
@@ -8192,9 +8251,9 @@
 
       // ***********************
       //改装服务项目
-      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.refitList").on("click",".item",function(){
+      $("#shopServerPage>.serverList>.shopServerList>.serverItemList>.refitList").on("click",".itemTit",function(){
         //所有的项目要对其是否有依赖商品进行判断，有则进行依赖商品选择页面（商品选择完成后会对他的金额进行判断，为0的话不对该服务进行勾选，否则勾选），没有则对其本身进行判断来进行勾选
-        var target=$(this);
+        var target=$(this).parent();
 
         console.log(target.attr("data-serverid"),target.attr("data-arrindex"));
         //所选择的服务项目ID
@@ -8375,7 +8434,7 @@
       if(!userTime){
         alertMsg("确定","请选择您的预约时间",function(){});
         return;
-      }else if((new Date(userTime)+57600000)<=new Date()){
+      }else if(Date.parse(new Date(userTime))+57600000<=new Date()){
         alertMsg("确定","请选择正确的预约时间",function(){});
         return;
       }
@@ -8542,14 +8601,14 @@
       setTimeout(function(){
         // 百度地图API功能
         var map = new BMap.Map("baiduMap");    // 创建Map实例
-        map.centerAndZoom(new BMap.Point((deviceLocation.longitude?deviceLocation.longitude:"120.428666"), (deviceLocation.latitude?deviceLocation.latitude:'36.164666')));  // 初始化地图,设置中心点坐标和地图级别
+        map.centerAndZoom(new BMap.Point(deviceLocation.longitude, deviceLocation.latitude));  // 初始化地图,设置中心点坐标和地图级别
         //起点
-        var p1 = new BMap.Point((deviceLocation.longitude?deviceLocation.longitude:"120.428666"),(deviceLocation.latitude?deviceLocation.latitude:'36.164666'));
+        var p1 = new BMap.Point(deviceLocation.longitude,deviceLocation.latitude);
         // 终点
         var p2 = new BMap.Point(shopLon, shopLat);
         //画行车路线
         var driving = new BMap.DrivingRoute(map, {renderOptions:{map: map, autoViewport: true}});
-        driving.search(p2, p1);
+        driving.search(p1, p2);
       },100);
     
     });
@@ -8653,6 +8712,7 @@
 
   //千位符
   function thousandSeparator(str){
+    str=parseFloat(str).toFixed(2);
     numberStr=str.toString().split(".")
     intStr=numberStr[0];
     if(!numberStr[1]){

@@ -41,8 +41,8 @@ var app = {
         //获取设备的地理位置
         var onSuccess=function(position){
             deviceLocation.state=1;
-            deviceLocation.longitude=position.coords.longitude;
-            deviceLocation.latitude=position.coords.latitude;
+            deviceLocation.longitude=parseFloat(position.coords.longitude)+0.012;
+            deviceLocation.latitude=parseFloat(position.coords.latitude)+0.006;
         }
 
         var onError=function(error){
@@ -51,11 +51,11 @@ var app = {
         }
 
 
-        navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
-        //navigator.geolocation.getCurrentPosition(onSuccess,onError);
+        // navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
+        navigator.geolocation.getCurrentPosition(onSuccess,onError);
         setInterval(function(){
-            navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
-            //navigator.geolocation.getCurrentPosition(onSuccess,onError);
+            // navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
+            navigator.geolocation.getCurrentPosition(onSuccess,onError);
         }.bind(this),2000);
 
 
@@ -71,7 +71,7 @@ var app = {
                 window.location.href="index.html#/main";
                 setTimeout(function(){
                     backNum=0;
-                }.bind(this),10000);
+                }.bind(this),5000);
             }
 
             //console.log(backNum);

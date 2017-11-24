@@ -966,6 +966,15 @@
 
     //获取数据
     function getOrderListDate(){
+      if($("#ponyShopOrderPage").length>0){
+        // console.log("在");
+      }else{
+        console.log("不在");
+        //当前页面不在订单列表页面时
+        clearInterval(orderListTimer);
+        return;
+      }
+
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_storeOrders/get",
@@ -1805,6 +1814,9 @@
       if(!makeUpTire){
         alertMsg("确定","请选择补胎数据",function(){}); 
         return;
+      }else if(makeUpTire<1){
+        alertMsg("确定","请选择补胎数据",function(){}); 
+        return;
       }
       //初始化表单
       var fData=new FormData(document.getElementById('affirmTireServerFreeChangeOrder'));
@@ -2597,6 +2609,8 @@
 
     //订单数据
     $scope.orderDate=null;
+    //订单服务详情
+    $scope.orderDetail=[];
 
     //获取数据 
     $http({
@@ -2606,7 +2620,19 @@
     }).success(function(data){
       console.log(data);
       if(data.code=="E0000"){
-        $scope.orderDate=data.data;
+        $scope.orderDate=data.data.orderInfo;
+        if(data.data.details){
+          $scope.orderDetail=data.data.details;
+        }else{
+          $scope.orderDetail.push({
+            description:data.data.orderInfo.description,
+            img:data.data.orderInfo.img,
+            no:0,
+            price:data.data.orderInfo.total,
+            title:data.data.orderInfo.subtype_name,
+            total:data.data.orderInfo.total,
+          });
+        }
       }else if(data.code=='E0014'){
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
@@ -2774,101 +2800,6 @@
 
     //店铺GPS地址数据
     $scope.userShopGPS="";
-
-    //获取店铺数据
-    $http({
-      method:"post",
-      url:"http://180.76.243.205:8383/_API/_storeData/get",
-      data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId
-    }).success(function(data){
-      // console.log(data);
-      if(data.code=="E0000"){
-        $scope.userShopDate=data.data;
-
-        // 获取基本省份城市地区信息
-        $http({
-          method:"post",
-          url:"http://180.76.243.205:8383/_API/_province/get",
-          data:""
-        }).success(function(data){
-          // console.log(data);
-          if(data.code=="E0000"){
-            //所有省份信息
-            $scope.provinceArr=data.data;
-            // console.log(data.data[0].id);
-            //所在省份下城市信息
-            $http({
-              method:"post",
-              url:"http://180.76.243.205:8383/_API/_city/get",
-              data:"province_id="+$scope.userShopDate.province_id
-            }).success(function(data){
-              // console.log(data);
-              if(data.code=="E0000"){
-                $scope.cityArr=data.data;
-                //所在城市下地区信息
-                $http({
-                  method:"post",
-                  url:"http://180.76.243.205:8383/_API/_area/get",
-                  data:"city_id="+$scope.userShopDate.city_id
-                }).success(function(data){
-                  // console.log(data);
-                  $scope.areaArr=data.data;
-                  isShopCity=true;
-                });
-              }
-            });
-          }
-        });
-
-        //获取店铺类型数据
-        $http({
-          method:"post",
-          url:"http://180.76.243.205:8383/_API/_storeType/get",
-          data:""
-        }).success(function(data){
-          // console.log(data);
-          if(data.code=="E0000"){
-            $scope.shopType=data.data;
-            isShopType=true;
-          }
-        });
-
-        //多异步请求，延时写入数据
-        var dataTimer=setInterval(function(){
-          // console.log(123);
-          if(isShopCity){
-            $("#shopAddressProvince").val($scope.userShopDate.province_id);
-            $("#shopAddressCity").val($scope.userShopDate.city_id);
-            $("#shopAddressDistrict").val($scope.userShopDate.area_id);
-          }
-          if(isShopType){
-            $("#userShopType").val($scope.userShopDate.type);
-          }
-          if(isShopType&&isShopCity){
-            clearInterval(dataTimer);
-          }
-        },1000);
-
-        //返回当前经纬度地理定位城市
-        $http({
-          method:"post",
-          url:"http://api.map.baidu.com/geocoder/v2/",
-          data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+data.data.latitude+","+data.data.longitude
-        }).success(function(data){
-          // console.log(data);
-          // $("#mapLocationAddress").html(addressStr).attr("data-lon","120.439014").attr("data-lat","36.167642").attr("data-mapStr",addressStr);
-          $scope.userShopGPS=data.result.formatted_address;
-        });
-      }else if(data.code=="E0014"){
-        alertMsg("确定",data.message,function(){
-          window.location.href="index.html#/login";
-        }); 
-      }else{
-        alertMsg("确定",data.message,function(){
-          window.location.href="index.html#/main";
-        }); 
-      }
-    });
 
     //获取店铺评论数据
     $http({
@@ -3056,6 +2987,102 @@
 
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
+
+      //获取店铺数据
+      $http({
+        method:"post",
+        url:"http://180.76.243.205:8383/_API/_storeData/get",
+        data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId
+      }).success(function(data){
+        console.log(data);
+        if(data.code=="E0000"){
+          $scope.userShopDate=data.data;
+          $("#workStartTime").val(data.data.start_time);
+          $("#workEndTime").val(data.data.end_time);
+          // 获取基本省份城市地区信息
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_province/get",
+            data:""
+          }).success(function(data){
+            // console.log(data);
+            if(data.code=="E0000"){
+              //所有省份信息
+              $scope.provinceArr=data.data;
+              // console.log(data.data[0].id);
+              //所在省份下城市信息
+              $http({
+                method:"post",
+                url:"http://180.76.243.205:8383/_API/_city/get",
+                data:"province_id="+$scope.userShopDate.province_id
+              }).success(function(data){
+                // console.log(data);
+                if(data.code=="E0000"){
+                  $scope.cityArr=data.data;
+                  //所在城市下地区信息
+                  $http({
+                    method:"post",
+                    url:"http://180.76.243.205:8383/_API/_area/get",
+                    data:"city_id="+$scope.userShopDate.city_id
+                  }).success(function(data){
+                    // console.log(data);
+                    $scope.areaArr=data.data;
+                    isShopCity=true;
+                  });
+                }
+              });
+            }
+          });
+
+          //获取店铺类型数据
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_storeType/get",
+            data:""
+          }).success(function(data){
+            // console.log(data);
+            if(data.code=="E0000"){
+              $scope.shopType=data.data;
+              isShopType=true;
+            }
+          });
+
+          //多异步请求，延时写入数据
+          var dataTimer=setInterval(function(){
+            // console.log(123);
+            if(isShopCity){
+              $("#shopAddressProvince").val($scope.userShopDate.province_id);
+              $("#shopAddressCity").val($scope.userShopDate.city_id);
+              $("#shopAddressDistrict").val($scope.userShopDate.area_id);
+            }
+            if(isShopType){
+              $("#userShopType").val($scope.userShopDate.type);
+            }
+            if(isShopType&&isShopCity){
+              clearInterval(dataTimer);
+            }
+          },1000);
+
+          //返回当前经纬度地理定位城市
+          $http({
+            method:"post",
+            url:"http://api.map.baidu.com/geocoder/v2/",
+            data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+data.data.latitude+","+data.data.longitude
+          }).success(function(data){
+            // console.log(data);
+            // $("#mapLocationAddress").html(addressStr).attr("data-lon","120.439014").attr("data-lat","36.167642").attr("data-mapStr",addressStr);
+            $scope.userShopGPS=data.result.formatted_address;
+          });
+        }else if(data.code=="E0014"){
+          alertMsg("确定",data.message,function(){
+            window.location.href="index.html#/login";
+          }); 
+        }else{
+          alertMsg("确定",data.message,function(){
+            window.location.href="index.html#/main";
+          }); 
+        }
+      });
 
       //店铺设置与评论切换
       $("#ponyShopUserShopSettingPage>.header>.settingClassify>ul").on("click","li",function(){
