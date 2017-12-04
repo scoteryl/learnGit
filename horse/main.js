@@ -106,7 +106,7 @@
         templateUrl:"tpl/userSetNewPayPwd.html",
         controller:"userSetNewPayPwdCtrl"
       })
-      //用户优惠卷页面
+      //用户优惠券页面
       .when("/userCoupon",{
         templateUrl:"tpl/userCoupon.html",
         controller:"userCouponCtrl"
@@ -763,7 +763,7 @@
     $scope.toMain=function(){
       $location.path("/main");
     }
-    //弹窗去优惠卷页面
+    //弹窗去优惠券页面
     $scope.toCoupon=function(){
       $location.path("/userCoupon");
     }
@@ -1911,7 +1911,7 @@
 
   });
 
-  //用户优惠卷页面
+  //用户优惠券页面
   horseApp.controller('userCouponCtrl',function($scope,$http,$location){
     $scope.height=vHeight;
 
@@ -1956,7 +1956,7 @@
 
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
-      //分类优惠卷
+      //分类优惠券
       $("#userCouponPage>.couponClassify>ul").on("click","li",function(){
         var target=$(this);
         if(!target.hasClass("active")){
@@ -2235,9 +2235,9 @@
           // $scope.orderListFinish=[];
   
         }else if(data.code=="E0014"){
-          alertMsg("确定",data.message,function(){
-            window.location.href="index.html#/login";
-          });
+          window.location.href="index.html#/main";
+          // alertMsg("确定",data.message,function(){
+          // });
         }else{
           console.log(data.message);
           // alertMsg("确定",data.message,function(){
@@ -3821,7 +3821,12 @@
           return;
         }else if(userDriveID>formatNow){
           console.log(userDriveID,formatNow);
-          alertMsg("确定","您输入的行驶征日期不正确",function(){}); 
+          alertMsg("确定","您输入的行驶证日期不正确",function(){}); 
+          return;
+        }
+        if(ponyServerStop<=formatNow){
+          console.log(userDriveID,formatNow);
+          alertMsg("确定","您选择的服务截止日期不正确",function(){}); 
           return;
         }
         // if(!userDriveMileage){
@@ -3923,7 +3928,12 @@
           alertMsg("确定","请输入您的行驶证日期",function(){}); 
           return;
         }else if(userDriveID>formatNow){
-          alertMsg("确定","您输入的行驶征日期不正确",function(){}); 
+          alertMsg("确定","您输入的行驶证日期不正确",function(){}); 
+          return;
+        }
+        if(ponyServerStop<=formatNow){
+          console.log(userDriveID,formatNow);
+          alertMsg("确定","您选择的服务截止日期不正确",function(){}); 
           return;
         }
         if(!userDriveMileage){
@@ -4662,11 +4672,11 @@
     //是否设置支付密码
     var isPayPwd=2;
 
-    //用户优惠卷可以抵扣金额
+    //用户优惠券可以抵扣金额
     $scope.couponSum=0;
-    //用户优惠卷列表
+    //用户优惠券列表
     $scope.userCouponList=[];
-    //用户选择优惠卷列表
+    //用户选择优惠券列表
     var userSelCoupon=[];
 
     //订单的四大分类金额
@@ -4954,7 +4964,7 @@
 
     }
 
-    //去优惠卷选取页面
+    //去优惠券选取页面
     $scope.toCouponList=function(){
       $("#couponListPage").css("display","block").siblings().css("display","none");
 
@@ -4967,36 +4977,36 @@
 
     }
 
-    //从优惠卷假页返回主页面 （返回按钮）
+    //从优惠券假页返回主页面 （返回按钮）
     $scope.toMainPage=function(){
       $("#checkoutCounterPage").css("display","block").siblings().css("display","none");
     }
 
-    //暂不使用优惠卷
+    //暂不使用优惠券
     $scope.noUseCoupon=function(){
       $("#couponListPage>.couponList>ul>li").removeClass("active");
       $("#checkoutCounterPage").css("display","block").siblings().css("display","none");
 
-      //在这做优惠卷数组清空
+      //在这做优惠券数组清空
       $scope.couponSum=0;
       userSelCoupon=[];
       $("#checkoutCounterPage>.coupon>p>span").html("");
     }
 
-    //优惠卷确认使用
+    //优惠券确认使用
     $scope.selCoupon=function(){
       // console.log(123123)
       $("#checkoutCounterPage").css("display","block").siblings().css("display","none");
-      //四项服务优惠卷使用金额及合计
+      //四项服务优惠券使用金额及合计
       var couponSum=0;
       var couponBY=0;
       var couponMR=0;
       var couponGZ=0;
       var couponAZ=0;
       
-      //现金卷数组
+      //现金券数组
       var couponCash=[];
-      //对用户选择优惠卷数组进行重置
+      //对用户选择优惠券数组进行重置
       var selCouponArr=[];
       var couponList=$("#couponListPage>.couponList>ul").children();
 
@@ -5004,7 +5014,7 @@
       for(var i=0;i<couponList.length;i++){
         var one=couponList[i];
         if($(one).hasClass('active')){
-          //压入所选优惠卷数组
+          //压入所选优惠券数组
           selCouponArr.push({
             id:$(one).attr("data-couponid"),
             type:$(one).attr("data-servertype"),
@@ -5014,7 +5024,7 @@
           var oneIndex=$(one).attr("data-location");
           var oneTypt=$(one).attr("data-servertype");
           if(oneTypt==1){
-            //服务卷
+            //服务券
             switch($scope.userCouponList[oneIndex].service_type_list){
               case '2':
                 couponBY+=parseFloat($scope.userCouponList[oneIndex].value);
@@ -5032,13 +5042,13 @@
             couponSum+=parseFloat($scope.userCouponList[oneIndex].value);
 
           }else{
-            //现金卷
+            //现金券
             couponCash.push($scope.userCouponList[oneIndex]);
           }
         }
       }
 
-      //如是一张优惠卷也没选，清空
+      //如是一张优惠券也没选，清空
       if(!selCouponArr.length){
         $scope.couponSum=0;
         userSelCoupon=[];
@@ -5050,7 +5060,7 @@
       // console.log(selCouponArr,couponCash);
       // console.log(couponBY,couponMR,couponGZ,couponAZ,couponSum);
 
-      //遍历现金卷，算出当前现金金额能抵多少
+      //遍历现金券，算出当前现金金额能抵多少
       for(var i=0;i<couponCash.length;i++){
         var one=couponCash[i];
         // 可用范围总数
@@ -5345,26 +5355,26 @@
 
       });
 
-      //优惠卷先取
+      //优惠券先取
       $("#couponListPage>.couponList>ul").on("click","li",function(){
         var target=$(this);
-        //当前优惠卷服务类型
+        //当前优惠券服务类型
         var targetType=target.attr("data-servertype");
-        //当前优惠卷id
+        //当前优惠券id
         var targetid=target.attr("data-couponid");
 
         // console.log(targetid,targetType);
-        //如果是现金抵用卷他只能用一张，如果是服务卷，他可以用多张
+        //如果是现金抵用券他只能用一张，如果是服务券，他可以用多张
 
         if(targetType==1){
-          //服务卷
+          //服务券
           if(target.hasClass("active")){
             target.removeClass("active");
           }else{
             target.addClass("active");
           }
         }else{
-          //现金卷
+          //现金券
           var couponList=$("#couponListPage>.couponList>ul").children();
           for(var i=0;i<couponList.length;i++){
             var one=couponList[i];
@@ -5831,10 +5841,6 @@
       });
     } 
 
-
-
-
-
     //从搜索页面返回店铺列表
     $scope.toShopList=function(){
       //当点击此按钮回到店铺列表时，列表数据会重新绘制成刚进行页面时的默认数据
@@ -5974,13 +5980,13 @@
           case 2:
           //评分
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.star_no)>parseFloat(b.star_no)?1:0;
+              return parseFloat(a.star_no)>parseFloat(b.star_no)?0:1;
             });
             break;
           case 3:
           //累计安装 
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?1:0;
+              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?0:1;
             });
             break;
         }
@@ -7090,13 +7096,13 @@
           case 2:
           //评分
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.star_no)>parseFloat(b.star_no)?1:0;
+              return parseFloat(a.star_no)>parseFloat(b.star_no)?0:1;
             });
             break;
           case 3:
           //累计安装 
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?1:0;
+              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?0:1;
             });
             break;
         }
@@ -7295,7 +7301,6 @@
         $("#selShopFiltrate>.subMenu>.filtrateBody>ul").children().removeClass("active");
       });
 
-
     });
       
   });
@@ -7491,7 +7496,7 @@
         var one=totalArr[i];
         total+=parseFloat(one.total);
       }
-      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
       //返回主页面
       $("#shopServerPage>.serverList").css({display:"block"}).siblings().css({display:"none"});
 
@@ -7575,7 +7580,7 @@
         var one=totalArr[i];
         total+=parseFloat(one.total);
       }
-      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
       //返回主页面
       $("#shopServerPage>.serverList").css({display:"block"}).siblings().css({display:"none"});
 
@@ -7660,7 +7665,7 @@
         var one=totalArr[i];
         total+=parseFloat(one.total);
       }
-      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
       //返回主页面
       $("#shopServerPage>.serverList").css({display:"block"}).siblings().css({display:"none"});
 
@@ -7745,7 +7750,7 @@
         var one=totalArr[i];
         total+=parseFloat(one.total);
       }
-      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+      $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
       //返回主页面
       $("#shopServerPage>.serverList").css({display:"block"}).siblings().css({display:"none"});
 
@@ -7935,7 +7940,7 @@
           }
           $("#shopServerPage>.upkeepProductList>.goodsList>ul").html(html);
 
-          $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html(subTotal);
+          $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html(subTotal.toFixed(2));
         }else{
           //没有依赖商品
           if(target.hasClass("active")){
@@ -7964,7 +7969,7 @@
             var one=totalArr[i];
             total+=parseFloat(one.total);
           }
-          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
         }
 
 
@@ -7976,13 +7981,13 @@
         // 当前商品数量
         var targetNum=$(this).next().html();
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(targetNum>0){
           targetNum--;
           $(this).next().html(targetNum);
-          $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html(subTotal-targetPrice);
+          $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html((subTotal-targetPrice).toFixed(2));
         }
       });
 
@@ -7993,9 +7998,9 @@
         //当前商品最大库存
         var maxNum=$(this).parent().attr("data-maxnum");
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(parseInt(targetNum)<parseInt(maxNum)){
           targetNum++;
         }else{
@@ -8003,7 +8008,7 @@
           return;
         }
         $(this).prev().html(targetNum);
-        $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html(subTotal+targetPrice);
+        $("#shopServerPage>.upkeepProductList>.footerSubmit>.typeTotal>span").html((parseFloat(subTotal)+parseFloat(targetPrice)).toFixed(2));
       });
 
       // ***********************
@@ -8056,7 +8061,7 @@
           }
           $("#shopServerPage>.cleanProductList>.goodsList>ul").html(html);
 
-          $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html(subTotal);
+          $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html(subTotal.toFixed(2));
         }else{
           //没有依赖商品
           if(target.hasClass("active")){
@@ -8085,7 +8090,7 @@
             var one=totalArr[i];
             total+=parseFloat(one.total);
           }
-          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
         }
         $scope.$apply();
       });
@@ -8095,13 +8100,13 @@
         // 当前商品数量
         var targetNum=$(this).next().html();
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(targetNum>0){
           targetNum--;
           $(this).next().html(targetNum);
-          $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html(subTotal-targetPrice);
+          $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html((subTotal-targetPrice).toFixed(2));
         }
       });
 
@@ -8112,9 +8117,9 @@
         //当前商品最大库存
         var maxNum=$(this).parent().attr("data-maxnum");
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(parseInt(targetNum)<parseInt(maxNum)){
           targetNum++;
         }else{
@@ -8122,7 +8127,7 @@
           return;
         }
         $(this).prev().html(targetNum);
-        $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html(subTotal+targetPrice);
+        $("#shopServerPage>.cleanProductList>.footerSubmit>.typeTotal>span").html((parseFloat(subTotal)+parseFloat(targetPrice)).toFixed(2));
       });
 
       // ***********************
@@ -8175,7 +8180,7 @@
           }
           $("#shopServerPage>.installProductList>.goodsList>ul").html(html);
 
-          $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html(subTotal);
+          $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html(subTotal.toFixed(2));
 
         }else{
           //没有依赖商品
@@ -8205,7 +8210,7 @@
             var one=totalArr[i];
             total+=parseFloat(one.total);
           }
-          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
         }
 
 
@@ -8218,13 +8223,13 @@
         // 当前商品数量
         var targetNum=$(this).next().html();
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(targetNum>0){
           targetNum--;
           $(this).next().html(targetNum);
-          $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html(subTotal-targetPrice);
+          $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html((subTotal-targetPrice).toFixed(2));
         }
       });
 
@@ -8236,9 +8241,9 @@
         var maxNum=$(this).parent().attr("data-maxnum");
         // console.log(maxNum);
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(parseInt(targetNum)<parseInt(maxNum)){
           targetNum++;
         }else{
@@ -8246,7 +8251,7 @@
           return;
         }
         $(this).prev().html(targetNum);
-        $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html(subTotal+targetPrice);
+        $("#shopServerPage>.installProductList>.footerSubmit>.typeTotal>span").html((parseFloat(subTotal)+parseFloat(targetPrice)).toFixed(2));
       });
 
       // ***********************
@@ -8300,7 +8305,7 @@
           }
           $("#shopServerPage>.refitProductList>.goodsList>ul").html(html);
 
-          $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html(subTotal);
+          $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html(subTotal.toFixed(2));
         }else{
           //没有依赖商品
           if(target.hasClass("active")){
@@ -8329,7 +8334,7 @@
             var one=totalArr[i];
             total+=parseFloat(one.total);
           }
-          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(total);
+          $("#shopServerPage>.serverList>.statistics>ul>li.serverTotal>span").html(parseFloat(total).toFixed(2));
         }
 
 
@@ -8341,13 +8346,13 @@
         // 当前商品数量
         var targetNum=$(this).next().html();
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(targetNum>0){
           targetNum--;
           $(this).next().html(targetNum);
-          $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html(subTotal-targetPrice);
+          $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html((subTotal-targetPrice).toFixed(2));
         }
       });
 
@@ -8358,9 +8363,9 @@
         //当前商品最大库存
         var maxNum=$(this).parent().attr("data-maxnum");
         // 当前商品单价
-        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice"));
+        var targetPrice=parseFloat($(this).parent().parent().parent().attr("data-itemprice")).toFixed(2);
         // 当前总价
-        var subTotal=parseFloat($("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html());
+        var subTotal=parseFloat($("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html()).toFixed(2);
         if(parseInt(targetNum)<parseInt(maxNum)){
           targetNum++;
         }else{
@@ -8368,7 +8373,7 @@
           return;
         }
         $(this).prev().html(targetNum);
-        $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html(subTotal+targetPrice);
+        $("#shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span").html((parseFloat(subTotal)+parseFloat(targetPrice)).toFixed(2));
       });
 
     });

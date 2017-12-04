@@ -203,6 +203,9 @@
     var verifyCode=null;
     var verifyCodeId=null;
 
+    //是否正在提交
+    var isSubmitOK=true;
+
     // 获取基本省份城市地区信息
     $http({
       method:"post",
@@ -268,7 +271,7 @@
       // 百度地图API功能
       var map = new BMap.Map("ponyMap");    // 创建Map实例
       //deviceLocation.latitude deviceLocation.longitude
-      var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude)+0.012,parseFloat(deviceLocation.latitude)+0.006);
+      var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude),parseFloat(deviceLocation.latitude));
       var geoc = new BMap.Geocoder(); 
       map.centerAndZoom(mapPoint,15);  // 初始化地图,设置中心点坐标和地图级别
       //查询地址
@@ -276,7 +279,7 @@
         var addComp = rs.addressComponents;
         // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
         var addressStr=addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
-        $("#mapLocationAddress").html(addressStr).attr("data-lon",parseFloat(deviceLocation.longitude)+0.012).attr("data-lat",parseFloat(deviceLocation.latitude)+0.006).attr("data-mapStr",addressStr);
+        $("#mapLocationAddress").html(addressStr).attr("data-lon",parseFloat(deviceLocation.longitude)).attr("data-lat",parseFloat(deviceLocation.latitude)).attr("data-mapStr",addressStr);
       }); 
       var marker = new BMap.Marker(mapPoint); // 创建点
       marker.enableDragging();     //设置点可以拖拽
@@ -386,6 +389,12 @@
 
     //提交表单
     $scope.submitForm=function(){
+
+      if(!isSubmitOK){
+        alertMsg("确定","正在上传资料请稍后",function(){}); 
+        return;
+      }
+
       // 申请人
       var ponyShopUser=$("#userName").val();
       // 申请人手机号
@@ -512,6 +521,9 @@
         fData.append("app_expert",2);
       }
 
+      //按钮置灰
+      $("#registerSubmitBtn").css("backgroundColor","#aaa");
+      isSubmitOK=false;
       //上传数据
       $.ajax({
         type:"post",
@@ -3379,6 +3391,7 @@
           $(this).val("0");
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html("0");
         }else{
+          $(this).val(parseFloat($(this).val()));
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html(parseFloat(targetVal).toFixed(2));
         }
       });
@@ -3413,10 +3426,10 @@
     }).success(function(data){
       console.log(data);
       if(data.code=='E0000'){
-        commodityOnList=data.data.on;
-        commodityOffList=data.data.off;
-        $scope.commodityOnList=data.data.on;
-        $scope.commodityOffList=data.data.off;
+        commodityOnList=data.data.on?data.data.on:[];
+        commodityOffList=data.data.off?data.data.off:[];
+        $scope.commodityOnList=data.data.on?data.data.on:[];
+        $scope.commodityOffList=data.data.off?data.data.off:[];
       }else if(data.code=="E0014"){
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
