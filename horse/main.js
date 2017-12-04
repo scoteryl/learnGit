@@ -6081,47 +6081,51 @@
         // 筛选数据
         $scope.shopList=[];
         //保养
-        var delI=0;
+        // var delI=0;
         if(isUpkeep){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_ii==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
         //美容
-        var delI=0;
+        // var delI=0;
         if(isBeauty){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_iii==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
 
         //改装
-        var deli=0;
+        // var deli=0;
         if(isRefit){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_iv==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
         //安装
-        var delI=0
+        // var delI=0
         if(isInstall){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_v==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
@@ -7197,47 +7201,53 @@
         // 筛选数据
         $scope.shopList=[];
         //保养
-        var delI=0;
+        // var delI=0;
         if(isUpkeep){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_ii==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
         //美容
-        var delI=0;
+        // var delI=0;
         if(isBeauty){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_iii==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
 
         //改装
-        var deli=0;
+        // var delI=0;
+        // console.log(newShopList)
         if(isRefit){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_iv==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // console.log(one,i-delI,delI,newShopList.length);
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
         //安装
-        var delI=0
+        // var delI=0
         if(isInstall){
           for(var i=0;i<newShopList.length;i++){
             var one=newShopList[i];
             if(one.service_type.service_type_v==2){
-              newShopList.splice(i-delI,1);
-              delI++;
+              // newShopList.splice(i-delI,1);
+              newShopList.splice(i,1);
+              // delI++;
             }
           }
         }
