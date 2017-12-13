@@ -40,7 +40,7 @@
             <h4>{{item.title}}</h4>
             <p>{{item.description}}</p>
             <span class="price">￥{{item.total}}</span>
-            <span class="num" style="display:{{item.no?'block':'none'}}">✖{{item.no}}</span>
+            <span class="num" style="display:{{(item.no>0||item.stock_no>0)?'block':'none'}}">✖{{item.no?item.no:item.stock_no}}</span>
           </div>
         </li>
       </ul>

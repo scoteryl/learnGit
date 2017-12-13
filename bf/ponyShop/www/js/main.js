@@ -1406,6 +1406,9 @@
     //获取传入订单ID
     var orderId=$routeParams.orderId;
 
+    //总更换数量
+    var changeTotalNum=1;
+  
     //订单数据
     $scope.orderDate=null;
     // 订单列表数据
@@ -1424,10 +1427,10 @@
       if(data.code=="E0000"){
         $scope.orderDate=data.data.orderInfo;
         $scope.orderListDetail=data.data.details;
-        if(data.data.details[0].stock_no==1){
-          //换一个时，禁用后三个
-          $("#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList").children().eq(2).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
-        }
+
+        changeTotalNum=data.data.shoe_no;
+        $("#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList").children().eq(changeTotalNum*3-1).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
+
       }else if(data.code=="E0014"){
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
@@ -1472,22 +1475,49 @@
       var tireImg4=$("#userTireImgInput4").val();
       var tireImg5=$("#userTireImgInput5").val();
       var tireImg6=$("#userTireImgInput6").val();
+      var tireImg7=$("#userTireImgInput7").val();
+      var tireImg8=$("#userTireImgInput8").val();
+      var tireImg9=$("#userTireImgInput9").val();
+      var tireImg10=$("#userTireImgInput10").val();
+      var tireImg11=$("#userTireImgInput11").val();
+      var tireImg12=$("#userTireImgInput12").val();
 
       //验证数据 
       if(!carImg){
         alertMsg("确定","请上传车辆照片",function(){}); 
         return;
       }
-      if(!(tireImg1&&tireImg2&&tireImg3)){
-        alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-        return;
-      }
-      if($scope.orderListDetail[0].stock_no!=1){
-        if(!(tireImg4&&tireImg5&&tireImg6)){
+
+      switch (changeTotalNum){
+        case 1:
+          if(!(tireImg1&&tireImg2&&tireImg3)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 2:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 3:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 4:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9&&tireImg10&&tireImg11&&tireImg12)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        default:
           alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-          return;
-        }
+          return; 
       }
+      
       if(!carFrameImg){
         alertMsg("确定","请上传车架号照片",function(){}); 
         return;
@@ -1505,7 +1535,8 @@
       fData.append("store_id",ponyShopId);
       fData.append("token",token);
       fData.append("order_id",orderId);
-      fData.append("diff",0);
+      fData.append("font_diff",0);
+      fData.append("rear_diff",0);
 
       //通讯开始等待
       commStart();
@@ -1667,7 +1698,7 @@
     // 订单列表数据
     $scope.orderListDetail=[];    
 
-    //总更换数据
+    //总更换数量
     var changeTotalNum=1;
 
     //前后轮胎尺寸数据

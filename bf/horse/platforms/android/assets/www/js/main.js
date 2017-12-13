@@ -5614,10 +5614,14 @@
       if(targetLocation=='font'){
         if($scope.originalChangeFontNum<changeFontMaxNum){
           $scope.originalChangeFontNum++;
+        }else{
+          alertMsg("确定","没胎了，买一个吧",function(){});
         }
       }else{
         if($scope.originalChangeRearNum<changeRearMaxNum){
           $scope.originalChangeRearNum++;
+        }else{
+          alertMsg("确定","没胎了，买一个吧",function(){});
         }
       }
     }
@@ -6547,10 +6551,14 @@
       if(targetLocation=='font'){
         if($scope.ponyChangeFontNum<changeFontMaxNum){
           $scope.ponyChangeFontNum++;
+        }else{
+          alertMsg("确定","已经是最大可更换数量了",function(){});
         }
       }else{
         if($scope.ponyChangeRearNum<changeRearMaxNum){
           $scope.ponyChangeRearNum++;
+        }else{
+          alertMsg("确定","已经是最大可更换数量了",function(){});
         }
       }
     }
