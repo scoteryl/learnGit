@@ -1,0 +1,33 @@
+<div id="ponyShopLoginPage" style="min-height:{{height}}px">
+  <div class="logo" style="height:{{height*0.44}}px">
+    <img src="img/logo.png">
+  </div>
+  <div class="loginInput">
+    <div class="formGroup">
+      <label for="userAccounts" class="userAccounts">
+        <i></i>
+      </label>
+      <div class="msgInput">
+        <input id="userAccounts" placeholder="请输入您的手机号" type="text">
+      </div>
+    </div>
+    <div class="formGroup">
+      <label for="userPwd" class="userPwd">
+        <i></i>
+      </label>
+      <div class="msgInput">
+        <input id="userPwd" placeholder="请输入您的密码" type="password">
+      </div>
+    </div>
+    <div class="btnGroup">
+      <div class="restPwd">
+        <a href="#/restPwd">忘记密码？</a>
+      </div>
+      <button ng-click="ponyShopLogin()">登录</button>
+      <a href="#/register">注册</a>
+    </div>
+  </div>
+  <div class="explain">
+    <p>小马驾驾V1.0商家版</p>
+  </div>
+</div>

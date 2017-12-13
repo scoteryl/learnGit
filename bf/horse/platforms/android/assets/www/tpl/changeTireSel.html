@@ -1,0 +1,35 @@
+<div id="changeTireSelPage" style="min-height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a href="#/tireServer"><i></i></a>
+    </div>
+    <h3>免费再换</h3>
+  </div>
+  <div class="standardList">
+    <div class="changeStandardList">
+      <h4 class="tit">免费更换标准</h4>
+      <ul>
+        <li ng-repeat="one in changeStandard"><i></i>{{one.content}}</li>
+      </ul>
+    </div>
+    <div class="repairStandardList">
+      <h4 class="tit">免费修补标准</h4>
+      <ul>
+        <li ng-repeat="one in repairStandard"><i></i>{{one.content}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="changeTireSelList">
+    <ul>
+      <li>
+        <a ng-click="tireOriginalChange()" href="">原厂更换</a>
+      </li>
+      <li>
+        <a href="#/tireRepair">免费修补</a>
+      </li>
+      <li>
+        <a ng-click="tireFreeChange()" href="">免费更换</a>
+      </li>
+    </ul>
+  </div>
+</div>
