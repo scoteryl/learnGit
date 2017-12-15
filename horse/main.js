@@ -116,6 +116,11 @@
         templateUrl:"tpl/userExpand.html",
         controller:"userExpandCtrl"
       })
+      //关于我们页面
+      .when("/aboutPony",{
+        templateUrl:"tpl/ponyAbout.html",
+        controller:"ponyAboutCtrl"
+      })
       //系统信息列表页面
       .when("/systemMsgList",{
         templateUrl:"tpl/systemMsgList.html",
@@ -222,7 +227,7 @@
         controller:"selTireInstallShopCtrl"
       })
       //原厂更换轮胎的订单确认页面
-      .when("/originalChangeTireSelAddress/:shopId/:num/:location",{
+      .when("/originalChangeTireSelAddress/:shopId/:changeFontNum/:changeRearNum",{
         templateUrl:"tpl/originalChangeTireSelAddress.html",
         controller:"originalChangeTireSelAddressCtrl"
       })
@@ -285,7 +290,10 @@
 
   //父级总控制器
   horseApp.controller('horseCtrl',function($scope){
-
+    //通讯加载时报错，可点击取消
+    $(".commLoad").click(function(){
+      $(this).css('display','none');
+    });
   });
 
   //load页面
@@ -696,6 +704,8 @@
         alertMsg("确定","手机号码有误，请重填",function(){});
         return; 
       }
+      //开始通讯加载
+      commStart();
       //发送请求，获取数据
       $http({
         method:"post",
@@ -704,6 +714,7 @@
       }).success(function(data){
         //console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           //数据保存
           ponyUserData=data.data.userInfo;
           ponyUserCar=data.data.userCar_info;
@@ -713,6 +724,7 @@
           $rootScope.addressCity="";
           $location.path("/main");
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){});
         }
       }).error(function(err){
@@ -730,6 +742,58 @@
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
       $(document).scrollTop(0);
+
+
+      // 前往登陆
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userName=$("#userName").val();
+          var userPwd=$("#userPwd").val();
+
+          //验证数据
+          if(!userName){
+            alertMsg("确定","请输入手机号",function(){});
+            return;
+          }else if(!userPwd){
+            alertMsg("确定","请输入登陆密码",function(){});
+            return;
+          }
+          if(!(/^1[34578]\d{9}$/.test(userName))){
+            alertMsg("确定","手机号码有误，请重填",function(){});
+            return; 
+          }
+          //开始通讯加载
+          commStart();
+          //发送请求，获取数据
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_user/login",
+            data:"phone="+userName+"&password="+strmd5(userPwd)
+          }).success(function(data){
+            //console.log(data);
+            if(data.code=="E0000"){
+              commFinish();
+              //数据保存
+              ponyUserData=data.data.userInfo;
+              ponyUserCar=data.data.userCar_info;
+              localStorage["ponyUserName"]=userName;
+              localStorage["ponyUserPwd"]=userPwd;
+              sessionStorage["ponyUserToken"]=data.data.userInfo.token;
+              $rootScope.addressCity="";
+              $location.path("/main");
+            }else{
+              commFinish();
+              alertMsg("确定",data.message,function(){});
+            }
+          }).error(function(err){
+            //console.log(err);
+          });
+
+        }
+      });
+
     });
 
   });
@@ -773,6 +837,69 @@
       //页面从头
       $(document).scrollTop(0);
 
+      // 前往注册
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userName=$("#userName").val();
+          var userPwd=$("#userPwd").val();
+          var verify=$("#verify").val();
+
+          //验证数据
+          if(!userName){
+            alertMsg("确定","请输入手机号",function(){});
+            return;
+          }else if(!verify){
+            alertMsg("确定","请输入短信验证码",function(){});
+            return;
+          }else if(!userPwd){
+            alertMsg("确定","请输入登陆密码",function(){});
+            return;
+          }
+          if(!(/^1[34578]\d{9}$/.test(userName))){ 
+            alertMsg("确定","手机号码有误，请重填",function(){}); 
+            return; 
+          }else if(verify!=verifyCode){
+            alertMsg("确定","您输入短信验证码不正确",function(){}); 
+            return;
+          }
+          //开始加载通讯
+          commStart();
+          // 发送数据
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_user/register",
+            data:"phone="+userName+"&password="+strmd5(userPwd)+"&code_id="+verifyCodeId+"&code="+verify
+          }).success(function(data){
+            console.log(data)
+            if(data.code=="E0000"){
+              commFinish();
+    
+              ponyUserData=data.data;
+              ponyUserCar="null";
+     
+              localStorage["ponyUserName"]=userName;
+              localStorage["ponyUserPwd"]=userPwd;
+              sessionStorage["ponyUserToken"]=data.data.token;
+              $rootScope.addressCity="";
+    
+              clearInterval(verifyTimer);
+              $("#registerPage>.successAlert").css("display","block");
+              // window.location.href="index.html#/main"
+    
+    
+            }else{
+              commFinish();
+              alertMsg("确定",data.message,function(){});
+            }
+          }).error(function(err){
+            //console.log(err)
+          });
+
+        }
+      });
+
     });
     
     //注册提交
@@ -797,6 +924,8 @@
         alertMsg("确定","您输入短信验证码不正确",function(){}); 
         return;
       }
+      //开始加载通讯
+      commStart();
       // 发送数据
       $http({
         method:"post",
@@ -805,7 +934,7 @@
       }).success(function(data){
         console.log(data)
         if(data.code=="E0000"){
-
+          commFinish();
 
           ponyUserData=data.data;
           ponyUserCar="null";
@@ -821,6 +950,7 @@
 
 
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){});
         }
       }).error(function(err){
@@ -928,6 +1058,8 @@
         alertMsg("确定","您输入短信验证码不正确",function(){}); 
         return;
       }
+      //开始加载通讯
+      commStart();
       // 发送数据
       $http({
         method:"post",
@@ -936,11 +1068,13 @@
       }).success(function(data){
         //console.log(data)
         if(data.code=="E0000"){
+          commFinish();
           alertMsg("确定","修改成功",function(){
             clearInterval(verifyTimer);
             window.location.href="index.html#/login"
           }); 
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){});
         }
       }).error(function(err){
@@ -1166,6 +1300,9 @@
           var fData=new FormData(document.getElementById("userLogoImgForm"));
           fData.append("user_id",ponyUserData.id); 
           fData.append("token",token); 
+          //开始加载通讯
+          commStart();
+
           $.ajax({
             type:"post",
             url:"http://180.76.243.205:8383/_API/_upload/headimg",
@@ -1175,12 +1312,15 @@
             success:function(data){
               console.log(data);
               if(data.code=="E0000"){
+                commFinish();
                 ponyUserData=data.data;
               }else if(data.code=="E0014"){
+                commFinish();
                 alertMsg("确定",data.message,function(){
                   window.location.href="index.html#/login";
                 });
               }else{
+                commFinish();
                 alertMsg("确定",data.message,function(){}); 
               }
             },
@@ -1234,7 +1374,8 @@
         alertMsg("确定","您输入短信验证码不正确",function(){}); 
         return;
       }
-
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_user/modifyPhone",
@@ -1242,15 +1383,18 @@
       }).success(function(data){ 
         console.log(data)
         if(data.code=="E0000"){
+          commFinish();
           alertMsg("确定","修改成功",function(){
             clearInterval(verifyTimer);
             window.location.href="index.html#/login"
           }); 
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){}); 
         } 
       }).error(function(err){
@@ -1482,6 +1626,8 @@
       //页面从头
       $(document).scrollTop(0);
 
+      //开始加载通讯
+      commStart();
       //获取数据
       $http({
         method:"post",
@@ -1490,6 +1636,8 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
+
           payList=data.data.ml_info;
 
           $scope.usableNumber=thousandSeparator(parseFloat(data.data.user_info.ml)+parseFloat(data.data.user_info.remain));
@@ -1502,10 +1650,12 @@
           }
 
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           console.log(data.message);
         }
       }).error(function(err){
@@ -1976,6 +2126,43 @@
     
   });
 
+  //小马驾驾关于我们页面
+  horseApp.controller("ponyAboutCtrl",function($scope,$http,$location){
+    $scope.height=vHeight;
+
+    var token=sessionStorage["ponyUserToken"];
+
+    //版本号
+    $scope.version=null;
+
+
+
+    //监听页面加载
+    $scope.$watch("viewContentLoaded",function(){
+
+      //获取数据
+      $http({
+        method:'post',
+        url:"http://180.76.243.205:8383/_API/_aboutUs/get",
+        data:"user_id="+ponyUserData.id+"&token="+token
+      }).success(function(data){
+        console.log(data);
+        if(data.code=="E0000"){
+          $scope.version=data.data.version;
+          $("#ponyAboutPage>.ponyMsg").html("<p>"+data.data.content.replace(/(<\/br>)+/ig,"</p><p>")+"</p>");
+          // console.log($scope.agreement);
+        }else if(data.code=="E0014"){
+          alertMsg("确定",data.message,function(){
+            window.location.href="index.html#/login";
+          });
+        }else{
+          console.log(data.message);
+        }
+      });
+
+    });
+  });
+
   //系统信息列表页面
   horseApp.controller("systemMsgListCtrl",function($scope,$http,$location){
     $scope.height=vHeight;
@@ -2126,7 +2313,6 @@
         clearInterval(orderTimer);
         return;
       }
-
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userOrder/get",
@@ -2134,7 +2320,6 @@
       }).success(function(data){
         // console.log(data);
         if(data.code=="E0000"){
-  
           if(data.data){
             if(orderListTime==data.data[0].update_time){
               console.log("没有数据更新");
@@ -2264,6 +2449,8 @@
         //待发货
         case '5':
           // 取消订单
+          //开始加载通讯
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_userOrder/cancel",
@@ -2271,14 +2458,17 @@
           }).success(function(data){
             console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","取消成功",function(){});
               getListData();
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
               // console.log(data.message);
+              commFinish();
               alertMsg("确定",data.message,function(){
               });
             }
@@ -2306,6 +2496,8 @@
         //待订单服务确认
         case '6':
           // 确认服务
+          //开始加载通讯
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_userService/confirm",
@@ -2313,13 +2505,16 @@
           }).success(function(data){
             console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","服务完成",function(){});
               getListData();
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
+              commFinish();
               // console.log(data.message);
               alertMsg("确定",data.message,function(){
               });
@@ -2456,6 +2651,8 @@
 
     //信息列表数据
     $scope.orderDetailList=null;
+    //用户使用优惠券列表
+    $scope.usedCoupon=[];
     //订单信息
     $scope.orderDetail=null;
     //轮胎照片
@@ -2489,6 +2686,8 @@
         //待发货
         case '5':
           // one.btnName="取消订单";
+          //开始加载通讯
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_userOrder/cancel",
@@ -2496,13 +2695,16 @@
           }).success(function(data){
             console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","取消成功",function(){});
               getListData();
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
+              commFinish();
               // console.log(data.message);
               alertMsg("确定",data.message,function(){
               });
@@ -2527,6 +2729,8 @@
         //待订单服务确认
         case '6':
           // one.btnName="确认服务";
+          //开始加载通讯
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_userService/confirm",
@@ -2534,14 +2738,17 @@
           }).success(function(data){
             console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","服务完成",function(){
                 window.location.href="index.html#/order/finish";
               });
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
+              commFinish();
               // console.log(data.message);
               alertMsg("确定",data.message,function(){
               });
@@ -2559,6 +2766,8 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //获取数据
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userOrder/getSingle",
@@ -2566,9 +2775,10 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           $scope.orderDetailList=data.data.details;
           $scope.orderDetail=data.data.orderInfo;
-
+          $scope.usedCoupon=data.data.sales_history;
           if(data.data.orderInfo.order_type_id==1){
             for(var i=0,len=data.data.orderImg.length;i<len;i++){
               var one=data.data.orderImg[i];
@@ -2601,41 +2811,37 @@
             //待发货
             case '5':
               // one.btnName="取消订单";
-              $("#orderAffirmBtn").html("取消订单").css("backgroundColor","#ee2625");;
+              $("#orderAffirmBtn").html("取消订单").css("backgroundColor","#ee2625");
               break;
             //待商家确认服务
-            // case '3':
-            //   // if(stage==2){
-            //   //   // one.btnName="补差换胎";
-            //   // }else if(stage==1||stage==3||stage==5){
-            //   //   // one.btnName="等待服务";
-            //   // }else if(stage==4){
-            //   //   // one.btnName="支付运费";
-            //   // }
-            //   break;
+            case '3':
+              $("#orderAffirmBtn").html("等待服务").css("backgroundColor","#b4b4b4");
+              break;
             //待收货
             case '2':
               // one.btnName="等待确认";
-              $("#orderAffirmBtn").html("等待确认").css("backgroundColor","#b4b4b4");;
+              $("#orderAffirmBtn").html("等待确认").css("backgroundColor","#b4b4b4");
               break;
             //待订单服务确认
             case '6':
               // one.btnName="确认服务";
-              $("#orderAffirmBtn").html("确认服务").css("backgroundColor","#ee2625");;
+              $("#orderAffirmBtn").html("确认服务").css("backgroundColor","#ee2625");
               break;
             case '7':
               // one.btnName="未评价";
               $("#orderAffirmBtn").html("待评价").css("backgroundColor","#ee2625");
               break;
             default:
-              $("#orderAffirmBtn").html("已完成").css("display","none");
+              $("#orderAffirmBtn").html("已完成").css("backgroundColor","#b4b4b4");
           }
 
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           // console.log(data.message);
           alertMsg("确定",data.message,function(){
           });
@@ -2665,7 +2871,8 @@
     //行驶证照片
     $scope.drivingImg=[];
 
-
+    //开始加载通讯
+    commStart();
     //获取数据
     $http({
       method:"post",
@@ -2674,6 +2881,7 @@
     }).success(function(data){
       console.log(data);
       if(data.code=="E0000"){
+        commFinish();
         $scope.orderDetailList=data.data.details;
         $scope.orderDetail=data.data.orderInfo;
         if(data.data.orderInfo.order_type_id==1){
@@ -2698,10 +2906,12 @@
         }
 
       }else if(data.code=="E0014"){
+        commFinish();
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
         });
       }else{
+        commFinish();
         console.log(data.message);
         // alertMsg("确定",data.message,function(){});
       }
@@ -2709,6 +2919,8 @@
 
     //支付运费
     $scope.submitPay=function(){
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userFare/pay",
@@ -2716,12 +2928,15 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           $location.path("/checkoutCounter/"+data.data.obj_id+"/"+data.data.trade_mode);
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           // console.log(data.message);
           alertMsg("确定",data.message,function(){});
         }
@@ -2758,6 +2973,8 @@
     //畅行无忧数量
     $scope.CXWY=0;
 
+    //开始加载通讯
+    commStart();
     //获取数据
     $http({
       method:"post",
@@ -2766,6 +2983,7 @@
     }).success(function(data){
       console.log(data);
       if(data.code=="E0000"){
+        commFinish();
         $scope.orderDetailList=data.data.details;
         $scope.orderDetail=data.data.orderInfo;
         $scope.CXWY=data.data.cxwy;
@@ -2791,10 +3009,12 @@
         }
 
       }else if(data.code=="E0014"){
+        commFinish();
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
         });
       }else{
+        commFinish();
         console.log(data.message);
         // alertMsg("确定",data.message,function(){});
       }
@@ -2803,7 +3023,8 @@
     //确认补差 ，如果使用畅行无忧且数量符合，直接跳订单列表页面，否则跳收银台进行支付
     $scope.submitMakeUp=function(){
       var cxwySel=$("#orderRepairTireCostPage>.orderDetail>.serverCXWY").hasClass("sel")?1:2;
-
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userBalance/payment",
@@ -2811,6 +3032,7 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           if(!data.data.trade_mode){
             alertMsg("确定","提交成功",function(){
               window.location.href="index.html#/order/server";
@@ -2819,10 +3041,12 @@
             $location.path("/checkoutCounter/"+data.data.obj_id+"/"+data.data.trade_mode);
           }
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           // console.log(data.message);
           alertMsg("确定",data.message,function(){});
         }
@@ -2833,6 +3057,8 @@
     $scope.refuseMakeUp=function(){
       confirmMsg(["确认","取消"],"您确定要拒绝服务吗？",function(){
         // console.log("确定");
+        //开始加载通讯
+        commStart();
         $.ajax({
           type:"post",
           url:"http://180.76.243.205:8383/_API/_userBalance/denial",
@@ -2842,6 +3068,7 @@
             token:token
           },
           success:function(data){
+            commFinish();
             console.log(data);
             if(data.code=="E0000"){
               alertMsg("确定","提交成功",function(){
@@ -2857,6 +3084,7 @@
             }
           },
           error:function(err){
+            commFinish();
             console.log(err);
           }
         });
@@ -2930,7 +3158,8 @@
         alertMsg("确定","请输入评价内容",function(){});
         return;
       }
-
+      //开始加载通讯
+      commStart();
       //提交数据
       $http({
         method:"post",
@@ -2939,14 +3168,17 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           alertMsg("确定","评论成功",function(){
             window.location.href="index.html#/order/finish";
           });
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           // console.log(data.message);
           alertMsg("确定",data.message,function(){});
         }
@@ -3031,6 +3263,8 @@
     //设为默认宝驹
     $scope.userCarDefault=function(userCarId){
       //console.log(userCarId);
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userCar/default",
@@ -3038,6 +3272,7 @@
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
+          commFinish();
           var carList=$("#bolgListPage>.bolgList>ul").children();
           for(var i=0;i<carList.length;i++){
             var item=carList[i];
@@ -3046,10 +3281,12 @@
             }
           }
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){}); 
         }
       }).error(function(err){
@@ -3059,30 +3296,45 @@
     //删除宝驹
     $scope.userCarRemove=function(userCarId){
       //console.log(userCarId);
-      $http({
-        method:"post",
-        url:"http://180.76.243.205:8383/_API/_userCar/delete",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&user_car_id="+userCarId
-      }).success(function(data){
-        //console.log(data);
-        if(data.code=="E0000"){
-          var carList=$("#bolgListPage>.bolgList>ul").children();
-          for(var i=0;i<carList.length;i++){
-            var item=carList[i];
-            if($(item).attr("data-usercarid")==userCarId){
-              $(item).remove();
+      confirmMsg(["确认","取消"],"删除宝驹后数据将不再保留，您确认删除吗？",function(){
+        // console.log("确定");
+        //开始加载通讯
+        commStart();
+        $.ajax({
+          type:"post",
+          url:"http://180.76.243.205:8383/_API/_userCar/delete",
+          data:{
+            user_id:ponyUserData.id,
+            token:token,
+            user_car_id:userCarId
+          },
+          success:function(data){
+            if(data.code=="E0000"){
+              commFinish();
+              var carList=$("#bolgListPage>.bolgList>ul").children();
+              for(var i=0;i<carList.length;i++){
+                var item=carList[i];
+                if($(item).attr("data-usercarid")==userCarId){
+                  $(item).remove();
+                }
+              }
+            }else if(data.code=="E0014"){
+              commFinish();
+              alertMsg("确定",data.message,function(){
+                window.location.href="index.html#/login";
+              });
+            }else{
+              commFinish();
+              alertMsg("确定",data.message,function(){}); 
             }
           }
-        }else if(data.code=="E0014"){
-          alertMsg("确定",data.message,function(){
-            window.location.href="index.html#/login";
-          });
-        }else{
-          alertMsg("确定",data.message,function(){}); 
-        }
-      }).error(function(err){
-        //console.log(err);
+        });
+
+
+      },function(){
+        // console.log("取消");
       });
+
     }
 
     //监听页面加载
@@ -3178,6 +3430,19 @@
       window.history.back(-1);
     }
 
+    //选取里程表是否被损坏
+    $scope.selObometerBad=function(){
+      if($("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on")){
+        $("#mileageImg").removeAttr("disabled");
+        $("#myBolgPage>.bolgConfig>form>.selObometer").removeClass("on").next().css("display","block").next().css("display","block");
+      }else{
+        $("#myBolgPage>.bolgConfig>form>.selObometer").addClass("on").next().css("display","none").next().css("display","none");
+        $("#userBolgMileage").val(0);
+        $("#mileagePic").attr('src','img/mileage.jpg');
+        $("#mileageImg").attr("disabled",'true').val("");
+      }
+    }
+
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
@@ -3186,6 +3451,8 @@
       //如果不为null那就是有id，是修改用户宝驹页面，如是NULL，那就是新增宝驹页面，有推荐人一项
       if(userBolg!="null"){
         $(".referrer").css("display","none");
+        //开始加载通讯
+        commStart();
         $http({
           method:"post",
           url:"http://180.76.243.205:8383/_API/_userCar/get",
@@ -3193,6 +3460,7 @@
         }).success(function(data){
           //console.log(data);
           if(data.code=="E0000"){
+            commFinish();
             userCreatBolg=data.data;
             //console.log(userCreatBolg);
             //车牌省
@@ -3222,10 +3490,18 @@
             // 行驶证副页照片
             $("#drivePicSecond").attr("src",userCreatBolg.traveled_img_inverse);
             // 里程照片
-            $("#mileagePic").attr("src",userCreatBolg.maturity_img);
+            if(userCreatBolg.maturity_img){
+              $("#mileagePic").attr("src",userCreatBolg.maturity_img);
+            }else{
+              $("#myBolgPage>.bolgConfig>form>.selObometer").addClass("on").next().css("display","none").next().css("display","none");
+              $("#userBolgMileage").val(0);
+              $("#mileagePic").attr('src','img/mileage.jpg');
+              $("#mileageImg").attr("disabled",'true').val("");
+            }
             // 保险照片
             $("#InsurancePic").attr("src",userCreatBolg.insurance_img);
           }else if(data.code=="E0014"){
+            commFinish();
             alertMsg("确定",data.message,function(){
               window.location.href="index.html#/login";
             });
@@ -3403,7 +3679,7 @@
       });
 
       //获取服务截止日期
-      $("#userBolgData").blur(function(){
+      $("#userBolgData").on('change',function(){
         var driveData=$(this).val();
         if(driveData){
           $.ajax({
@@ -3421,7 +3697,6 @@
         }
 
       });
-
 
     });
 
@@ -3565,6 +3840,7 @@
     $scope.userBolgSelRunRoad=function(){
       //页面从头
       $(document).scrollTop(0);
+      alertMsg("确定","为了您的行车安全请如实填写您的行车路况！",function(){}); 
 
       $scope.selRoadHtml="";
       $("#carSelRunRoad").css({
@@ -3704,60 +3980,6 @@
 
     }
 
-    // 用户自选轮胎规格
-    // $scope.userBolgSetTireType=function(){
-    //   var font=$("#userBolgTireType").attr("data-font");
-    //   var rear=$("#userBolgTireType").attr("data-rear");
-    //   if(!font||!rear){
-    //     alertMsg("确定","请先选择车型再自选轮胎规格",function(){}); 
-    //     return;
-    //   }
-    //   //前轮数据
-    //   var fontArr=font.split("/");
-    //   var fontWidth=fontArr[0];
-    //   var fontRatio=fontArr[1].split("R")[0];
-    //   var fontDia=fontArr[1].split("R")[1];
-
-    //   //后轮数据
-    //   var rearArr=rear.split("/");
-    //   var rearWidth=rearArr[0];
-    //   var rearRatio=rearArr[1].split("R")[0];
-    //   var rearDia=rearArr[1].split("R")[1];
-      
-    //   $(".font #tireSurfaceWidth").val(fontWidth);
-    //   $(".font #tireFlatnessRatio").val(fontRatio);
-    //   $(".font #tireDia").val(fontDia);
-
-    //   $(".rear #tireSurfaceWidth").val(rearWidth);
-    //   $(".rear #tireFlatnessRatio").val(rearRatio);
-    //   $(".rear #tireDia").val(rearDia);
-
-    //   $("#carSelTireSpec").css({
-    //     display:"block"
-    //   }).siblings().css({display:"none"});
-
-    // }
-
-    //用户修改轮胎规格数据
-    // $scope.submitSpec=function(){
-    //   var fontW=$(".font #tireSurfaceWidth").val();
-    //   var fontR=$(".font #tireFlatnessRatio").val();
-    //   var fontD=$(".font #tireDia").val();
-      
-    //   var font=fontW+"/"+fontR+"R"+fontD
-      
-    //   var rearW=$(".rear #tireSurfaceWidth").val();
-    //   var rearR=$(".rear #tireFlatnessRatio").val();
-    //   var rearD=$(".rear #tireDia").val();
-
-    //   var rear=rearW+"/"+rearR+"R"+rearD
-
-    //   $("#userBolgTireType").attr("data-font",font).attr("data-rear",rear).html("前:"+font+" 后:"+rear);
-
-    //   $("#myBolgPage").css({
-    //     display:"block"
-    //   }).siblings().css({display:"none"});
-    // }
 
     //用户回退按键
     $scope.toBackPage=function(targetPage){
@@ -3767,7 +3989,7 @@
 
     //服务截止日期帮助
     $scope.ponyServerStopHelper=function(){
-      alertMsg("确定","小马驾驾为你安装后服务15年",function(){}); 
+      alertMsg("确定","小马驾驾自您行驶证注册之日起为您服务15年",function(){}); 
     }
 
     //保存或修改用户车辆信息
@@ -3820,7 +4042,7 @@
           alertMsg("确定","请输入您的行驶证日期",function(){}); 
           return;
         }else if(userDriveID>formatNow){
-          console.log(userDriveID,formatNow);
+          // console.log(userDriveID,formatNow);
           alertMsg("确定","您输入的行驶证日期不正确",function(){}); 
           return;
         }
@@ -3829,10 +4051,6 @@
           alertMsg("确定","您选择的服务截止日期不正确",function(){}); 
           return;
         }
-        // if(!userDriveMileage){
-        //   alertMsg("确定","请输入您的行驶里程",function(){}); 
-        //   return;
-        // }
         if(!userDriveInsurance){
           alertMsg("确定","请输入您的车险日期",function(){}); 
           return;
@@ -3855,6 +4073,20 @@
           return;
         }
         
+        //如果他选了里程表损坏，则不对他的里程和图片进行验证
+        var isMeterBad=$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on");
+        if(!isMeterBad){
+          if(userDriveMileage<=0){
+            alertMsg("确定","请输入正确的行驶里程",function(){}); 
+            return;
+          }
+          if(!$("#mileageImg").val()){
+            alertMsg("确定","请上传您的里程表照片",function(){}); 
+            return;
+          }
+        }
+
+
         //填写推荐人，验推荐人手机号
         if(!(/^1[34578]\d{9}$/.test(ponyUserReferrer))&&ponyUserReferrer){ 
           alertMsg("确定","填写推荐人手机号码有误，请重填",function(){}); 
@@ -3871,6 +4103,12 @@
         fData.append("city_code",carLetter);
         fData.append("plat_code",carOther);
         fData.append("insurance_date",userDriveInsurance);
+
+        if(isMeterBad){
+          fData.append("is_broken",1);
+        }else{
+          fData.append("is_broken",2);
+        }
         
         fData.append("font",tireFontSize);
         fData.append("rear",tireRearSize);
@@ -3881,6 +4119,8 @@
           fData.append("road_info["+i+"]['road_id']",carFinalSelRoad[i].road_id);
           fData.append("road_info["+i+"]['selected']",carFinalSelRoad[i].selected);
         }
+        //开始加载通讯
+        commStart();
         $.ajax({
           type:"post",
           processData:false,
@@ -3890,14 +4130,17 @@
           success:function(data){
             // console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","添加成功",function(){
                 window.location.href="index.html#/main"
               }); 
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
+              commFinish();
               alertMsg("确定",data.message,function(){}); 
             }
           },
@@ -3936,13 +4179,26 @@
           alertMsg("确定","您选择的服务截止日期不正确",function(){}); 
           return;
         }
-        if(!userDriveMileage){
-          alertMsg("确定","请输入您的行驶里程",function(){}); 
-          return;
-        }
+        // if(!userDriveMileage){
+        //   alertMsg("确定","请输入您的行驶里程",function(){}); 
+        //   return;
+        // }
         if(!userDriveInsurance){
           alertMsg("确定","请输入您的车险日期",function(){}); 
           return;
+        }
+
+        //如果他选了里程表损坏，则不对他的里程和图片进行验证
+        var isMeterBad=$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on");
+        if(!isMeterBad){
+          if(userDriveMileage<=0){
+            alertMsg("确定","请输入正确的行驶里程",function(){}); 
+            return;
+          }
+          if(!$("#mileageImg").val()){
+            alertMsg("确定","请上传您的里程表照片",function(){}); 
+            return;
+          }
         }
 
 
@@ -3958,6 +4214,12 @@
         fData.append("city_code",carLetter);
         fData.append("plat_code",carOther);
         fData.append("insurance_date",userDriveInsurance);
+
+        if(isMeterBad){
+          fData.append("is_broken",1);
+        }else{
+          fData.append("is_broken",2);
+        }
         
         fData.append("font",tireFontSize);
         fData.append("rear",tireRearSize);
@@ -3971,7 +4233,8 @@
             }
           }
         }
-
+        //开始加载通讯
+        commStart();
         $.ajax({
           type:"post",
           processData:false,
@@ -3981,14 +4244,17 @@
           success:function(data){
             // console.log(data);
             if(data.code=="E0000"){
+              commFinish();
               alertMsg("确定","修改成功",function(){
                 window.location.href="index.html#/main"
               }); 
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else{
+              commFinish();
               alertMsg("确定",data.message,function(){}); 
             }
           },
@@ -4341,7 +4607,8 @@
       //   var one=addServer[i];
       //   selAddServerList.push($(one).attr("data-addserverid"));
       // }
-
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_shoePrice/get",
@@ -4350,15 +4617,18 @@
         //+(addServerArr.length>0?"1":"2")+"&added_ids="+selAddServerList
       }).success(function(data){
         if(data.code=="E0000"){
+          commFinish();
           // console.log(data.data);
           //更新完数据后开始定时器
           clearInterval(detailBannerTimer);
           $location.path("/tireQCServer"+"/"+data.data.shoe_temp_id)
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){}); 
         }
       }).error(function(err){
@@ -4612,19 +4882,24 @@
         alertMsg("确定","你的预约时间有误，请重新选择",function(){}); 
         return; 
       } 
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_shoeOrder/submit",
         data:"user_id="+ponyUserData.id+"&token="+token+"&shoe_temp_id="+tempId+"&name="+userName+"&phone="+userTel+"&appointment="+userAppointment+" 23:59"
       }).success(function(data){
         if(data.code=="E0000"){
+          commFinish();
           // console.log(data.data);
           $location.path("/checkoutCounter/"+tempId+"/"+orderType);
         }else if(data.code=="E0014"){
+          commFinish();
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
           });
         }else{
+          commFinish();
           alertMsg("确定",data.message,function(){}); 
         }
       }).error(function(err){
@@ -4814,46 +5089,9 @@
         //成功正解匹配
         // alert(pwd);
         //提交订单
-        // $http({
-        //   method:"post",
-        //   url:"http://180.76.243.205:8383/_API/_ml/pay",
-        //   data:"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-        // }).success(function(data){
-        //   if(data.code=="E0000"){
-        //     console.log(data);
-        //     $("#userPayPwdInput").blur();
-        //     if(data.data.trade_mode=="shoe_temp "){
-        //       alertMsg("确定","支付成功",function(){
-        //         window.location.href="index.html#/CASTire"
-        //       }); 
-        //     }else{
-        //       alertMsg("确定","支付成功",function(){
-        //         window.location.href="index.html#/order/all"
-        //       }); 
-        //     }
-        //   }else if(data.code=="E0014"){
-        //     alertMsg("确定",data.message,function(){
-        //       window.location.href="index.html#/login";
-        //     });
-        //   }else if(data.code=="E0030"){
-        //     //余额不足，跳转充值页面
-        //     confirmMsg(["充值","取消"],data.message,function(){
-        //       // console.log("确定");
-        //       window.location.href="index.html#/userAmount";
-        //     },function(){
-        //       // console.log("取消");
-        //       //关闭支付窗口
-        //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-        //     });
-        //   }else{
-        //     alertMsg("确定",data.message,function(){
-        //       //关闭支付窗口
-        //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-        //     }); 
-        //   }
-        // }).error(function(err){
-        //   console.log(err);
-        // });
+
+        //开始加载通讯
+        commStart();
         $.ajax({
           type:"post",
           url:"http://180.76.243.205:8383/_API/_ml/pay",
@@ -4867,6 +5105,7 @@
           },
           success:function(data){
             if(data.code=="E0000"){
+              commFinish();
               // console.log(data);
               $("#userPayPwdInput").blur();
               if(data.data.trade_mode=="shoe_temp"){
@@ -4879,10 +5118,12 @@
                 }); 
               }
             }else if(data.code=="E0014"){
+              commFinish();
               alertMsg("确定",data.message,function(){
                 window.location.href="index.html#/login";
               });
             }else if(data.code=="E0030"){
+              commFinish();
               //余额不足，跳转充值页面
               confirmMsg(["充值","取消"],data.message,function(){
                 // console.log("确定");
@@ -4893,6 +5134,7 @@
                 $("#checkoutCounterPage>.inputPayPwd").css("display","none");
               });
             }else{
+              commFinish();
               alertMsg("确定",data.message,function(){
                 //关闭支付窗口
                 $("#checkoutCounterPage>.inputPayPwd").css("display","none");
@@ -4900,6 +5142,7 @@
             }
           },
           error:function(err){
+            commFinish();
             console.log(err);
           }
         });
@@ -5245,56 +5488,8 @@
             //成功正解匹配
             // alert(pwd);
             //提交订单
-            // $http({
-            //   method:"post",
-            //   url:"http://180.76.243.205:8383/_API/_ml/pay",
-            //   // data:"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-            //   data:{
-            //     user_id:ponyUserData.id,
-            //     token:token,
-            //     obj_id:tempId,
-            //     trade_mode:orderType,
-            //     pay_pwd:strmd5(pwd),
-            //     arr:userSelCoupon
-            //   }
-            //   //"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-            // }).success(function(data){
-            //   if(data.code=="E0000"){
-            //     // console.log(data);
-            //     $("#userPayPwdInput").blur();
-            //     if(data.data.trade_mode=="shoe_temp "){
-            //       alertMsg("确定","支付成功",function(){
-            //         window.location.href="index.html#/CASTire"
-            //       }); 
-            //     }else{
-            //       alertMsg("确定","支付成功",function(){
-            //         window.location.href="index.html#/order/all"
-            //       }); 
-            //     }
-            //   }else if(data.code=="E0014"){
-            //     alertMsg("确定",data.message,function(){
-            //       window.location.href="index.html#/login";
-            //     });
-            //   }else if(data.code=="E0030"){
-            //     //余额不足，跳转充值页面
-            //     confirmMsg(["充值","取消"],data.message,function(){
-            //       // console.log("确定");
-            //       window.location.href="index.html#/userAmount";
-            //     },function(){
-            //       // console.log("取消");
-            //       //关闭支付窗口
-            //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-            //     });
-            //   }else{
-            //     alertMsg("确定",data.message,function(){
-            //       //关闭支付窗口
-            //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-            //     }); 
-            //   }
-            // }).error(function(err){
-            //   console.log(err);
-            // });
-
+            //开始加载通讯
+            commStart();
             $.ajax({
               type:"post",
               url:"http://180.76.243.205:8383/_API/_ml/pay",
@@ -5307,6 +5502,7 @@
                 sale_ids:userSelCoupon
               },
               success:function(data){
+                commFinish();
                 if(data.code=="E0000"){
                   // console.log(data);
                   $("#userPayPwdInput").blur();
@@ -5341,6 +5537,7 @@
                 }
               },
               error:function(err){
+                commFinish();
                 console.log(err);
               }
             });
@@ -5475,23 +5672,50 @@
     //流程信息
     $scope.flowPath=[];
 
-    //最大更换数量
-    var changeMaxNum=2;
+    //最大更换数量 前胎，后胎
+    var changeFontMaxNum=0;
+    var changeRearMaxNum=0;
 
-    //更换数量
-    $scope.originalChangeNum=0;
+    //更换数量 前胎，后胎
+    $scope.originalChangeFontNum=0;
+    $scope.originalChangeRearNum=0;
 
     // 更换数量增加
-    $scope.changeNumAdd=function(){
-      if($scope.originalChangeNum<changeMaxNum){
-        $scope.originalChangeNum++;
+    $scope.changeNumAdd=function(targetLocation){
+      if(targetLocation=='font'){
+        if($scope.originalChangeFontNum<changeFontMaxNum){
+          $scope.originalChangeFontNum++;
+        }else{
+          if(changeFontMaxNum==2){
+            alertMsg("确定","最大可更换数量",function(){});
+          }else{
+            alertMsg("确定","没胎了，买一个吧",function(){});
+          }
+        }
+      }else{
+        if($scope.originalChangeRearNum<changeRearMaxNum){
+          $scope.originalChangeRearNum++;
+        }else{
+          if(changeRearMaxNum==2){
+            alertMsg("确定","最大可更换数量",function(){});
+          }else{
+            alertMsg("确定","没胎了，买一个吧",function(){});
+          }
+        }
       }
     }
     // 更换数量减少
-    $scope.changeNumMinus=function(){
-      if($scope.originalChangeNum>0){
-        $scope.originalChangeNum--;
+    $scope.changeNumMinus=function(targetLocation){
+      if(targetLocation=='font'){
+        if($scope.originalChangeFontNum>0){
+          $scope.originalChangeFontNum--;
+        }
+      }else{
+        if($scope.originalChangeRearNum>0){
+          $scope.originalChangeRearNum--;
+        }
       }
+
     }
 
     //显示流程配置
@@ -5522,22 +5746,25 @@
 
     //提交订单到更换地址选择
     $scope.submitOriginalChange=function(){
-      var num=$("#originalChangeNum").val();
-      if(num<1){
+      var changeFontNum=$("#originalChangeFontNum").val();
+      var changeRearNum=$("#originalChangeRearNum").val();
+
+      if((changeFontNum*1+changeRearNum*1)<1){
         alertMsg("确定","请选择你要更换的数量",function(){});
         return;
       }
-      var location=$("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>.active").index()==0?"font":"rear";
-
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_contacts/select",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireServerSelShopData.id+"&shoe_name="+location+"&shoe_no="+num
+        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireServerSelShopData.id+"&font="+changeFontNum+"&rear="+changeRearNum
       }).success(function(data){
         // console.log(data)
+        commFinish();
         if(data.code=="E0000"){
           clearInterval(bannerTimer);
-          $location.path("/originalChangeTireSelAddress/"+tireServerSelShopData.id+"/"+num+"/"+location);
+          $location.path("/originalChangeTireSelAddress/"+tireServerSelShopData.id+"/"+changeFontNum+"/"+changeRearNum);
         }else if(data.code=="E0014"){
           alertMsg("确定",data.message,function(){
             clearInterval(bannerTimer);
@@ -5555,7 +5782,8 @@
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
       $(document).scrollTop(0);
-
+      //开始加载通讯
+      commStart();
       // deviceLocation.latitude+","+deviceLocation.longitude
       //获取数据
       $http({
@@ -5563,18 +5791,12 @@
         url:"http://180.76.243.205:8383/_API/_original/change",
         data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')
       }).success(function(data){
+        commFinish();
         if(data.code=="E0000"){
           console.log(data.data);
           $scope.userFont=data.data.font;
           $scope.userRear=data.data.rear;
-          //判断前胎数为最大可选数量
-          if(data.data.font.shoe_no>2){
-            changeMaxNum=2
-          }else if(data.data.font.shoe_no>0){
-            changeMaxNum=data.data.font.shoe_no;
-          }else{
-            changeMaxNum=0;
-          }
+
           //默认前胎轮播图片并加载更新
           var bannerImgList=data.data.font.shoe_image;
           var html="";
@@ -5617,9 +5839,6 @@
             }
           }
 
-          // console.log($scope.shop,tireServerSelShopData);
-
-
         }else if(data.code=="E0014"){
           alertMsg("确定",data.message,function(){
             clearInterval(bannerTimer);
@@ -5629,11 +5848,6 @@
           console.log(data.message);
         }
       });
-
-
-
-
-
 
       //banner图片点
       $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgListNum>ul").on("click","li",function(){
@@ -5674,7 +5888,6 @@
         }
       });
 
-
       //前后胎选择
       $("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul").on("click","li",function(){
         var target=$(this);
@@ -5682,62 +5895,41 @@
         var indexNum=$(this).index();
         //更换选择前后胎
         if(target.hasClass("active")){
-        }else{
-          target.addClass("active").siblings().removeClass("active");
-        }
-        //设置最大更换数量
-        if(num>2){
-          changeMaxNum=2
-        }else if(num>0){
-          changeMaxNum=num;
-        }else{
-          changeMaxNum=0;
-        }
-        //初始化更换数量
-        $scope.originalChangeNum=0;
-        
-        //判断前后胎，更换轮播图片
-        // console.log(indexNum);
-        var bannerImgList=[];
-        if(indexNum==0){
-          clearInterval(bannerTimer);
-          bannerImgList=$scope.userFont.shoe_image||[];
-        }else{
-          clearInterval(bannerTimer);
-          bannerImgList=$scope.userRear.shoe_image||[];
-        }
-        //更新banner图片
-        var html="";
-        var subHtml="";
-        for(var i=0;i<bannerImgList.length;i++){
-          var one=bannerImgList[i];
-          if(i==0){
-            html+="<li class='active'><img src='"+one+"'/></li>";
-            subHtml+="<li class='active'></li>";
+          target.removeClass("active");
+          if(indexNum==0){
+            $scope.originalChangeFontNum=0;
+            changeFontMaxNum=0;
           }else{
-            html+="<li><img src='"+one+"'/></li>";
-            subHtml+="<li></li>";
+            $scope.originalChangeRearNum=0;
+            changeRearMaxNum=0;
+          }
+          $scope.$apply();
+        }else{
+          target.addClass("active");
+
+          //设置最大更换数量 分前后胎
+          if(indexNum==0){
+            //前胎
+            if(num>2){
+              changeFontMaxNum=2
+            }else if(num>0){
+              changeFontMaxNum=num;
+            }else{
+              changeFontMaxNum=0;
+            }
+          }else{
+            //后胎
+            if(num>2){
+              changeRearMaxNum=2
+            }else if(num>0){
+              changeRearMaxNum=num;
+            }else{
+              changeRearMaxNum=0;
+            }
           }
         }
-        $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgList>ul").html(html);
-        $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgListNum>ul").html(subHtml);
-
-        //banner图片轮播
-        bannerTimer=setInterval(function(){
-          var num=$("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgList>ul").children(".active").index();
-          var len=$("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgList>ul").children().length;
-          if(num<(len-1)){
-            $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgList>ul").children(".active").next().addClass("active").siblings().removeClass("active");
-            $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgListNum>ul").children(".active").next().addClass("active").siblings().removeClass("active");
-          }else{
-            $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgList>ul").children().first().addClass("active").siblings().removeClass("active");
-            $("#originalChangeTirePage>.originalChangeTire>.tireBanner>.imgListNum>ul").children().first().addClass("active").siblings().removeClass("active");
-          }  
-        },10000);
 
       });
-
-
 
     });
 
@@ -6212,10 +6404,10 @@
 
     var token=sessionStorage["ponyUserToken"];
 
-    //获取传入的数据(更换轮胎的数量，更换轮胎的店铺ID)
+    //获取传入的数据(更换前后轮胎的数量，更换轮胎的店铺ID)
     var tireShopId=$routeParams.shopId;
-    var tireChangeNum=$routeParams.num;
-    var tireChangeLocation=$routeParams.location;
+    var tireChangeFontNum=$routeParams.changeFontNum;
+    var tireChangeRearNum=$routeParams.changeRearNum;
     // console.log(tireNum,tireLocation,tireShopId);
 
     //用户联系地址列表
@@ -6249,11 +6441,14 @@
       var userAddId=$("#originalChangeTireSelAddressPage>.addressList>ul>.active").attr("data-addid");
       // console.log(userAddId);
       // return;
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_serviceOrder/submit",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireShopId+"&user_shoe_id="+userAddId+"&shoe_no="+tireChangeNum+"&shoe_name="+tireChangeLocation
+        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireShopId+"&user_shoe_id="+userAddId+"&font="+tireChangeFontNum+"&rear="+tireChangeRearNum
       }).success(function(data){
+        commFinish();
         // console.log(data)
         if(data.code=="E0000"){
           alertMsg("确定","下单成功",function(){
@@ -6362,12 +6557,14 @@
         alertMsg("确定","您选择的预约时间不正确，请重新选择",function(){});
         return;
       }
-
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_shoePatch/submit",
         data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+shopId+"&name="+userName+"&phone="+userTel+"&appointment="+userTime
       }).success(function(data){
+        commFinish();
         console.log(data);
         if(data.code=="E0000"){
           tireRepairServer.userName="";
@@ -6420,20 +6617,42 @@
     // 当前选中店铺列表数据
     $scope.shop=null;
 
-    //更换数量
-    $scope.ponyChangeNum=1;
+    //前后胎更换数量
+    $scope.ponyChangeFontNum=0;
+    $scope.ponyChangeRearNum=0;
+
+    //前后胎最大可更换数量
+    var changeFontMaxNum=2;
+    var changeRearMaxNum=2;
     
     // 更换数量增加
-    $scope.changeNumAdd=function(){
-      if($scope.ponyChangeNum<2){
-        $scope.ponyChangeNum++;
+    $scope.changeNumAdd=function(targetLocation){
+      if(targetLocation=='font'){
+        if($scope.ponyChangeFontNum<changeFontMaxNum){
+          $scope.ponyChangeFontNum++;
+        }else{
+          alertMsg("确定","已经是最大可更换数量了",function(){});
+        }
+      }else{
+        if($scope.ponyChangeRearNum<changeRearMaxNum){
+          $scope.ponyChangeRearNum++;
+        }else{
+          alertMsg("确定","已经是最大可更换数量了",function(){});
+        }
       }
     }
     // 更换数量减少
-    $scope.changeNumMinus=function(){
-      if($scope.ponyChangeNum>1){
-        $scope.ponyChangeNum--;
+    $scope.changeNumMinus=function(targetLocation){
+      if(targetLocation=='font'){
+        if($scope.ponyChangeFontNum>0){
+          $scope.ponyChangeFontNum--;
+        }
+      }else{
+        if($scope.ponyChangeRearNum>0){
+          $scope.ponyChangeRearNum--;
+        }
       }
+
     }
 
     //显示流程配置
@@ -6465,12 +6684,13 @@
     //小马驾驾轮胎免费再换订单提交
     $scope.submitPonyTireChange=function(){
       
-      var num=$("#ponyChangeNum").val();
-      if(num<1){
+      var changeFontNum=$("#ponyChangeFontNum").val();
+      var changeRearNum=$("#ponyChangeRearNum").val();
+
+      if((changeFontNum*1+changeRearNum*1)<1){
         alertMsg("确定","请选择你要更换的数量",function(){});
         return;
       }
-      var location=$("#ponyTireChangePage>.ponyTireChange>.changeLocation>.selLocation>ul>.active").index()==0?"font":"rear";
       
       var changeOriginalArr=$("#ponyTireChangePage>.ponyTireChange>.changeCause>ul").children(".active");
       var tireChangeOriginal=[];
@@ -6487,12 +6707,15 @@
       // return;
 
       //提交临时订单数据
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_free/submit",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireServerSelShopData.id+"&font_rear="+location+"&shoe_no="+num
+        data:"user_id="+ponyUserData.id+"&token="+token+"&store_id="+tireServerSelShopData.id+"&font="+changeFontNum+"&rear="+changeRearNum
       }).success(function(data){
         // console.log(data)
+        commFinish();
         if(data.code=="E0000"){
           clearInterval(bannerTimer);
           $location.path("/ponyTireChangeOrderDetail/"+data.data.shoe_temp_id+'/'+tireChangeOriginal.join(","));
@@ -6513,26 +6736,22 @@
       //页面从头
       $(document).scrollTop(0);
 
+      //开始加载通讯
+      commStart();
       //获取数据
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_free/change",
         data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')
       }).success(function(data){
+        commFinish();
         console.log(data);
         // return;
         if(data.code=="E0000"){
           // console.log(data.data);
           $scope.userFont=data.data.font;
           $scope.userRear=data.data.rear;
-          // //判断前胎数为最大可选数量
-          // if(data.data.font.shoe_no>2){
-          //   changeMaxNum=2
-          // }else if(data.data.font.shoe_no>0){
-          //   changeMaxNum=data.data.font.shoe_no;
-          // }else{
-          //   changeMaxNum=0;
-          // }
+
           //默认前胎轮播图片并加载更新
           var bannerImgList=data.data.font.shoe_image;
           var html="";
@@ -6580,9 +6799,6 @@
               tireServerSelShopData=data.data.store;        
             }
           }
-
-          // console.log($scope.shop,tireServerSelShopData);
-
 
         }else if(data.code=="E0014"){
           alertMsg("确定",data.message,function(){
@@ -6644,67 +6860,6 @@
         }
       });
 
-      //前后胎选择
-      $("#ponyTireChangePage>.ponyTireChange>.changeLocation>.selLocation>ul").on("click","li",function(){
-        var target=$(this);
-        var num=$(this).attr("data-num");
-        var indexNum=$(this).index();
-        //更换选择前后胎
-        if(target.hasClass("active")){
-        }else{
-          target.addClass("active").siblings().removeClass("active");
-        }
-        //设置最大更换数量
-        if(num>2){
-          changeMaxNum=2
-        }else if(num>0){
-          changeMaxNum=num;
-        }else{
-          changeMaxNum=0;
-        }
-        //初始化更换数量
-        $scope.originalChangeNum=0;
-        
-        //判断前后胎，更换轮播图片
-        // console.log(indexNum);
-        var bannerImgList=[];
-        if(indexNum==0){
-          clearInterval(bannerTimer);
-          bannerImgList=$scope.userFont.shoe_image||[];
-        }else{
-          clearInterval(bannerTimer);
-          bannerImgList=$scope.userRear.shoe_image||[];
-        }
-        //更新banner图片
-        var html="";
-        var subHtml="";
-        for(var i=0;i<bannerImgList.length;i++){
-          var one=bannerImgList[i];
-          if(i==0){
-            html+="<li class='active'><img src='"+one+"'/></li>";
-            subHtml+="<li class='active'></li>";
-          }else{
-            html+="<li><img src='"+one+"'/></li>";
-            subHtml+="<li></li>";
-          }
-        }
-        $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgList>ul").html(html);
-        $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgListNum>ul").html(subHtml);
-
-        //banner图片轮播
-        bannerTimer=setInterval(function(){
-          var num=$("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgList>ul").children(".active").index();
-          var len=$("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgList>ul").children().length;
-          if(num<(len-1)){
-            $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgList>ul").children(".active").next().addClass("active").siblings().removeClass("active");
-            $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgListNum>ul").children(".active").next().addClass("active").siblings().removeClass("active");
-          }else{
-            $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgList>ul").children().first().addClass("active").siblings().removeClass("active");
-            $("#ponyTireChangePage>.ponyTireChange>.tireBanner>.imgListNum>ul").children().first().addClass("active").siblings().removeClass("active");
-          }  
-        },10000);
-
-      });
 
     });
 
@@ -6770,6 +6925,8 @@
       }
 
       //提交数据
+      //开始加载通讯
+      commStart();
       $.ajax({
         type:"post",
         url:"http://180.76.243.205:8383/_API/_freeOrder/submit",
@@ -6782,6 +6939,7 @@
           appointment:userServerTime,
           ori_list:orderChangeOriginalList
         },success:function(data){
+          commFinish();
           console.log(data);
           if(data.code=="E0000"){
             alertMsg("确定","下单成功",function(){
@@ -7360,13 +7518,15 @@
     //总价合计数组
     var totalArr=[];
 
-
+    //开始加载通讯
+    commStart();
     //获取数据
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_userStore/getHome",
       data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')+"&store_id="+shopId
     }).success(function(data){
+      commFinish();
       console.log(data);
       if(data.code=="E0000"){
         $scope.shopDetail=data.data.store;
@@ -7798,6 +7958,8 @@
       
       // console.log(server,list);
       //提交数据
+      //开始加载通讯
+      commStart();
       $.ajax({
         type:"post",
         url:"http://180.76.243.205:8383/_API/_userService/confirmTemp",
@@ -7810,6 +7972,7 @@
           service_types:0+($scope.upkeepNum>0?1:0)+($scope.beautyNum>0?1:0)+($scope.refitNum>0?1:0)+($scope.installList>0?1:0)
         },
         success:function(data){
+          commFinish();
           console.log(data);
           
           if(data.code=="E0000"){
@@ -7832,6 +7995,7 @@
           }
         },
         error:function(err){
+          commFinish();
           console.log(err);
         }
       });
@@ -8455,11 +8619,14 @@
       }
 
       //提交数据
+      //开始加载通讯
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_userService/submitTemp",
         data:"user_id="+ponyUserData.id+"&token="+token+"&temp_order_id="+orderId+"&name="+userName+"&phone="+userTel+"&appointment="+userTime
       }).success(function(data){
+        commFinish();
         console.log(data);
         if(data.code=="E0000"){
           $location.path("/checkoutCounter/"+data.data.obj_id+"/"+data.data.trade_mode);
@@ -8744,6 +8911,13 @@
     }
   }
 
+  //通讯load加载
+  function commStart(){
+    $(".commLoad").css("display","block");
+  }
+  function commFinish(){
+    $(".commLoad").css("display","none");
+  }
   //数组查询
   function searchArr(arr,key,val){
     for(var i=0;i<arr.length;i++){

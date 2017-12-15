@@ -69,7 +69,7 @@ var app = {
                 //console.log("可以退出了");
                 onTouch();
             }else{
-                window.location.href="index.html#/main";
+                // window.location.href="index.html#/main";
                 setTimeout(function(){
                     backNum=0;
                 }.bind(this),5000);

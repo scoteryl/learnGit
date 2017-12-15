@@ -140,7 +140,7 @@
       <span>暂不使用优惠券</span>
     </div>
     <ul>
-      <li ng-repeat="item in userCouponList track by $index" data-servertype="{{item.type}}" data-couponid="{{item.id}}" data-location="{{$index}}">
+      <li ng-repeat="item in userCouponList track by $index" data-servertype="{{item.type}}" data-couponid="{{item.user_sales_id}}" data-location="{{$index}}">
         <div class="couponTit coupon{{item.view_type_id}}">
           <h5>优惠券</h5>
           <p><span>{{item.name}}</span></p>

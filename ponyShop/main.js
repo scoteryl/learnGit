@@ -120,7 +120,10 @@
 
   //父级总控制器
   ponyShopApp.controller('ponyShopCtrl',function($scope){
-    
+    //通讯加载时报错，可点击取消
+    $(".commLoad").click(function(){
+      $(this).css('display','none');
+    });
   });
 
   //登陆页面
@@ -160,12 +163,14 @@
         return;
       }
 
+      //通讯开始等待
+      commStart();
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_store/login",
         data:"phone="+userTel+"&password="+strmd5(userPwd)
       }).success(function(data){
-
+        commFinish();
         if(data.code=="E0000"){
           sessionStorage["ponyShopUserID"]=data.data.producer_id;
           sessionStorage["ponyShopID"]=data.data.store_id;
@@ -180,15 +185,76 @@
         }
       });
 
-      
-
     } 
     
+    //监听页面加载
+    $scope.$watch("$viewContentLoaded",function(){
+
+      // 前往登陆
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userTel=$("#userAccounts").val();
+          var userPwd=$("#userPwd").val();
+          if(!userTel){
+            alertMsg("确定","请输入帐号",function(){}); 
+            return;
+          }
+          if(!userPwd){
+            alertMsg("确定","请输入密码",function(){}); 
+            return;
+          }
+    
+          //通讯开始等待
+          commStart();
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_store/login",
+            data:"phone="+userTel+"&password="+strmd5(userPwd)
+          }).success(function(data){
+            commFinish();
+            if(data.code=="E0000"){
+              sessionStorage["ponyShopUserID"]=data.data.producer_id;
+              sessionStorage["ponyShopID"]=data.data.store_id;
+              sessionStorage["ponyShopToken"]=data.data.token;
+              localStorage["ponyShopUserTel"]=userTel;
+              localStorage["ponyShopUserPwd"]=userPwd;
+              ponyShopDate=data.data;
+              // console.log(data);
+              $location.path("/main");
+            }else{
+              alertMsg("确定",data.message,function(){}); 
+            }
+          });
+
+        }
+      });
+    });
+
   });
  
   //注册页面
   ponyShopApp.controller("ponyShopRegisterCtrl",function($scope,$http,$location){
     $scope.height=vHeight;
+
+    //百度IP定位  定位当前城市中心IP
+    var lonBD=null;
+    var latBD=null;
+    $.ajax({
+      type:"get",
+      url:"http://api.map.baidu.com/location/ip",
+      data:{
+        ak:"9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB",
+        coor:"bd09ll"
+      },
+      success:function(data){
+        console.log(data,data.content.point.x,data.content.point.y);
+        // 经度
+        lonBD=data.content.point.x;
+        latBD=data.content.point.y;
+      }
+    });
 
     //省份数据
     $scope.provinceArr=[];
@@ -271,7 +337,14 @@
       // 百度地图API功能
       var map = new BMap.Map("ponyMap");    // 创建Map实例
       //deviceLocation.latitude deviceLocation.longitude
-      var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude),parseFloat(deviceLocation.latitude));
+      if(deviceLocation.status==1){
+        var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude)?parseFloat(deviceLocation.longitude):'120.389563',parseFloat(deviceLocation.latitude)?parseFloat(deviceLocation.latitude):'36.072198');
+      }else{
+        var mapPoint = new BMap.Point(lonBD,latBD);
+
+      }
+
+
       var geoc = new BMap.Geocoder(); 
       map.centerAndZoom(mapPoint,15);  // 初始化地图,设置中心点坐标和地图级别
       //查询地址
@@ -313,7 +386,7 @@
       var lon=$("#mapLocationAddress").attr("data-lon");
       var lat=$("#mapLocationAddress").attr("data-lat");
       // 更新数据
-      $("#mapLocationInput").attr("data-lon",lon).attr("data-lat",lat).attr("data-mapStr",addStr).children(".GPSAddress").html(addStr);
+      $("#mapLocationInput").attr("data-lon",parseFloat(lon)?lon:'').attr("data-lat",parseFloat(lat)?lat:'').attr("data-mapStr",addStr).children(".GPSAddress").html(addStr);
       // 返回注册页面
       $("#ponyShopRegisterPage").css("display","block").siblings().css("display","none");
     }
@@ -464,7 +537,7 @@
         return;
       }
       if(!(userShopLon&&userShopLat)){
-        alertMsg("确定","选取门店地图位置",function(){}); 
+        alertMsg("确定","门店定位失败，请重新选取门店定位",function(){}); 
         return;
       }
       if(!$("#userCharterInput").val()){
@@ -525,6 +598,8 @@
       $("#registerSubmitBtn").css("backgroundColor","#aaa");
       isSubmitOK=false;
       //上传数据
+      //通讯开始等待
+      commStart();
       $.ajax({
         type:"post",
         processData:false,
@@ -532,6 +607,7 @@
         url:"http://180.76.243.205:8383/_API/_store/register",
         data:fData,
         success:function(data){
+          commFinish();
           if(data.code=="E0000"){
             console.log(data);
             alertMsg("确定","注册成功",function(){
@@ -545,6 +621,7 @@
           }
         },
         error:function(err){
+          commFinish();
           //console.log(err);
         }
       });
@@ -1150,11 +1227,14 @@
             }else{
               //其他
               // path="/affirmOtherServer/"+id;
+              //通讯开始等待
+              commStart();
               $http({
                 method:"post",
                 url:"http://180.76.243.205:8383/_API/_service/complete",
                 data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+id
               }).success(function(data){
+                commFinish();
                 // console.log(data);
                 if(data.code=="E0000"){
                   alertMsg("确定","服务完成",function(){}); 
@@ -1177,11 +1257,14 @@
           }else if(stage==3||stage==5){
             // 服务完成
             // path="/affirmOtherServer/"+id;
+            //通讯开始等待
+            commStart();
             $http({
               method:"post",
               url:"http://180.76.243.205:8383/_API/_service/complete",
               data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+id
             }).success(function(data){
+              commFinish();
               // console.log(data);
               if(data.code=="E0000"){
                 alertMsg("确定","服务完成",function(){}); 
@@ -1201,11 +1284,14 @@
         //待收货
         case '2':
           // 确认收货
+          //通讯开始等待
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_storeDelivery/take",
             data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+id
           }).success(function(data){
+            commFinish();
             // console.log(data);
             if(data.code=="E0000"){
               alertMsg("确定","收货成功",function(){}); 
@@ -1366,11 +1452,16 @@
     //获取传入订单ID
     var orderId=$routeParams.orderId;
 
+    //总更换数量
+    var changeTotalNum=1;
+  
     //订单数据
     $scope.orderDate=null;
     // 订单列表数据
     $scope.orderListDetail=[];
 
+    //通讯开始等待
+    commStart();
     // 获取数据 
     $http({
       method:"post",
@@ -1378,13 +1469,14 @@
       data:"producer_id="+ponyUserId+"&store_id="+ponyShopId+"&token="+token+"&order_id="+orderId
     }).success(function(data){
       console.log(data);
+      commFinish();
       if(data.code=="E0000"){
         $scope.orderDate=data.data.orderInfo;
         $scope.orderListDetail=data.data.details;
-        if(data.data.details[0].stock_no==1){
-          //换一个时，禁用后三个
-          $("#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList").children().eq(2).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
-        }
+
+        changeTotalNum=data.data.shoe_no;
+        $("#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList").children().eq(changeTotalNum*3-1).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
+
       }else if(data.code=="E0014"){
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
@@ -1429,22 +1521,49 @@
       var tireImg4=$("#userTireImgInput4").val();
       var tireImg5=$("#userTireImgInput5").val();
       var tireImg6=$("#userTireImgInput6").val();
+      var tireImg7=$("#userTireImgInput7").val();
+      var tireImg8=$("#userTireImgInput8").val();
+      var tireImg9=$("#userTireImgInput9").val();
+      var tireImg10=$("#userTireImgInput10").val();
+      var tireImg11=$("#userTireImgInput11").val();
+      var tireImg12=$("#userTireImgInput12").val();
 
       //验证数据 
       if(!carImg){
         alertMsg("确定","请上传车辆照片",function(){}); 
         return;
       }
-      if(!(tireImg1&&tireImg2&&tireImg3)){
-        alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-        return;
-      }
-      if($scope.orderListDetail[0].stock_no!=1){
-        if(!(tireImg4&&tireImg5&&tireImg6)){
+
+      switch (changeTotalNum){
+        case 1:
+          if(!(tireImg1&&tireImg2&&tireImg3)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 2:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 3:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 4:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9&&tireImg10&&tireImg11&&tireImg12)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        default:
           alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-          return;
-        }
+          return; 
       }
+      
       if(!carFrameImg){
         alertMsg("确定","请上传车架号照片",function(){}); 
         return;
@@ -1462,8 +1581,11 @@
       fData.append("store_id",ponyShopId);
       fData.append("token",token);
       fData.append("order_id",orderId);
-      fData.append("diff",0);
+      fData.append("font_diff",0);
+      fData.append("rear_diff",0);
 
+      //通讯开始等待
+      commStart();
       //上传数据
       $.ajax({
         type:"post",
@@ -1472,6 +1594,7 @@
         url:"http://180.76.243.205:8383/_API/_service/submit",
         data:fData,
         success:function(data){
+          commFinish();
           if(data.code=="E0000"){
             console.log(data);
             alertMsg("确定","提交成功",function(){
@@ -1486,6 +1609,7 @@
           }
         },
         error:function(err){
+          commFinish();
           //console.log(err);
         }
       });
@@ -1498,6 +1622,8 @@
         // console.log("确定");
         // msg:输入信息
         // console.log(msg);
+        //通讯开始等待
+        commStart();
         $.ajax({
           type:"post",
           url:"http://180.76.243.205:8383/_API/_storeOrigin/denial",
@@ -1509,6 +1635,7 @@
             origin:msg
           },
           success:function(data){
+            commFinish();
             console.log(data);
             if(data.code=="E0000"){
               alertMsg("确定","订单完结",function(){
@@ -1523,6 +1650,7 @@
             }
           },
           error:function(err){
+            commFinish();
             console.log(err);
           }
         });
@@ -1616,24 +1744,46 @@
     // 订单列表数据
     $scope.orderListDetail=[];    
 
-    // 最大可补差更换数量
-    var maxSupplementNum=2;
+    //总更换数量
+    var changeTotalNum=1;
+
+    //前后轮胎尺寸数据
+    $scope.fontSize=null;
+    $scope.rearSize=null;
+
+    // 最大可补差更换数量 分前后胎
+    var maxSupplementFontNum=2;
+    var maxSupplementRearNum=2;
 
     // 补差换胎数量
-    $scope.supplementTireNum=0;
+    $scope.supplementFontTireNum=0;
+    $scope.supplementRearTireNum=0;
 
     // 补差换胎数量减少
-    $scope.supplementMinusNum=function(){
-      if($scope.supplementTireNum>0){
-        $scope.supplementTireNum--;
+    $scope.supplementMinusNum=function(targetLoactaion){
+      if(targetLoactaion=='font'){
+        if($scope.supplementFontTireNum>0){
+          $scope.supplementFontTireNum--;
+        }
+      }else{
+        if($scope.supplementRearTireNum>0){
+          $scope.supplementRearTireNum--;
+        }
       }
     }
 
     // 补差换胎数量增加
-    $scope.supplementPlusNum=function(){
-      if($scope.supplementTireNum<maxSupplementNum){
-        $scope.supplementTireNum++;
+    $scope.supplementPlusNum=function(targetLoactaion){
+      if(targetLoactaion=='font'){
+        if($scope.supplementFontTireNum<maxSupplementFontNum){
+          $scope.supplementFontTireNum++;
+        }
+      }else{
+        if($scope.supplementRearTireNum<maxSupplementRearNum){
+          $scope.supplementRearTireNum++;
+        }
       }
+
     }
 
     //返回按钮
@@ -1674,24 +1824,52 @@
       var tireImg4=$("#userTireImgInput4").val();
       var tireImg5=$("#userTireImgInput5").val();
       var tireImg6=$("#userTireImgInput6").val();
+      var tireImg7=$("#userTireImgInput7").val();
+      var tireImg8=$("#userTireImgInput8").val();
+      var tireImg9=$("#userTireImgInput9").val();
+      var tireImg10=$("#userTireImgInput10").val();
+      var tireImg11=$("#userTireImgInput11").val();
+      var tireImg12=$("#userTireImgInput12").val();
 
-      var makeUpTire=$("#makeUpTireNum").html();
+      var makeUpFontTire=$("#makeUpFontTireNum").html();
+      var makeUpRearTire=$("#makeUpRearTireNum").html();
 
       //验证数据 
       if(!carImg){
         alertMsg("确定","请上传车辆照片",function(){}); 
         return;
       }
-      if(!(tireImg1&&tireImg2&&tireImg3)){
-        alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-        return;
-      }
-      if($scope.orderListDetail[0].stock_no!=1){
-        if(!(tireImg4&&tireImg5&&tireImg6)){
+
+      switch (changeTotalNum){
+        case 1:
+          if(!(tireImg1&&tireImg2&&tireImg3)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 2:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 3:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 4:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9&&tireImg10&&tireImg11&&tireImg12)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        default:
           alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-          return;
-        }
+          return; 
       }
+
       if(!carFrameImg){
         alertMsg("确定","请上传车架号照片",function(){}); 
         return;
@@ -1701,6 +1879,7 @@
         return;
       }
 
+
       //初始化表单
       var fData=new FormData(document.getElementById('affirmTireServerFreeChangeOrder'));
       //补充数据
@@ -1708,12 +1887,14 @@
       fData.append("store_id",ponyShopId);
       fData.append("token",token);
       fData.append("order_id",orderId);
-      fData.append("diff",makeUpTire);
+      fData.append("font_diff",makeUpFontTire);
+      fData.append("rear_diff",makeUpRearTire);
 
       
-      if(makeUpTire<$scope.orderListDetail[0].stock_no){
-        if(makeUpTire==0){
-
+      if((parseInt(makeUpFontTire)+parseInt(makeUpRearTire))<changeTotalNum){
+        if((parseInt(makeUpFontTire)+parseInt(makeUpRearTire))==0){
+          //通讯开始等待
+          commStart();
           //上传数据
           $.ajax({
             type:"post",
@@ -1722,6 +1903,7 @@
             url:"http://180.76.243.205:8383/_API/_service/submit",
             data:fData,
             success:function(data){
+              commFinish();
               if(data.code=="E0000"){
                 console.log(data);
                 alertMsg("确定","提交成功",function(){
@@ -1736,13 +1918,16 @@
               }
             },
             error:function(err){
+              commFinish();
               //console.log(err);
             }
           });  
         }else{
-          confirmMsg(["确认","取消"],"免费更换的轮胎："+($scope.orderListDetail[0].stock_no-makeUpTire)+"条",function(){
+          confirmMsg(["确认","取消"],"免费更换的轮胎："+(changeTotalNum-(parseInt(makeUpFontTire)+parseInt(makeUpRearTire)))+"条",function(){
             // console.log("确定");
             //上传数据
+            //通讯开始等待
+            commStart();
             $.ajax({
               type:"post",
               processData:false,
@@ -1750,6 +1935,7 @@
               url:"http://180.76.243.205:8383/_API/_service/submit",
               data:fData,
               success:function(data){
+                commFinish();
                 if(data.code=="E0000"){
                   console.log(data);
                   alertMsg("确定","提交成功",function(){
@@ -1764,6 +1950,7 @@
                 }
               },
               error:function(err){
+                commFinish();
                 //console.log(err);
               }
             });  
@@ -1774,11 +1961,6 @@
       }else{
         alertMsg("确定","您没有可以免费更换的数量",function(){}); 
       }
-
-
-    
-
-
 
     }
 
@@ -1797,24 +1979,53 @@
       var tireImg4=$("#userTireImgInput4").val();
       var tireImg5=$("#userTireImgInput5").val();
       var tireImg6=$("#userTireImgInput6").val();
+      var tireImg7=$("#userTireImgInput7").val();
+      var tireImg8=$("#userTireImgInput8").val();
+      var tireImg9=$("#userTireImgInput9").val();
+      var tireImg10=$("#userTireImgInput10").val();
+      var tireImg11=$("#userTireImgInput11").val();
+      var tireImg12=$("#userTireImgInput12").val();
 
-      var makeUpTire=$("#makeUpTireNum").html();
+      var makeUpFontTire=$("#makeUpFontTireNum").html();
+      var makeUpRearTire=$("#makeUpRearTireNum").html();
 
       //验证数据 
       if(!carImg){
         alertMsg("确定","请上传车辆照片",function(){}); 
         return;
       }
-      if(!(tireImg1&&tireImg2&&tireImg3)){
-        alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-        return;
-      }
-      if($scope.orderListDetail[0].stock_no!=1){
-        if(!(tireImg4&&tireImg5&&tireImg6)){
+
+      switch (changeTotalNum){
+        case 1:
+          if(!(tireImg1&&tireImg2&&tireImg3)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 2:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 3:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        case 4:
+          if(!(tireImg1&&tireImg2&&tireImg3&&tireImg4&&tireImg5&&tireImg6&&tireImg7&&tireImg8&&tireImg9&&tireImg10&&tireImg11&&tireImg12)){
+            alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
+            return;
+          }
+          break;
+        default:
           alertMsg("确定","轮胎照片不完整，请上传完整",function(){}); 
-          return;
-        }
+          return; 
       }
+
+
       if(!carFrameImg){
         alertMsg("确定","请上传车架号照片",function(){}); 
         return;
@@ -1823,10 +2034,7 @@
         alertMsg("确定","请上传行驶证照片",function(){}); 
         return;
       }
-      if(!makeUpTire){
-        alertMsg("确定","请选择补胎数据",function(){}); 
-        return;
-      }else if(makeUpTire<1){
+      if((parseInt(makeUpFontTire)+parseInt(makeUpRearTire))<1){
         alertMsg("确定","请选择补胎数据",function(){}); 
         return;
       }
@@ -1837,8 +2045,10 @@
       fData.append("store_id",ponyShopId);
       fData.append("token",token);
       fData.append("order_id",orderId);
-      fData.append("diff",makeUpTire);
-
+      fData.append("font_diff",makeUpFontTire);
+      fData.append("rear_diff",makeUpRearTire);
+      //通讯开始等待
+      commStart();
       //上传数据
       $.ajax({
         type:"post",
@@ -1847,6 +2057,7 @@
         url:"http://180.76.243.205:8383/_API/_balance/payment",
         data:fData,
         success:function(data){
+          commFinish();
           if(data.code=="E0000"){
             console.log(data);
             alertMsg("确定","补差提交成功",function(){
@@ -1861,6 +2072,7 @@
           }
         },
         error:function(err){
+          commFinish();
           //console.log(err);
         }
       });  
@@ -1875,6 +2087,8 @@
         // console.log("确定");
         // msg:输入信息
         // console.log(msg);
+        //通讯开始等待
+        commStart();        
         $.ajax({
           type:"post",
           url:"http://180.76.243.205:8383/_API/_service/denial",
@@ -1885,6 +2099,7 @@
             order_id:orderId
           },
           success:function(data){
+            commFinish();
             console.log(data);
             if(data.code=="E0000"){
               alertMsg("确定","订单提交",function(){
@@ -1899,6 +2114,7 @@
             }
           },
           error:function(err){
+            commFinish();
             console.log(err);
           }
         });
@@ -1921,11 +2137,17 @@
         if(data.code=="E0000"){
           $scope.orderDate=data.data.orderInfo;
           $scope.orderListDetail=data.data.details;
-          maxSupplementNum=data.data.details[0].stock_no;
-          if(data.data.details[0].stock_no==1){
-            //换一个时，禁用后三个
-            $("#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList").children().eq(2).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
+          maxSupplementFontNum=data.data.details[0].stock_no;
+          if(data.data.details[1]){
+            maxSupplementRearNum=data.data.details[1].stock_no;
           }
+          $scope.fontSize=data.data.font_size;
+          $scope.rearSize=data.data.rear_size;
+
+          // 多少个免费再换轮胎 要上传的照片数量
+          changeTotalNum=data.data.shoe_no;
+          $("#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList").children().eq(changeTotalNum*3-1).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
+
         }else if(data.code=="E0014"){
           alertMsg("确定",data.message,function(){
             window.location.href="index.html#/login";
@@ -2012,13 +2234,16 @@
     $scope.orderDate=null;
     // 订单列表数据
     $scope.orderListDetail=[];   
-    
+
+    //通讯开始等待
+    commStart();
     // 获取数据 
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_storeOrder/getSingle",
       data:"producer_id="+ponyUserId+"&store_id="+ponyShopId+"&token="+token+"&order_id="+orderId
     }).success(function(data){
+      commFinish();
       console.log(data);
       if(data.code=="E0000"){
         $scope.orderDate=data.data.orderInfo;
@@ -2082,16 +2307,21 @@
 
       var makeUpTire=$("#makeUpTireNum").html();
 
-      //验证数据 
-      if(!carImg){
-        alertMsg("确定","请上传车辆照片",function(){}); 
-        return;
-      }
       // 总共要传照片数量
       var leftFontNum=$scope.leftFontTireNum>0?1:0;
       var rightFontNum=$scope.rightFontTireNum>0?1:0;
       var leftRearNum=$scope.leftRearTireNum>0?1:0;
       var rightRearNum=$scope.rightRearTireNum>0?1:0;
+
+      //验证数据 
+      if((leftFontNum+rightFontNum+leftRearNum+rightRearNum)<1){
+        alertMsg("确定","请选择你要修补的车胎",function(){}); 
+        return;
+      }
+      if(!carImg){
+        alertMsg("确定","请上传车辆照片",function(){}); 
+        return;
+      }
       switch ((leftFontNum+rightFontNum+leftRearNum+rightRearNum)){
         case 1:
           if(!(tireImg1&&tireImg2&&tireImg3)){
@@ -2138,7 +2368,8 @@
       fData.append("token",token);
       fData.append("order_id",orderId);
       fData.append("description","左前轮修补："+$scope.leftFontTireNum+"处,右前轮修补："+$scope.rightFontTireNum+"处,左后轮修补："+$scope.leftRearTireNum+"处,右后轮修补："+$scope.rightRearTireNum+"处");
-
+      //通讯开始等待
+      commStart();
       //上传数据
       $.ajax({
         type:"post",
@@ -2147,6 +2378,7 @@
         url:"http://180.76.243.205:8383/_API/_freeService/submit",
         data:fData,
         success:function(data){
+          commFinish();
           if(data.code=="E0000"){
             console.log(data);
             alertMsg("确定","提交成功",function(){
@@ -2161,6 +2393,7 @@
           }
         },
         error:function(err){
+          commFinish();
           //console.log(err);
         }
       });
@@ -2170,10 +2403,12 @@
 
     //提交拒绝服务
     $scope.submitRefuse=function(){
-      refuseMsg(["确认","取消"],"请输入拒绝服务理由：",function(msg){
+      refuseMsg(["确认","取消"],"请输入拒绝服务理由:",function(msg){
         // console.log("确定");
         // msg:输入信息
         // console.log(msg);
+        //通讯开始等待
+        commStart();
         $.ajax({
           type:"post",
           url:"http://180.76.243.205:8383/_API/_storeOrigin/denial",
@@ -2185,6 +2420,7 @@
             origin:msg
           },
           success:function(data){
+            commFinish();
             console.log(data);
             if(data.code=="E0000"){
               alertMsg("确定","订单完结",function(){
@@ -2199,6 +2435,7 @@
             }
           },
           error:function(err){
+            commFinish();
             console.log(err);
           }
         });
@@ -2372,6 +2609,8 @@
     $scope.orderDate=null;
     // 订单列表数据
     $scope.orderListDetail=[];
+    //用户使用优惠券列表
+    $scope.usedCoupon=[];
 
     //轮胎照片
     $scope.tireImg=[];
@@ -2387,17 +2626,21 @@
     var orderStatus=null;
     var orderStage=null;
     var orderTypeId=null;
-
+    
+    //通讯开始等待
+    commStart();
     // 获取数据 
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_storeOrder/getSingle",
       data:"producer_id="+ponyUserId+"&store_id="+ponyShopId+"&token="+token+"&order_id="+orderId
     }).success(function(data){
+      commFinish();
       console.log(data);
       if(data.code=="E0000"){
         $scope.orderDate=data.data.orderInfo;
         $scope.orderListDetail=data.data.details;
+        $scope.usedCoupon=data.data.sales_history;
 
         if(data.data.orderInfo.order_type_id==1){
           for(var i=0,len=data.data.orderImg.length;i<len;i++){
@@ -2536,12 +2779,15 @@
               $location.path("/affirmTireServerRepair/"+orderId);
             }else{
               //其他
+              //通讯开始等待
+              commStart();
               $http({
                 method:"post",
                 url:"http://180.76.243.205:8383/_API/_service/complete",
                 data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+orderId
               }).success(function(data){
                 // console.log(data);
+                commFinish();
                 if(data.code=="E0000"){
                   alertMsg("确定","服务完成",function(){
                     window.location.href="index.html#/order/server";
@@ -2560,12 +2806,15 @@
 
           }else if(orderStage==3||orderStage==5){
             // one.btnName="服务完成";
+            //通讯开始等待
+            commStart();
             $http({
               method:"post",
               url:"http://180.76.243.205:8383/_API/_service/complete",
               data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+orderId
             }).success(function(data){
               // console.log(data);
+              commFinish();
               if(data.code=="E0000"){
                 alertMsg("确定","服务完成",function(){
                   window.location.href="index.html#/order/server";
@@ -2583,12 +2832,15 @@
         //待收货
         case '2':
           // 确认收货
+          //通讯开始等待
+          commStart();
           $http({
             method:"post",
             url:"http://180.76.243.205:8383/_API/_storeDelivery/take",
             data:"producer_id="+ponyUserId+"&token="+token+"&store_id="+ponyShopId+"&order_id="+orderId
           }).success(function(data){
             // console.log(data);
+            commFinish();
             if(data.code=="E0000"){
               alertMsg("确定","收货成功",function(){
                 window.location.href="index.html#/order/server";
@@ -2623,13 +2875,18 @@
     $scope.orderDate=null;
     //订单服务详情
     $scope.orderDetail=[];
+    //用户使用优惠券列表
+    $scope.usedCoupon=[];
 
+    //通讯开始等待
+    commStart();
     //获取数据 
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_order/get",
       data:"producer_id="+ponyUserId+"&store_id="+ponyShopId+"&token="+token+"&order_id="+orderId
     }).success(function(data){
+      commFinish();
       console.log(data);
       if(data.code=="E0000"){
         $scope.orderDate=data.data.orderInfo;
@@ -2645,6 +2902,7 @@
             total:data.data.orderInfo.total,
           });
         }
+        $scope.usedCoupon=data.data.sales_history;
       }else if(data.code=='E0014'){
         alertMsg("确定",data.message,function(){
           window.location.href="index.html#/login";
@@ -2972,7 +3230,8 @@
         fData.append("service_type_iv",2);
       }
 
-
+      //通讯开始等待
+      commStart();
       //上传数据
       $.ajax({
         type:"post",
@@ -2981,6 +3240,7 @@
         url:"http://180.76.243.205:8383/_API/_store/editor",
         data:fData,
         success:function(data){
+          commFinish();
           if(data.code=="E0000"){
             // console.log(data);
             alertMsg("确定","店铺资料修改成功",function(){}); 
@@ -2989,6 +3249,7 @@
           }
         },
         error:function(err){
+          commFinish();
           //console.log(err);
         }
       });
@@ -3334,7 +3595,8 @@
         }
         service_type_iv.push(item);
       }
-
+      //通讯开始等待
+      commStart();
       //上传数据
       $.ajax({
         type:"post",
@@ -3349,6 +3611,7 @@
           service_type_v:service_type_v
         },
         success:function(data){
+          commFinish();
           console.log(data);
           if(data.code=='E0000'){
             alertMsg("确定",'保存成功',function(){}); 
@@ -3446,6 +3709,8 @@
       // console.log(id);
       confirmMsg(["确认","取消"],"删除商品后数据将不再保留，您确认删除吗？",function(){
         // console.log("确定");
+        //通讯开始等待
+        commStart();
         console.log(id,type);
         $.ajax({
           type:"post",
@@ -3458,6 +3723,7 @@
           },
           success:function(data){
             console.log(data);
+            commFinish();
             if(data.code=="E0000"){
               alertMsg("确定","删除成功",function(){}); 
               if(type=='on'){
@@ -3491,6 +3757,7 @@
             }
           },
           error:function(err){
+            commFinish();
             // console.log(err);
           }
         });
@@ -3695,7 +3962,8 @@
       fData.append("token",token);
       fData.append("store_id",ponyShopId);
 
-
+      //通讯开始等待
+      commStart();
       //上传数据 如果commodityId为null那是新增商品，否则为修改商品
       if(commodityId=="null"){
         $.ajax({
@@ -3705,6 +3973,7 @@
           url:"http://180.76.243.205:8383/_API/_stock/add",
           data:fData,
           success:function(data){
+            commFinish();
             if(data.code=="E0000"){
               // console.log(data);
               alertMsg("确定","添加成功",function(){
@@ -3715,6 +3984,7 @@
             }
           },
           error:function(err){
+            commFinish();
             //console.log(err);
           }
         });
@@ -3728,6 +3998,7 @@
           url:"http://180.76.243.205:8383/_API/_stock/edit",
           data:fData,
           success:function(data){
+            commFinish();
             if(data.code=="E0000"){
               // console.log(data);
               commodityDate=data.data;
@@ -3739,6 +4010,7 @@
             }
           },
           error:function(err){
+            commFinish();
             //console.log(err);
           }
         });
@@ -3937,7 +4209,13 @@
   // },function(){
   //   console.log("取消");
   // });
-
+  //通讯load加载
+  function commStart(){
+    $(".commLoad").css("display","block");
+  }
+  function commFinish(){
+    $(".commLoad").css("display","none");
+  }
   //千位符
   function thousandSeparator(str){
     numberStr=str.toString().split(".")

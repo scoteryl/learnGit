@@ -120,7 +120,10 @@
 
   //父级总控制器
   ponyShopApp.controller('ponyShopCtrl',function($scope){
-    
+    //通讯加载时报错，可点击取消
+    $(".commLoad").click(function(){
+      $(this).css('display','none');
+    });
   });
 
   //登陆页面
@@ -182,10 +185,53 @@
         }
       });
 
-      
-
     } 
     
+    //监听页面加载
+    $scope.$watch("$viewContentLoaded",function(){
+
+      // 前往登陆
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userTel=$("#userAccounts").val();
+          var userPwd=$("#userPwd").val();
+          if(!userTel){
+            alertMsg("确定","请输入帐号",function(){}); 
+            return;
+          }
+          if(!userPwd){
+            alertMsg("确定","请输入密码",function(){}); 
+            return;
+          }
+    
+          //通讯开始等待
+          commStart();
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_store/login",
+            data:"phone="+userTel+"&password="+strmd5(userPwd)
+          }).success(function(data){
+            commFinish();
+            if(data.code=="E0000"){
+              sessionStorage["ponyShopUserID"]=data.data.producer_id;
+              sessionStorage["ponyShopID"]=data.data.store_id;
+              sessionStorage["ponyShopToken"]=data.data.token;
+              localStorage["ponyShopUserTel"]=userTel;
+              localStorage["ponyShopUserPwd"]=userPwd;
+              ponyShopDate=data.data;
+              // console.log(data);
+              $location.path("/main");
+            }else{
+              alertMsg("确定",data.message,function(){}); 
+            }
+          });
+
+        }
+      });
+    });
+
   });
  
   //注册页面
@@ -2261,16 +2307,21 @@
 
       var makeUpTire=$("#makeUpTireNum").html();
 
-      //验证数据 
-      if(!carImg){
-        alertMsg("确定","请上传车辆照片",function(){}); 
-        return;
-      }
       // 总共要传照片数量
       var leftFontNum=$scope.leftFontTireNum>0?1:0;
       var rightFontNum=$scope.rightFontTireNum>0?1:0;
       var leftRearNum=$scope.leftRearTireNum>0?1:0;
       var rightRearNum=$scope.rightRearTireNum>0?1:0;
+
+      //验证数据 
+      if((leftFontNum+rightFontNum+leftRearNum+rightRearNum)<1){
+        alertMsg("确定","请选择你要修补的车胎",function(){}); 
+        return;
+      }
+      if(!carImg){
+        alertMsg("确定","请上传车辆照片",function(){}); 
+        return;
+      }
       switch ((leftFontNum+rightFontNum+leftRearNum+rightRearNum)){
         case 1:
           if(!(tireImg1&&tireImg2&&tireImg3)){
@@ -2352,7 +2403,7 @@
 
     //提交拒绝服务
     $scope.submitRefuse=function(){
-      refuseMsg(["确认","取消"],"请输入拒绝服务理由：",function(msg){
+      refuseMsg(["确认","取消"],"请输入拒绝服务理由:",function(msg){
         // console.log("确定");
         // msg:输入信息
         // console.log(msg);

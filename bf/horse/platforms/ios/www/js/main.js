@@ -290,7 +290,10 @@
 
   //父级总控制器
   horseApp.controller('horseCtrl',function($scope){
-
+    //通讯加载时报错，可点击取消
+    $(".commLoad").click(function(){
+      $(this).css('display','none');
+    });
   });
 
   //load页面
@@ -739,6 +742,58 @@
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
       $(document).scrollTop(0);
+
+
+      // 前往登陆
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userName=$("#userName").val();
+          var userPwd=$("#userPwd").val();
+
+          //验证数据
+          if(!userName){
+            alertMsg("确定","请输入手机号",function(){});
+            return;
+          }else if(!userPwd){
+            alertMsg("确定","请输入登陆密码",function(){});
+            return;
+          }
+          if(!(/^1[34578]\d{9}$/.test(userName))){
+            alertMsg("确定","手机号码有误，请重填",function(){});
+            return; 
+          }
+          //开始通讯加载
+          commStart();
+          //发送请求，获取数据
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_user/login",
+            data:"phone="+userName+"&password="+strmd5(userPwd)
+          }).success(function(data){
+            //console.log(data);
+            if(data.code=="E0000"){
+              commFinish();
+              //数据保存
+              ponyUserData=data.data.userInfo;
+              ponyUserCar=data.data.userCar_info;
+              localStorage["ponyUserName"]=userName;
+              localStorage["ponyUserPwd"]=userPwd;
+              sessionStorage["ponyUserToken"]=data.data.userInfo.token;
+              $rootScope.addressCity="";
+              $location.path("/main");
+            }else{
+              commFinish();
+              alertMsg("确定",data.message,function(){});
+            }
+          }).error(function(err){
+            //console.log(err);
+          });
+
+        }
+      });
+
     });
 
   });
@@ -781,6 +836,69 @@
     $scope.$watch('$viewContentLoaded',function(){
       //页面从头
       $(document).scrollTop(0);
+
+      // 前往注册
+      $("#userPwd").keydown(function(e){
+        //确认按键 13
+        if(e.which==13){
+
+          var userName=$("#userName").val();
+          var userPwd=$("#userPwd").val();
+          var verify=$("#verify").val();
+
+          //验证数据
+          if(!userName){
+            alertMsg("确定","请输入手机号",function(){});
+            return;
+          }else if(!verify){
+            alertMsg("确定","请输入短信验证码",function(){});
+            return;
+          }else if(!userPwd){
+            alertMsg("确定","请输入登陆密码",function(){});
+            return;
+          }
+          if(!(/^1[34578]\d{9}$/.test(userName))){ 
+            alertMsg("确定","手机号码有误，请重填",function(){}); 
+            return; 
+          }else if(verify!=verifyCode){
+            alertMsg("确定","您输入短信验证码不正确",function(){}); 
+            return;
+          }
+          //开始加载通讯
+          commStart();
+          // 发送数据
+          $http({
+            method:"post",
+            url:"http://180.76.243.205:8383/_API/_user/register",
+            data:"phone="+userName+"&password="+strmd5(userPwd)+"&code_id="+verifyCodeId+"&code="+verify
+          }).success(function(data){
+            console.log(data)
+            if(data.code=="E0000"){
+              commFinish();
+    
+              ponyUserData=data.data;
+              ponyUserCar="null";
+     
+              localStorage["ponyUserName"]=userName;
+              localStorage["ponyUserPwd"]=userPwd;
+              sessionStorage["ponyUserToken"]=data.data.token;
+              $rootScope.addressCity="";
+    
+              clearInterval(verifyTimer);
+              $("#registerPage>.successAlert").css("display","block");
+              // window.location.href="index.html#/main"
+    
+    
+            }else{
+              commFinish();
+              alertMsg("确定",data.message,function(){});
+            }
+          }).error(function(err){
+            //console.log(err)
+          });
+
+        }
+      });
 
     });
     
@@ -2012,8 +2130,35 @@
   horseApp.controller("ponyAboutCtrl",function($scope,$http,$location){
     $scope.height=vHeight;
 
+    var token=sessionStorage["ponyUserToken"];
+
+    //版本号
+    $scope.version=null;
+
+
+
     //监听页面加载
     $scope.$watch("viewContentLoaded",function(){
+
+      //获取数据
+      $http({
+        method:'post',
+        url:"http://180.76.243.205:8383/_API/_aboutUs/get",
+        data:"user_id="+ponyUserData.id+"&token="+token
+      }).success(function(data){
+        console.log(data);
+        if(data.code=="E0000"){
+          $scope.version=data.data.version;
+          $("#ponyAboutPage>.ponyMsg").html("<p>"+data.data.content.replace(/(<\/br>)+/ig,"</p><p>")+"</p>");
+          // console.log($scope.agreement);
+        }else if(data.code=="E0014"){
+          alertMsg("确定",data.message,function(){
+            window.location.href="index.html#/login";
+          });
+        }else{
+          console.log(data.message);
+        }
+      });
 
     });
   });
@@ -3897,7 +4042,7 @@
           alertMsg("确定","请输入您的行驶证日期",function(){}); 
           return;
         }else if(userDriveID>formatNow){
-          console.log(userDriveID,formatNow);
+          // console.log(userDriveID,formatNow);
           alertMsg("确定","您输入的行驶证日期不正确",function(){}); 
           return;
         }
@@ -3929,7 +4074,8 @@
         }
         
         //如果他选了里程表损坏，则不对他的里程和图片进行验证
-        if(!$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on")){
+        var isMeterBad=$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on");
+        if(!isMeterBad){
           if(userDriveMileage<=0){
             alertMsg("确定","请输入正确的行驶里程",function(){}); 
             return;
@@ -3957,6 +4103,12 @@
         fData.append("city_code",carLetter);
         fData.append("plat_code",carOther);
         fData.append("insurance_date",userDriveInsurance);
+
+        if(isMeterBad){
+          fData.append("is_broken",1);
+        }else{
+          fData.append("is_broken",2);
+        }
         
         fData.append("font",tireFontSize);
         fData.append("rear",tireRearSize);
@@ -4037,7 +4189,8 @@
         }
 
         //如果他选了里程表损坏，则不对他的里程和图片进行验证
-        if(!$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on")){
+        var isMeterBad=$("#myBolgPage>.bolgConfig>form>.selObometer").hasClass("on");
+        if(!isMeterBad){
           if(userDriveMileage<=0){
             alertMsg("确定","请输入正确的行驶里程",function(){}); 
             return;
@@ -4061,6 +4214,12 @@
         fData.append("city_code",carLetter);
         fData.append("plat_code",carOther);
         fData.append("insurance_date",userDriveInsurance);
+
+        if(isMeterBad){
+          fData.append("is_broken",1);
+        }else{
+          fData.append("is_broken",2);
+        }
         
         fData.append("font",tireFontSize);
         fData.append("rear",tireRearSize);
@@ -4930,46 +5089,7 @@
         //成功正解匹配
         // alert(pwd);
         //提交订单
-        // $http({
-        //   method:"post",
-        //   url:"http://180.76.243.205:8383/_API/_ml/pay",
-        //   data:"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-        // }).success(function(data){
-        //   if(data.code=="E0000"){
-        //     console.log(data);
-        //     $("#userPayPwdInput").blur();
-        //     if(data.data.trade_mode=="shoe_temp "){
-        //       alertMsg("确定","支付成功",function(){
-        //         window.location.href="index.html#/CASTire"
-        //       }); 
-        //     }else{
-        //       alertMsg("确定","支付成功",function(){
-        //         window.location.href="index.html#/order/all"
-        //       }); 
-        //     }
-        //   }else if(data.code=="E0014"){
-        //     alertMsg("确定",data.message,function(){
-        //       window.location.href="index.html#/login";
-        //     });
-        //   }else if(data.code=="E0030"){
-        //     //余额不足，跳转充值页面
-        //     confirmMsg(["充值","取消"],data.message,function(){
-        //       // console.log("确定");
-        //       window.location.href="index.html#/userAmount";
-        //     },function(){
-        //       // console.log("取消");
-        //       //关闭支付窗口
-        //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-        //     });
-        //   }else{
-        //     alertMsg("确定",data.message,function(){
-        //       //关闭支付窗口
-        //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-        //     }); 
-        //   }
-        // }).error(function(err){
-        //   console.log(err);
-        // });
+
         //开始加载通讯
         commStart();
         $.ajax({
@@ -5368,55 +5488,6 @@
             //成功正解匹配
             // alert(pwd);
             //提交订单
-            // $http({
-            //   method:"post",
-            //   url:"http://180.76.243.205:8383/_API/_ml/pay",
-            //   // data:"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-            //   data:{
-            //     user_id:ponyUserData.id,
-            //     token:token,
-            //     obj_id:tempId,
-            //     trade_mode:orderType,
-            //     pay_pwd:strmd5(pwd),
-            //     arr:userSelCoupon
-            //   }
-            //   //"user_id="+ponyUserData.id+"&token="+token+"&obj_id="+tempId+"&trade_mode="+orderType+"&pay_pwd="+strmd5(pwd)+"&arr="+userSelCoupon
-            // }).success(function(data){
-            //   if(data.code=="E0000"){
-            //     // console.log(data);
-            //     $("#userPayPwdInput").blur();
-            //     if(data.data.trade_mode=="shoe_temp "){
-            //       alertMsg("确定","支付成功",function(){
-            //         window.location.href="index.html#/CASTire"
-            //       }); 
-            //     }else{
-            //       alertMsg("确定","支付成功",function(){
-            //         window.location.href="index.html#/order/all"
-            //       }); 
-            //     }
-            //   }else if(data.code=="E0014"){
-            //     alertMsg("确定",data.message,function(){
-            //       window.location.href="index.html#/login";
-            //     });
-            //   }else if(data.code=="E0030"){
-            //     //余额不足，跳转充值页面
-            //     confirmMsg(["充值","取消"],data.message,function(){
-            //       // console.log("确定");
-            //       window.location.href="index.html#/userAmount";
-            //     },function(){
-            //       // console.log("取消");
-            //       //关闭支付窗口
-            //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-            //     });
-            //   }else{
-            //     alertMsg("确定",data.message,function(){
-            //       //关闭支付窗口
-            //       $("#checkoutCounterPage>.inputPayPwd").css("display","none");
-            //     }); 
-            //   }
-            // }).error(function(err){
-            //   console.log(err);
-            // });
             //开始加载通讯
             commStart();
             $.ajax({
@@ -5615,13 +5686,21 @@
         if($scope.originalChangeFontNum<changeFontMaxNum){
           $scope.originalChangeFontNum++;
         }else{
-          alertMsg("确定","没胎了，买一个吧",function(){});
+          if(changeFontMaxNum==2){
+            alertMsg("确定","最大可更换数量",function(){});
+          }else{
+            alertMsg("确定","没胎了，买一个吧",function(){});
+          }
         }
       }else{
         if($scope.originalChangeRearNum<changeRearMaxNum){
           $scope.originalChangeRearNum++;
         }else{
-          alertMsg("确定","没胎了，买一个吧",function(){});
+          if(changeRearMaxNum==2){
+            alertMsg("确定","最大可更换数量",function(){});
+          }else{
+            alertMsg("确定","没胎了，买一个吧",function(){});
+          }
         }
       }
     }
