@@ -1,0 +1,31 @@
+<div id="tireSizePage" style="min-height: {{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a href="#/tireServer"><i></i></a>
+    </div>
+    <h3>{{userCarName}}</h3>
+  </div>
+  <div class="originSize">
+    <div class="tit">
+      <h3>该车原配轮胎规格</h3>
+    </div>
+    <div class="detail">
+      <a ng-click="selFont(userCarFont)" href="">
+        <span>前轮规格：{{userCarFont}}</span>
+        <i></i>
+      </a>
+    </div>
+    <div class="detail">
+      <a ng-click="selRear(userCarRear)" href="">
+        <span>后轮规格：{{userCarRear}}</span>
+        <i></i>
+      </a>
+    </div>
+  </div>
+  <div class="upgradeSize">
+    <a href="#/tireSpecUpgrade">
+      <i></i>
+      <span>轮胎升级</span>
+    </a>
+  </div>
+</div>

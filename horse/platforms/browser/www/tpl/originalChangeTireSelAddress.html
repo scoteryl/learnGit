@@ -1,0 +1,26 @@
+<div id="originalChangeTireSelAddressPage" style="min-height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>订单确认</h3>
+  </div>
+  <div class="addressList">
+    <ul>
+      <li ng-repeat="item in addList track by $index" data-addid="{{item.user_shoe_id}}" class="addItem {{$index==0?'active':''}}">
+        <i></i>
+        <div class="item">
+          <ul>
+            <li><span class="label">联系人：</span><span class="detail">{{item.name}}</span></li>
+            <li><span class="label">联系电话：</span><span class="detail">{{item.phone}}</span></li>
+            <li><span class="label">服务车牌号：</span><span class="detail">{{item.plat_number}}</span></li>
+            <li><span class="label">预约时间：</span><span class="detail">{{item.appointment}}</span></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="submitBtn">
+    <a ng-click="submitOriginalChangeOrder()" href="">提交订单</a>
+  </div>
+</div>

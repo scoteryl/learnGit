@@ -1,0 +1,181 @@
+<div id="checkoutCounterPage" style="min-height:{{height}}px;">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>收银台</h3>
+  </div>
+  <!-- 应付金额 -->
+  <div class="payTotal">
+    <label>应付金额：</label>
+    <span><i>{{orderTotal-couponSum| number:2}}</i>元</span>
+  </div>
+  <!-- 支付方式 -->
+  <div class="payMode">
+    <!-- 余额支付 -->
+    <div data-sel="mlpay" class="payModeItem active">
+      <label>
+        <i class="balance"></i>
+        余额支付：  
+      </label>
+      <div class="mlPay selMode"><span>{{userMLNum}}</span><i class="selModeIcon">✔</i></div>
+      <span class="recommend">推荐</span>
+    </div>
+    <!-- 其他支付方式 -->
+    <p>其他支付方式</p>
+    <!-- 银联支付 -->
+    <div data-sel="unionpay" class="payModeItem">
+      <label>
+        <i class="unionpay"></i>
+        银联支付  
+      </label>
+      <div class="selMode"><i class="selModeIcon">✔</i></div>
+    </div>
+    <!-- 微信支付 -->
+    <div data-sel="wechatpay" class="payModeItem">
+      <label>
+        <i class="wechat"></i>
+        微信支付  
+      </label>
+      <div class="selMode"><i class="selModeIcon">✔</i></div>
+    </div>
+    <!-- 支付宝支付 -->
+    <div data-sel="alipay" class="payModeItem">
+      <label>
+        <i class="alipay"></i>
+        支付宝支付  
+      </label>
+      <div class="selMode"><i class="selModeIcon">✔</i></div>
+    </div>
+  </div>
+  <!-- 优惠券 -->
+  <div ng-click="toCouponList()" class="coupon">
+    <label>优惠券：</label>
+    <p><span></span><i></i></p>
+  </div>
+  <div class="submitPay">
+    <button ng-click="affirmOrderPay()">确认支付</button>
+  </div>
+  <!-- 设置支付密码页面 -->
+  <div class="setPayPwd">
+    <div class="setBody">
+      <span ng-click="closeSetPayPwd()" class="close"></span>
+      <div class="setInput">
+        <div class="tit">
+          <h4><i></i> 您还未设置支付密码</h4>
+        </div>
+        <label for="setPayPwdInputFirst">
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+        </label>
+        <div class="inputBody">
+          <input id="setPayPwdInputFirst" ng-model="setPayPwdFirst" type="number">
+        </div>
+        <p class="help">请设置支付密码</p>
+        <div class="btn">
+          <button ng-click="setPayPwd()">下一步</button>
+        </div>
+      </div>
+      <div class="affirmBody">
+        <div class="tit">
+          <h4>再次确认</h4>
+        </div>
+        <label for="affirmPayPwdInput">
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+          <b><i></i></b>
+        </label>
+        <div class="inputBody">
+          <input id="affirmPayPwdInput" ng-model="setPayPwdSecond" type="number">
+        </div>
+        <p class="help">请确认支付密码</p>
+        <div class="btn">
+          <button ng-click="affirmPayPwd()">完成</button>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <!-- 输入支付密码页面 -->
+  <div class="inputPayPwd">
+    <div class="payPwdBody">
+      <span ng-click="closePayPwd()" class="close"></span>
+      <div class="tit">
+        <h4>支付密码</h4>
+      </div>
+      <label for="userPayPwdInput">
+        <b><i></i></b>
+        <b><i></i></b>
+        <b><i></i></b>
+        <b><i></i></b>
+        <b><i></i></b>
+        <b><i></i></b>
+      </label>
+      <div class="inputBody">
+        <input id="userPayPwdInput" ng-model="userPayPwd" type="number">
+      </div>
+      <p class="help">请输入支付密码</p>
+      <div class="btn">
+        <button ng-click="submitUserPayPwd()">支付</button>
+      </div>  
+    </div>
+  </div>
+</div>
+<!-- 优惠券页面 -->
+<div id="couponListPage" style="min-height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toMainPage()" href=""><i></i></a>
+    </div>
+    <h3>我的优惠券</h3>
+  </div>  
+  <div class="couponList">
+    <div ng-click="noUseCoupon()" class="noCoupon">
+      <span>暂不使用优惠券</span>
+    </div>
+    <ul>
+      <li ng-repeat="item in userCouponList track by $index" data-servertype="{{item.type}}" data-couponid="{{item.user_sales_id}}" data-location="{{$index}}">
+        <div class="couponTit coupon{{item.view_type_id}}">
+          <h5>优惠券</h5>
+          <p><span>{{item.name}}</span></p>
+          <span>未使用</span>
+        </div>
+        <div class="couponMsg">
+          <h4>{{item.rule}}</h4>
+          <p>{{item.content}}</p>
+          <ul>
+            <li>开始时间：<span>{{item.start_time.split(' ')[0]}}</span></li>
+            <li>结束时间：<span>{{item.end_time.split(' ')[0]}}</span></li>
+          </ul>
+        </div>
+        <i></i>
+      </li>
+      <!-- <li>
+        <div class="couponTit coupon2">
+          <h5>优惠券</h5>
+          <p><span>轮胎修补券</span></p>
+          <span>未使用</span>
+        </div>
+        <div class="couponMsg">
+          <h4>轮胎修补券</h4>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis fugit harum delectus nesciunt vitae molestias, error voluptatem vero, ad facere, dolorem unde praesentium. Esse deleniti distinctio fugit aut exercitationem nam.</p>
+          <ul>
+            <li>开始时间：<span>2017.10.09</span></li>
+            <li>结束时间：<span>2017.10.09</span></li>
+          </ul>
+        </div>
+        <i></i>
+      </li> -->
+    </ul>
+    <div class="couponBtn" style="display:{{userCouponList.length>0?'block':'none'}}">
+      <a id="couponUserBtn" ng-click="selCoupon()" href="">确认使用</a>
+    </div>
+  </div>
+</div>
+

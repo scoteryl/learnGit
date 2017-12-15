@@ -1,0 +1,110 @@
+<!-- 选择安装店面 -->
+<div id="selTireInstallShopPage">
+  <!-- 安装店面列表 -->
+  <div class="installShopList">
+    <div class="header">
+      <div class="tit">
+        <div class="toBack">
+          <a ng-click="toBackPack()" href=""><i></i></a>
+        </div>
+        <div ng-click="toSearchShop()" class="toSearch">
+          <a href=""><i></i></a>
+        </div>
+        <h3>配送到店</h3>
+      </div>
+      <div class="selType">
+        <ul class="clearfix">
+          <li id="selShopType">
+            <span>全部门店</span>
+            <i></i>
+            <div class="subMenu">
+              <ul>
+                <li class="active"><span>全部门店</span><i></i></li>
+                <li><span>快修店</span><i></i></li>
+                <li><span>维修厂</span><i></i></li>
+                <li><span>美容店</span><i></i></li>
+                <li><span>4S店</span><i></i></li>
+              </ul>
+            </div>
+          </li>
+          <li id="selShopSort">
+            <span>默认排序</span>
+            <i></i>
+            <div class="subMenu">
+              <ul>
+                <li class="active"><span>默认排序</span><i></i></li>
+                <li><span>附近优先</span><i></i></li>
+                <li><span>评分最高</span><i></i></li>
+                <li><span>累计安装</span><i></i></li>
+              </ul>
+            </div>
+          </li>
+          <li id="selShopFiltrate">
+            <span>筛选</span>
+            <i></i>
+            <div class="subMenu">
+              <div class="filtrateBody">
+                <div class="tit">
+                  <h3>门店服务项目</h3>
+                </div>
+                <ul class="clearfix">
+                  <li>保养</li>
+                  <li>美容清洗</li>
+                  <li>改装</li>
+                  <li>安装</li>
+                </ul>
+                <div class="filtrateBtn clearfix">
+                  <button class="filtrateReset">重置</button>
+                  <button class="filtrateSet">完成</button>
+                </div>
+              </div>
+
+            </div>          
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="shopList" style="min-height:{{height-95}}px">
+      <ul>
+        <li ng-repeat="item in shopList" data-stopid="{{item.id}}" class="clearfix">
+          <div class="shopImg">
+            <img ng-src="{{item.location_img_url}}">
+          </div>
+          <div class="shopMsg">
+            <h4 class="shopName">{{item.name}}<span class="shopType" style="background-color:{{item.color}}">{{item.type_name}}</span></h4>
+            <div class="shopStarLevel">
+              <p>星级：<i style="opacity:{{item.star_no>=1?1:0}}"></i><i style="opacity:{{item.star_no>=2?1:0}}"></i><i style="opacity:{{item.star_no>=3?1:0}}"></i><i style="opacity:{{item.star_no>=4?1:0}}"></i><i style="opacity:{{item.star_no>=5?1:0}}"></i></p>
+            </div>
+            <div class="shopAdd">
+              <p class="address">地址：<span>{{item.address}}</span></p>
+              <p class="distance"><i></i> <span>{{item.distance}}</span></p>
+            </div>
+            <p class="shopServerType"><span ng-repeat="itemServer in item.service" style="color: {{itemServer.color}};border:1px solid {{itemServer.color}};">{{itemServer.name.substr(0,2)}}</span></p>
+          </div>
+        </li>
+      </ul>
+      <div class="noData" style="display:{{shopList.length==0?'block':'none'}}">
+        <img src="img/noFindShop.png">
+      </div>
+    </div>
+  </div>
+  <!-- 搜索安装店面 -->
+  <div class="searchInstallShopPage">
+    <div class="searchBody">
+      <a ng-click="toShopList()" class="cancelSearch" href="">取消</a>
+      <div class="search">
+        <i></i>
+        <input id="searchInstallShop" placeholder="请输入你想搜索的关键字" type="search">  
+      </div>
+    </div>
+    <div class="searchHistoryList">
+      <div class="tit">
+        <h4>历史搜索</h4>
+        <a ng-click="delSearchHistory()" href=""><i></i></a>
+      </div>
+      <p class="historyList">
+      </p>
+    </div>
+  </div>
+</div>
+
