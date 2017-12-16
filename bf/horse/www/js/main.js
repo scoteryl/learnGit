@@ -3968,9 +3968,10 @@
 
       for(var noSelI=0;noSelI<roadArr.length;noSelI++){
         var noSelOne=roadArr[noSelI];
+        // console.log(noSelOne);
         //把没有选的数据压入数组
         var noSel={
-          road_id:oneid,
+          road_id:noSelOne.id,
           selected:"type_iii_rate"
         };
         carFinalSelRoad.push(noSel);
@@ -4225,6 +4226,8 @@
         fData.append("rear",tireRearSize);
         fData.append("service_end_date",ponyServerStop);
         fData.append("road_txt",wayText);
+
+        // console.log(carFinalSelRoad);
         if(carFinalSelRoad){
           if(carFinalSelRoad.length==5){
             for(var i=0;i<carFinalSelRoad.length;i++){
