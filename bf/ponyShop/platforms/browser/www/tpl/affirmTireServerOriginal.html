@@ -70,6 +70,7 @@
             <div class="setInput"><input id="userCarImgInput" name="img_url_4" type="file"></div>
           </div>
         </div>
+        <p class="hint">（照片大小不大于3M）</p>
       </div>
       <!-- 上传轮胎照片 -->
       <div class="userTireImg">
@@ -127,6 +128,7 @@
             <div class="setInput"><input id="userTireImgInput12" name="img_url_1[11]" type="file"></div>
           </div>
         </div>
+        <p class="hint">（照片大小不大于3M）</p>
       </div>
       <!-- 上传车架号照片 -->
       <div class="userFrameNumImg">
@@ -139,6 +141,7 @@
             <div class="setInput"><input id="userFrameNumImgInput" name="img_url_2" type="file"></div>
           </div>
         </div>
+        <p class="hint">（照片大小不大于3M）</p>
       </div>
       <!-- 上传行驶证照片 -->
       <div class="userDriveImg">
@@ -151,6 +154,7 @@
             <div class="setInput"><input id="userDriveImgInput" name="img_url_3" type="file"></div>
           </div>
         </div>
+        <p class="hint">（照片大小不大于3M）</p>
       </div> 
     </form>
     <!-- 补差换胎数量 -->
@@ -164,6 +168,13 @@
     <a class="affirmServer" ng-click="submitServer()" href="">符合要求，确认服务</a>
     <!-- <a class="balanceServer" href="">不符合要求，需要补差服务</a> -->
     <a class="rejectServer" ng-click="refuseSubmit()" href="">客户拒绝服务</a>
+  </div>
+  <!-- 拒绝服务情况选择 -->
+  <div class="rejectCase">
+    <ul>
+      <li>回退厂家</li>
+      <li>客户自提</li>
+    </ul>
   </div>
 </div>
 <!-- 汽车拍照事例页面 -->

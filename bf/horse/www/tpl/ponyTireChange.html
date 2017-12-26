@@ -41,7 +41,7 @@
     <div class="changeCause">
       <h4 class="tit">更换原因</h4>
       <ul>
-        <li ng-repeat="item in freeChangeCause" data-causeid="{{item.id}}"><i></i>{{item.name}}</li>
+        <li ng-repeat="item in freeChangeCause" class="{{item.seled?'active':''}}" data-causeid="{{item.id}}"><i></i>{{item.name}}</li>
       </ul>
     </div>
     <!-- 更换数量 -->

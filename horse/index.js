@@ -51,11 +51,11 @@ var app = {
         }
 
 
-        // navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
-        navigator.geolocation.getCurrentPosition(onSuccess,onError);
+        navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
+        // navigator.geolocation.getCurrentPosition(onSuccess,onError);
         setInterval(function(){
-            // navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
-            navigator.geolocation.getCurrentPosition(onSuccess,onError);
+            navigator.geolocation.getCurrentPosition(onSuccess,onError,{enableHighAccuracy: true});
+            // navigator.geolocation.getCurrentPosition(onSuccess,onError);
         }.bind(this),2000);
 
 

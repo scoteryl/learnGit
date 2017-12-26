@@ -31,15 +31,19 @@
       </ul>
     </div>
     <div class="orderCommodity clearfix">
-      <div class="commodityImg">
-        <img ng-src="{{orderDetailList[0].img}}">
-      </div>
-      <div class="commodityMsg">
-        <h4>{{orderDetailList[0].title}}</h4>
-        <p>{{orderDetail.description}}</p>
-        <span class="price">{{orderDetailList[0].total | currency:"￥"}}</span>
-        <span class="num">✖{{orderDetailList[0].stock_no}}</span>
-      </div>
+      <ul>
+        <li ng-repeat="detailItem in orderDetailList">
+          <div class="commodityImg">
+            <img ng-src="{{orderDetail.img}}">
+          </div>
+          <div class="commodityMsg">
+            <h4>{{detailItem.title}}</h4>
+            <p>{{detailItem.description}}</p>
+            <span class="price">{{detailItem.total | currency:"￥"}}</span>
+            <span class="num" style="display:{{orderDetail.order_type_id==1?'block':'none'}}">✖{{detailItem.stock_no}}</span>
+          </div>          
+        </li>
+      </ul>
     </div>
     <div class="orderServerTime">
       <span>预约服务时间</span>

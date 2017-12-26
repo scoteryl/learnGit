@@ -2887,6 +2887,43 @@ a{
   font-size: 16px;
   border-radius: 5px;
 }
+#userExpandPage>.shareMenu{
+  display: none;
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 1000;
+}
+#userExpandPage>.shareMenu>.shareList{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff; 
+}
+#userExpandPage>.shareMenu>.shareList>ul{
+  text-align: center;
+}
+#userExpandPage>.shareMenu>.shareList>ul>li{
+  display:inline-block;
+  padding:10px;
+}
+#userExpandPage>.shareMenu>.shareList>ul>li>img{
+  display: block;
+  margin: 0 auto;
+  width: 60px;
+  height:60px;
+}
+#userExpandPage>.shareMenu>.shareList>ul>li>span{
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #787878;
+}
 
 /* 系统信息列表页面 */
 #systemMsgListPage{
@@ -2984,6 +3021,8 @@ a{
   display: block;
   height: 30px;
   line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #systemMsgListPage>.msgList>ul>li>.itemTit>.msgTime{
   float: right;
@@ -3300,6 +3339,23 @@ a{
   padding: 20px 0;
   display:none;
 }
+#CASTirePage>.CASList>ul>li>.itemRemove{
+  padding-top: 10px; 
+  height: 30px;
+}
+#CASTirePage>.CASList>ul>li>.itemRemove>a{
+  display:block;
+  margin-right: 20px;
+  float: right;
+  width: 60px;
+  height: 26px;
+  line-height: 24px;
+  font-size: 14px;
+  color: #ee2625;
+  border: 1px solid  #ee2625;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
 #CASTirePage>.CASList>.noData>img{
   display: block;
   margin: 30% auto;
@@ -3590,15 +3646,15 @@ a{
   background-size: 100% 100%;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity,
-#orderPayFreightPage>.orderDetail>.orderCommodity{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li{
   margin-top: 5px;
   padding: 10px;
   background-color: #fff;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityImg,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityImg,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityImg{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityImg,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityImg{
   float: left;
   width: 100px;
   height: 130px;
@@ -3607,20 +3663,20 @@ a{
   overflow: hidden;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityImg>img,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityImg>img{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img{
   width: 100%;
   height: 100%;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityMsg,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityMsg{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg{
   margin-left: 110px;
   padding-bottom: 30px;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityMsg>h4,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityMsg>h4{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4{
   height: 25px;
   line-height: 25px;
   overflow: hidden;
@@ -3628,24 +3684,24 @@ a{
   text-overflow: ellipsis;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityMsg>p,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityMsg>p{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p{
   height: 80px;
   line-height: 16px;
   color: #787878;
   overflow: hidden;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityMsg>.price,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityMsg>.price{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price{
   float: left;
   height: 30px;
   line-height: 30px;
   font-size: 16px;
 }
 #orderAffirmServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num,
-#orderRepairTireCostPage>.orderDetail>.orderCommodity>.commodityMsg>.num,
-#orderPayFreightPage>.orderDetail>.orderCommodity>.commodityMsg>.num{
+#orderRepairTireCostPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num,
+#orderPayFreightPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num{
   float: right;
   height: 30px;
   line-height: 30px;
@@ -4157,10 +4213,16 @@ a{
 }
 #bolgListPage>.bolgList>ul>li>.bolgIcon{
   display: block;
+  padding-top: 5px;
   position: relative;
   height: 100px;
   overflow: hidden;
   color: #000;
+  box-sizing: border-box;
+}
+#bolgListPage>.bolgList>ul>li>.bolgIcon>p{
+  height: 20px;
+  line-height: 20px
 }
 #bolgListPage>.bolgList>ul>li>.bolgIcon>.icon{
   display: none;
@@ -4393,7 +4455,6 @@ a{
   margin: 10px;
 }
 #myBolgPage>.bolgConfig>form>.formGroupImg>h4{
-  height: 30px;
   line-height: 30px;
 }
 #myBolgPage>.bolgConfig>form>.formGroupImg:after{
@@ -4421,6 +4482,14 @@ a{
 #myBolgPage>.bolgConfig>form>.formGroupImg>.itemImg>.formImgFile{
   display: none;
 }
+#myBolgPage>.bolgConfig>form>.formGroupImg>.hint{
+  clear: both;
+  height: 20px;
+  line-height: 20px;
+  color: #777;
+  font-size: 12px;
+}
+
 #myBolgPage>.bolgConfig>.btn{
   padding:20px 0;
   background-color: #ececec;
@@ -9319,10 +9388,12 @@ a{
 #shopServerPage>.serverList>.statistics>ul>li.serverNum{
   width: 30%;
   background-color: #FE8E20;
+  white-space: nowrap;
 }
 #shopServerPage>.serverList>.statistics>ul>li.serverTotal{
   width: 45%;
   background-color: #FF6434;
+  white-space: nowrap;
 }
 #shopServerPage>.serverList>.statistics>ul>li.submitBtn{
   width: 25%;
@@ -9557,6 +9628,8 @@ a{
   margin-right: 30%;
   padding: 0 10px;
   text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #shopServerPage>.refitProductList>.footerSubmit>.typeTotal>span,
 #shopServerPage>.installProductList>.footerSubmit>.typeTotal>span,

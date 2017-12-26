@@ -9,8 +9,8 @@
   <!-- 待服务轮胎列表 -->
   <div class="CASList">
     <ul>
-      <li ng-click="toInstall()" ng-repeat="item in CASTireList">
-        <a class="clearfix" href="">
+      <li ng-repeat="item in CASTireList">
+        <a ng-click="toInstall()"  class="clearfix" href="">
           <div class="tireImg">
             <img ng-src="{{item.shoe_img}}">
           </div>
@@ -23,6 +23,7 @@
             <p class="tireAppointment"><label>预约时间：</label><span>{{item.appointment}}</span></p>
           </div>
         </a>
+        <div class="itemRemove"><a ng-click="tireReturn(item.id)" href="">退货</a></div>
       </li>
     </ul>
     <div class="noData">

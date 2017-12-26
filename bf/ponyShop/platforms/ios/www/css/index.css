@@ -692,6 +692,14 @@ a{
   display: table;
   clear: both;
 }
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.hint,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.hint,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
+}
 #ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup>.imgItem,
 #ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup>.imgItem,
 #ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup>.imgItem{
@@ -1761,6 +1769,7 @@ a{
   background: url("../img/next.png") no-repeat;
   background-size: 100% 100%;
 }
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopCommodity>a>span,
 #ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopServer>a>span{
   float: left;
   height: 40px;
@@ -2594,6 +2603,24 @@ a{
   display: table;
   clear: both;
 }
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
+}
+
 #ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem,
 #ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem,
 #ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem,
@@ -2724,6 +2751,34 @@ a{
   color:#fff;
   background-color: #ee2625;
 }
+  /* 拒绝服务选项菜单 */
+#ponyShopAffirmTireServerOriginalPage>.rejectCase{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+#ponyShopAffirmTireServerOriginalPage>.rejectCase>ul{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+#ponyShopAffirmTireServerOriginalPage>.rejectCase>ul>li{
+  margin: 5px;
+  height: 40px;
+  line-height: 40px;
+  color:#878787;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #ececec;
+}
+
 
 /* 汽车照片事例、轮胎照片事例假页面 */
 #userCarPicExamplePage,
@@ -3028,6 +3083,12 @@ a{
   content: "";
   display: table;
   clear: both;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
 }
 #ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup>.imgItem{
   float: left;

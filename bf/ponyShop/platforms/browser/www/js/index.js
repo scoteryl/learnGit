@@ -43,6 +43,9 @@ var app = {
             deviceLocation.state=1;
             deviceLocation.longitude=parseFloat(position.coords.longitude)+0.012;
             deviceLocation.latitude=parseFloat(position.coords.latitude)+0.006;
+
+            // alert(deviceLocation.longitude+"|"+deviceLocation.latitude);
+
         }
 
         var onError=function(error){

@@ -23,6 +23,20 @@
     </div>
   </div>
   <div class="expandBtn">
-    <a href="">立即分享</a>
+    <a ng-click="ponyShare()">立即分享</a>
+  </div>
+  <div class="shareMenu">
+    <div class="shareList">
+      <ul>
+        <li ng-click="wxSharePeople()">
+          <img src="img/weixin.png">
+          <span>分享到微信</span>
+        </li>
+        <li ng-click="wxShareFriend()">
+          <img src="img/wxShareFriend.png">
+          <span>分享到朋友圈</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

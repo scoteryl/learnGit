@@ -39,7 +39,7 @@
           <div class="commodityMsg">
             <h4>{{orderDate.subtype_name}}</h4>
             <p>{{item.description}}</p>
-            <span class="price">{{orderDate.total | currency:"￥"}}</span>
+            <span class="price">{{item.total | currency:"￥"}}</span>
             <span class="num" style="display:{{orderDate.order_type_id==1?'block':'none'}}">✖{{item.stock_no}}</span>
           </div>
         </li>

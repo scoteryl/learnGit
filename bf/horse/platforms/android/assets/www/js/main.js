@@ -9,6 +9,11 @@
   var nowDateDay=nowDate.getDate();
   var formatNow=nowDateYear+"-"+(nowDateMonth>9?nowDateMonth:"0"+nowDateMonth)+"-"+(nowDateDay>9?nowDateDay:"0"+nowDateDay);
 
+  //百度IP定位坐标
+  var lonBD=null;
+  var latBD=null;
+  var cityBD="";
+
   //小马驾驾共用数据
   var ponyUserData=null;
   var ponyUserCar=null;
@@ -24,6 +29,13 @@
 
   //轮胎修补暂存用户跳转数据
   var tireRepairServer={userName:"",userTel:"",userTime:null};
+  //轮胎原厂更换暂存用户跳转数据  sel:是否被选中  num选择的数量
+  var tireOriginalChangeData={font:{sel:false,num:0},rear:{sel:false,num:0}};
+  //轮胎 免费再换 暂存用户跳转数据 caues:选择原因ID  font：前胎更换数量  rear:后胎更换数量
+  var tireFreeChangeData={caues:[],font:0,rear:0};
+
+  //是否使用畅行无忧
+  var isUseCXWY=2;
 
 //angularJS
   var horseApp = angular.module('horse', ['ng', 'ngRoute']);
@@ -290,6 +302,7 @@
 
   //父级总控制器
   horseApp.controller('horseCtrl',function($scope){
+
     //通讯加载时报错，可点击取消
     $(".commLoad").click(function(){
       $(this).css('display','none');
@@ -315,6 +328,47 @@
     $('body').css({
       overflow:"auto"
     });
+
+    // 如果还没有GPS定位，那么用IP进行定位
+    $.ajax({
+      type:"get",
+      url:"http://api.map.baidu.com/location/ip",
+      data:{
+        ak:"9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB",
+        coor:"bd09ll"
+      },
+      success:function(data){
+        // console.log(data,data.content.point.x,data.content.point.y);
+        // 经度
+        lonBD=data.content.point.x;
+        latBD=data.content.point.y;
+        cityBD=data.content.address_detail.city;
+      }
+    });
+    if(deviceLocation.state!=1){
+      setTimeout(function(){
+        $.ajax({
+          type:"get",
+          url:"http://api.map.baidu.com/location/ip",
+          data:{
+            ak:"9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB",
+            coor:"bd09ll"
+          },
+          success:function(data){
+            // console.log(data,data.content.point.x,data.content.point.y);
+            // 经度
+            lonBD=data.content.point.x;
+            latBD=data.content.point.y;
+            cityBD=data.content.address_detail.city;
+            deviceLocation.state=1;
+            deviceLocation.longitude=lonBD;
+            deviceLocation.latitude=latBD;
+          }
+        });
+      },5000);
+    }
+
+
     //是否有选中的城市，有用选中的城市，没有用GPS定们查询城市
     // console.log($rootScope.addressCity);
     if(!$rootScope.addressCity){
@@ -431,6 +485,7 @@
         }).success(function(data){
           console.log(data);
           if(data.code=="E0000"){
+            commFinish();
             $scope.ponyUserData=data.data.userInfo;
             ponyUserData=data.data.userInfo;
             ponyUserCar=data.data.userCar_info;
@@ -738,6 +793,72 @@
       alertMsg("确定","正在开发，敬请期待",function(){});
     }
 
+    //微信登陆
+    $scope.wxlogin=function(){
+      //检查微信是否安装
+      Wechat.isInstalled(function (installed) {
+        WEIXININSTALL=installed;
+        // alert(WEIXININSTALL);
+        //如果安装 WEIXININSTALL为1 
+        if(WEIXININSTALL){
+
+          //请求微信授权
+          var scope = "snsapi_userinfo";
+          Wechat.auth(scope, function (response) {
+            // you may use response.code to get the access token.
+            // alert(JSON.stringify(response));
+            //获取用户信息
+            $.ajax({
+              type:'get',
+              url:'https://api.weixin.qq.com/sns/oauth2/access_token',
+              data:{
+                appid:'wx1c6cb276e9828728',
+                secret:'010a96c08125c156780bb19a517dc760',
+                code:response.code,
+                grant_type:'authorization_code'
+              },
+              success:function(data){
+                // alert(JSON.stringify(data));
+                var jsonObj = JSON.parse(data);
+
+                var access_token=jsonObj.access_token;
+                var refresh_token=jsonObj.refresh_token;
+                var openid=jsonObj.openid;
+                var unionid=jsonObj.unionid;
+
+                //获取授权用户信息
+                $.ajax({
+                  type:'get',
+                  url:'https://api.weixin.qq.com/sns/userinfo',
+                  data:{
+                    access_token:access_token,
+                    openid:openid
+                  },
+                  success:function(data){
+                    alert(JSON.stringify(data));
+                  }
+                });
+
+
+              }
+            });
+
+
+
+          }, function (reason) {
+            alertMsg("确定","微信登陆失败",function(){});
+          });
+
+        }else{
+          alertMsg("确定","您还未安装微信",function(){});
+        }
+
+
+      });
+
+
+    }
+
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
@@ -800,6 +921,7 @@
 
   //用户注册页面
   horseApp.controller('registerCtrl',function($scope,$http,$location,$rootScope){
+
     //验证码
     var verifyCodeId=null;
     var verifyCode=null;
@@ -894,6 +1016,7 @@
               alertMsg("确定",data.message,function(){});
             }
           }).error(function(err){
+            isRegister=true;
             //console.log(err)
           });
 
@@ -954,6 +1077,7 @@
           alertMsg("确定",data.message,function(){});
         }
       }).error(function(err){
+        isRegister=true;
         //console.log(err)
       });
 
@@ -2123,7 +2247,110 @@
   horseApp.controller("userExpandCtrl",function($scope,$http,$location){
     $scope.height=vHeight;
 
-    
+    //分享按钮
+    $scope.ponyShare=function(){
+      //显示分享列表
+      $("#userExpandPage>.shareMenu").css("display","block");
+      //禁用页面滚动
+      $("#userExpandPage").css({
+        height:vHeight,
+        overflow:'hidden'
+      });
+    }
+
+    //微信分享朋友圈
+    $scope.wxShareFriend=function(){
+      //阻止事件冒泡
+      // event.stopPropagation();
+
+      //检查微信是否安装
+      Wechat.isInstalled(function (installed) {
+        WEIXININSTALL=installed;
+        // alert(WEIXININSTALL);
+        //如果安装 WEIXININSTALL为1 
+        if(WEIXININSTALL){
+
+          //分享朋友圈
+          Wechat.share({
+            message:{
+              title:"这是分享标题",
+              description:"这是分享内容",
+              //这是分享图片
+              thumb:'http://zwhtnet.com/img/index/p04.png',
+              media:{
+                type:Wechat.Type.LINK,
+                webpageUrl:'http://www.baidu.com'
+              }    
+            },
+            scene:Wechat.Scene.TIMELINE
+          },function(){
+            alertMsg("确定","分享成功",function(){});
+          },function(reason){
+            alertMsg("确定","分享失败",function(){});
+          });
+          
+
+        }else{
+          alertMsg("确定","您还未安装微信",function(){});
+        }
+      });
+
+    }
+
+    //微信分享朋友
+    $scope.wxSharePeople=function(){
+      //阻止事件冒泡
+      // event.stopPropagation();
+
+      //检查微信是否安装
+      Wechat.isInstalled(function (installed) {
+        WEIXININSTALL=installed;
+        // alert(WEIXININSTALL);
+        //如果安装 WEIXININSTALL为1 
+        if(WEIXININSTALL){
+
+          //分享朋友圈
+          Wechat.share({
+            message:{
+              title:"这是分享标题",
+              description:"这是分享内容",
+              //这是分享图片
+              thumb:'http://zwhtnet.com/img/index/p04.png',
+              media:{
+                type:Wechat.Type.LINK,
+                webpageUrl:'http://www.baidu.com'
+              }    
+            },
+            scene:Wechat.Scene.SESSION
+          },function(){
+            alertMsg("确定","分享成功",function(){});
+          },function(reason){
+            alertMsg("确定","分享失败",function(){});
+          });
+
+        }else{
+          alertMsg("确定","您还未安装微信",function(){});
+        }
+      });
+
+    }
+
+    //监听页面加载
+    $scope.$watch("viewContentLoaded",function(){
+      //分享页面取消
+      $("#userExpandPage>.shareMenu").click(function(){
+        //取消分享列表
+        $("#userExpandPage>.shareMenu").css("display","none");
+        //恢复页面滚动
+        $("#userExpandPage").css({
+          height:'auto',
+          overflow:'auto'
+        });
+      });
+
+    });
+
+
   });
 
   //小马驾驾关于我们页面
@@ -2242,6 +2469,18 @@
     //跳转安装服务
     $scope.toInstall=function(){
       $location.path("/changeTireSel");
+    }
+
+    //轮胎退回
+    $scope.tireReturn=function(itemId){
+      //传入要退货轮胎的ID
+      console.log(itemId);
+      confirmMsg(["确认","取消"],"您确认要退货吗？",function(){
+        console.log("确定");
+      },function(){
+        console.log("取消");
+      });
+
     }
 
     //监听页面加载
@@ -3038,6 +3277,7 @@
               window.location.href="index.html#/order/server";
             });
           }else{
+            isUseCXWY=cxwySel;
             $location.path("/checkoutCounter/"+data.data.obj_id+"/"+data.data.trade_mode);
           }
         }else if(data.code=="E0014"){
@@ -3840,7 +4080,7 @@
     $scope.userBolgSelRunRoad=function(){
       //页面从头
       $(document).scrollTop(0);
-      alertMsg("确定","为了您的行车安全请如实填写您的行车路况！",function(){}); 
+      alertMsg("我同意","为了您的行车安全请如实填写您的行车路况！",function(){}); 
 
       $scope.selRoadHtml="";
       $("#carSelRunRoad").css({
@@ -4196,10 +4436,13 @@
             alertMsg("确定","请输入正确的行驶里程",function(){}); 
             return;
           }
-          if(!$("#mileageImg").val()){
-            alertMsg("确定","请上传您的里程表照片",function(){}); 
-            return;
+          if(!userCreatBolg.maturity_img){
+            if(!$("#mileageImg").val()){
+              alertMsg("确定","请上传您的里程表照片",function(){}); 
+              return;
+            }
           }
+
         }
 
 
@@ -4277,7 +4520,7 @@
   });
 
   //轮胎服务页面
-  horseApp.controller("tireServerCtrl",function($scope,$location){
+  horseApp.controller("tireServerCtrl",function($scope,$location,$rootScope){
 
     //初次体验页面
     $scope.toTireSel=function(){
@@ -4291,6 +4534,33 @@
         // $location.path("/userBolgConfig/null");
       }
     }
+
+    //如果没有没定位城市
+    // console.log($rootScope.addressCity);
+    if(!$rootScope.addressCity){
+      setTimeout(function(){
+        $.ajax({
+          type:"get",
+          url:"http://api.map.baidu.com/location/ip",
+          data:{
+            ak:"9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB",
+            coor:"bd09ll"
+          },
+          success:function(data){
+            console.log(data);
+            // console.log(data,data.content.point.x,data.content.point.y);
+            // 经度
+            $rootScope.addressCity=data.content.address_detail.city;
+            lonBD=data.content.point.x;
+            latBD=data.content.point.y;
+            deviceLocation.state=1;
+            deviceLocation.longitude=lonBD;
+            deviceLocation.latitude=latBD;
+          }
+        });
+      },100);
+    }
+
 
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
@@ -5104,13 +5374,15 @@
             obj_id:tempId,
             trade_mode:orderType,
             pay_pwd:strmd5(pwd),
-            sale_ids:userSelCoupon
+            sale_ids:userSelCoupon,
+            cxwy:isUseCXWY
           },
           success:function(data){
             if(data.code=="E0000"){
               commFinish();
               // console.log(data);
               $("#userPayPwdInput").blur();
+              isUseCXWY=2;
               if(data.data.trade_mode=="shoe_temp"){
                 alertMsg("确定","支付成功",function(){
                   window.location.href="index.html#/CASTire"
@@ -5204,7 +5476,144 @@
           break;
         case "alipay":
           // console.log("支付宝");
-          alertMsg("确定","正在开发，敬请期待",function(){}); 
+          // alertMsg("确定","正在开发，敬请期待",function(){}); 
+          //开始通讯
+          commStart();
+          $.ajax({
+            type:"post",
+            url:'http://180.76.243.205:8383/_API/_ali/pay',
+            data:{
+              user_id:ponyUserData.id,
+              token:token,
+              obj_id:tempId,
+              trade_mode:orderType,
+              sale_ids:userSelCoupon,
+              cxwy:isUseCXWY
+            },
+            success:function(data){
+              // console.log(data);
+              if(data.code=="E0000"){
+                // 调用支付宝进行支付
+                // 第一步：订单在服务端签名生成订单信息，具体请参考官网进行签名处理
+                var payInfo  = data.data.body;
+                // 第二步：调用支付插件            
+                cordova.plugins.alipay.payment(payInfo,function success(e){
+                  // alertMsg("确定","调用成功："+JSON.stringify(e)+"|",function(){}); 
+                  // alertMsg("确定","调用成功："+e.resultStatus+"|",function(){}); 
+                  // alert(JSON.stringify(e));
+
+                  if(e.resultStatus==9000){    
+                    var alipayData=JSON.parse(e.result).alipay_trade_app_pay_response;
+
+                    // alert("code:"+alipayData.code);
+                    // alert("msg:"+alipayData.msg);
+                    // alert("total_amount:"+alipayData.total_amount);
+                    // alert("app_id:"+alipayData.app_id);
+                    // alert("trade_no:"+alipayData.trade_no);
+                    // alert("seller_id:"+alipayData.seller_id);
+                    // alert("out_trade_no:"+alipayData.out_trade_no);
+                    // alert(e.resultStatus);
+        
+                    $.ajax({
+                      type:'post',
+                      url:'http://180.76.243.205:8383/_API/_ali/success',
+                      data:{
+                        user_id:ponyUserData.id,
+                        token:token,
+                        trade_mode:orderType,
+                        obj_id:tempId,
+                        code:alipayData.code,
+                        msg:alipayData.msg,
+                        total_amount:alipayData.total_amount,
+                        app_id:alipayData.app_id,
+                        trade_no:alipayData.trade_no,
+                        seller_id:alipayData.seller_id,
+                        out_trade_no:alipayData.out_trade_no,
+                        timestamp:alipayData.timestamp,
+                        result_status:e.resultStatus
+                      },
+                      success:function(data){
+                        // alert(JSON.stringify(data));
+
+                        if(data.code=="E0000"){
+                          commFinish();
+                          isUseCXWY=2;
+                          // console.log(data);
+                          if(data.data.trade_mode=="shoe_temp"){
+                            alertMsg("确定","支付成功",function(){
+                              window.location.href="index.html#/CASTire"
+                            }); 
+                          }else{
+                            alertMsg("确定","支付成功",function(){
+                              window.location.href="index.html#/order/all"
+                            }); 
+                          }
+                        }else{
+                          commFinish();
+                          alertMsg("确定",data.message,function(){}); 
+                        }
+
+
+                      },
+                      error:function(err){
+                        console.log(err);
+                        // alert(JSON.stringify(err));
+                      }
+                    });
+
+
+                  }else{
+                    commFinish();
+                    alertMsg("确定","支付失败",function(){}); 
+                  }
+                  
+                },function error(e){
+                  commFinish();
+                  alertMsg("确定","支付失败",function(){}); 
+                });
+          
+
+              }else if(data.code=="E0014"){
+                commFinish();
+                alertMsg("确定",data.message,function(){
+                  window.location.href="index.html#/login";
+                });
+              }else if(data.code=="E0030"){
+                commFinish();
+                //余额不足，跳转充值页面
+                confirmMsg(["充值","取消"],data.message,function(){
+                  // console.log("确定");
+                  window.location.href="index.html#/userAmount";
+                },function(){
+                  // console.log("取消");
+                });
+              }else{
+                commFinish();
+                alertMsg("确定",data.message,function(){}); 
+              }
+            }
+          });
+
+
+          // 第一步：订单在服务端签名生成订单信息，具体请参考官网进行签名处理
+          // var payInfo  = "xxxx";
+    
+          // // 第二步：调用支付插件            
+          // cordova.plugins.alipay.payment(payInfo,function success(e){
+          //   alertMsg("确定","调用成功："+e.resultStatus+"|",function(){}); 
+          // },function error(e){
+          //   alertMsg("确定","调用失败："+e.resultStatus,function(){}); 
+          // });
+      
+          //e.resultStatus  状态代码  e.result  本次操作返回的结果数据 e.memo 提示信息
+          //e.resultStatus  9000  订单支付成功 ;8000 正在处理中  调用function success
+          //e.resultStatus  4000  订单支付失败 ;6001  用户中途取消 ;6002 网络连接出错  调用function error
+          //当e.resultStatus为9000时，请去服务端验证支付结果
+                      /**
+                       * 同步返回的结果必须放置到服务端进行验证（验证的规则请看https://doc.open.alipay.com/doc2/
+                       * detail.htm?spm=0.0.0.0.xdvAU6&treeId=59&articleId=103665&
+                       * docType=1) 建议商户依赖异步通知
+                       */
           break;
       }
 
@@ -5502,13 +5911,15 @@
                 obj_id:tempId,
                 trade_mode:orderType,
                 pay_pwd:strmd5(pwd),
-                sale_ids:userSelCoupon
+                sale_ids:userSelCoupon,
+                cxwy:isUseCXWY
               },
               success:function(data){
                 commFinish();
                 if(data.code=="E0000"){
                   // console.log(data);
                   $("#userPayPwdInput").blur();
+                  isUseCXWY=2;
                   if(data.data.trade_mode=="shoe_temp"){
                     alertMsg("确定","支付成功",function(){
                       window.location.href="index.html#/CASTire"
@@ -5593,10 +6004,14 @@
   });
 
   //轮胎服务，免费再换 服务选择页面
-  horseApp.controller("changeTireSelCtrl",function($scope,$http,$location){
+  horseApp.controller("changeTireSelCtrl",function($scope,$http,$location,$rootScope){
     $scope.height=vHeight;
 
     var token=sessionStorage["ponyUserToken"];
+
+    //定位城市
+    var addressCity=$rootScope.addressCity;
+    // console.log(addressCity);
 
     //更换标准
     $scope.changeStandard=[];
@@ -5609,7 +6024,7 @@
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_freeHome/get",
-      data:"user_id="+ponyUserData.id+"&token="+token
+      data:"user_id="+ponyUserData.id+"&token="+token+"&city_name="+addressCity
     }).success(function(data){
       if(data.code=="E0000"){
         // console.log(data.data);
@@ -5634,12 +6049,21 @@
       }
     }
 
+    //免费修补
+    $scope.tireRepairServer=function(){
+      if(userOrderLength>'0'){
+        $location.path("/tireRepair");
+      }else{
+        alertMsg("确定","您的默认车辆没有下过订单,无法免费修补轮胎",function(){}); 
+      }
+    }
+
     //免费更换
     $scope.tireFreeChange=function(){
       if(userOrderLength>'0'){
         $location.path("/ponyTireChange");
       }else{
-        alertMsg("确定","您的默认车辆没有下过订单,无法更换轮胎",function(){}); 
+        alertMsg("确定","您的默认车辆没有下过订单,无法免费更换轮胎",function(){}); 
       }
     }
 
@@ -5683,6 +6107,8 @@
     $scope.originalChangeFontNum=0;
     $scope.originalChangeRearNum=0;
 
+    // console.log(tireOriginalChangeData);
+
     // 更换数量增加
     $scope.changeNumAdd=function(targetLocation){
       if(targetLocation=='font'){
@@ -5692,7 +6118,11 @@
           if(changeFontMaxNum==2){
             alertMsg("确定","最大可更换数量",function(){});
           }else{
-            alertMsg("确定","没胎了，买一个吧",function(){});
+            if(changeFontMaxNum<$scope.userFont.shoe_no){
+              alertMsg("确定","您还未选择更换前胎",function(){});
+            }else{
+              alertMsg("确定","没胎了，买一个吧",function(){});
+            }
           }
         }
       }else{
@@ -5702,7 +6132,11 @@
           if(changeRearMaxNum==2){
             alertMsg("确定","最大可更换数量",function(){});
           }else{
-            alertMsg("确定","没胎了，买一个吧",function(){});
+            if(changeRearMaxNum<$scope.userRear.shoe_no){
+              alertMsg("确定","您还未选择更换后胎",function(){});
+            }else{
+              alertMsg("确定","没胎了，买一个吧",function(){});
+            }
           }
         }
       }
@@ -5737,6 +6171,22 @@
 
     //选择安装店铺
     $scope.selInstallShop=function(){
+      //选中更换前胎，对前胎数据进行暂存
+      if($("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(0).hasClass("active")){
+        tireOriginalChangeData.font.sel=true;
+        tireOriginalChangeData.font.num=$scope.originalChangeFontNum;
+      }else{
+        tireOriginalChangeData.font.sel=false;
+        tireOriginalChangeData.font.num=0;
+      }
+      //选中更换后胎，对后胎数据进行暂存
+      if($("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(1).hasClass("active")){
+        tireOriginalChangeData.rear.sel=true;
+        tireOriginalChangeData.rear.num=$scope.originalChangeRearNum;
+      }else{
+        tireOriginalChangeData.rear.sel=false;
+        tireOriginalChangeData.rear.num=0;
+      }
       clearInterval(bannerTimer);
       $location.path("/selTireInstallShop");
     }
@@ -5766,6 +6216,8 @@
         // console.log(data)
         commFinish();
         if(data.code=="E0000"){
+          //取消暂存数据
+          tireOriginalChangeData={font:{sel:false,num:0},rear:{sel:false,num:0}};
           clearInterval(bannerTimer);
           $location.path("/originalChangeTireSelAddress/"+tireServerSelShopData.id+"/"+changeFontNum+"/"+changeRearNum);
         }else if(data.code=="E0014"){
@@ -5792,7 +6244,7 @@
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_original/change",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')
+        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)
       }).success(function(data){
         commFinish();
         if(data.code=="E0000"){
@@ -5840,6 +6292,26 @@
               $scope.shop=data.data.store; 
               tireServerSelShopData=data.data.store;        
             }
+          }
+
+          //根据tireOriginalChangeData内的暂存数据，对页面进行更新
+          if(tireOriginalChangeData.font.sel){
+            $("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(0).addClass("active");
+            if(data.data.font.shoe_no>2){
+              changeFontMaxNum=2;
+            }else{
+              changeFontMaxNum=data.data.font.shoe_no;
+            }
+            $scope.originalChangeFontNum=tireOriginalChangeData.font.num;
+          }
+          if(tireOriginalChangeData.rear.sel){
+            $("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(1).addClass("active");
+            if(data.data.rear.shoe_no>2){
+              changeRearMaxNum=2;
+            }else{
+              changeRearMaxNum=data.data.rear.shoe_no;
+            }
+            $scope.originalChangeRearNum=tireOriginalChangeData.rear.num;
           }
 
         }else if(data.code=="E0014"){
@@ -5958,7 +6430,7 @@
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_store/getList",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')+"&service_type=1"+(key?"&key_words="+key:'')+"&city_name="+$rootScope.addressCity
+        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&service_type=1"+(key?"&key_words="+key:'')+"&city_name="+$rootScope.addressCity
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
@@ -6162,26 +6634,26 @@
           case 0:
           //默认
             $scope.shopList.sort(function(a,b){
-              return a.id>b.id?1:0;
+              return a.id-b.id;
             });
             break;
           case 1:
           //附近
             // console.log(1);
             $scope.shopList.sort(function(a,b){
-              return (parseFloat(a.value)>parseFloat(b.value))?1:0;
+              return a.value-b.value;
             });
             break;
           case 2:
           //评分
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.star_no)>parseFloat(b.star_no)?0:1;
+              return b.star_no-a.star_no;
             });
             break;
           case 3:
           //累计安装 
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?0:1;
+              return b.complete_no-a.complete_no;
             });
             break;
         }
@@ -6491,7 +6963,6 @@
     $scope.userTel=tireRepairServer.userTel;
     $scope.userTime=tireRepairServer.userTime;
 
-
     //修补规则
     $scope.repairRuleList=null;
     
@@ -6502,7 +6973,7 @@
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_shoePatch/confirm",
-      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')
+      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)
     }).success(function(data){
       console.log(data);
       if(data.code=="E0000"){
@@ -6532,6 +7003,7 @@
       tireRepairServer.userName=$("#ponyTireOrderUserName").val();
       tireRepairServer.userTel=$("#ponyTireOrderUserTel").val();
       tireRepairServer.userTime=$("#orderReserveTime").val();
+      // console.log(tireRepairServer);
       $location.path(path);
     }
 
@@ -6590,7 +7062,9 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //订单预约时间
-      $("#orderReserveTime").val(nowDateYear+"-"+(nowDateMonth>10?nowDateMonth:"0"+nowDateMonth)+"-"+(nowDateDay>10?nowDateDay:"0"+nowDateDay));
+      if(!tireRepairServer.userTime){
+        $("#orderReserveTime").val(nowDateYear+"-"+(nowDateMonth>10?nowDateMonth:"0"+nowDateMonth)+"-"+(nowDateDay>10?nowDateDay:"0"+nowDateDay));
+      }
     });
 
   });
@@ -6628,6 +7102,9 @@
     var changeFontMaxNum=2;
     var changeRearMaxNum=2;
     
+
+    console.log(tireFreeChangeData);
+
     // 更换数量增加
     $scope.changeNumAdd=function(targetLocation){
       if(targetLocation=='font'){
@@ -6680,6 +7157,17 @@
 
     //选择安装店铺
     $scope.selInstallShop=function(){
+
+      //把选中的更换原因压入暂存数据中 
+      tireFreeChangeData.caues=[];
+      var cauesListArr=$('#ponyTireChangePage>.ponyTireChange>.changeCause>ul>li.active');
+      for(i=0;i<cauesListArr.length;i++){
+        var one=cauesListArr[i];
+        tireFreeChangeData.caues.push($(one).attr("data-causeid"));
+      }
+      tireFreeChangeData.font=$scope.ponyChangeFontNum;
+      tireFreeChangeData.rear=$scope.ponyChangeRearNum;
+
       clearInterval(bannerTimer);
       $location.path("/selTireInstallShop");
     }
@@ -6720,6 +7208,8 @@
         // console.log(data)
         commFinish();
         if(data.code=="E0000"){
+          //清空暂存数据
+          tireFreeChangeData={caues:[],font:0,rear:0};
           clearInterval(bannerTimer);
           $location.path("/ponyTireChangeOrderDetail/"+data.data.shoe_temp_id+'/'+tireChangeOriginal.join(","));
         }else if(data.code=="E0014"){
@@ -6745,7 +7235,7 @@
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_free/change",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')
+        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)
       }).success(function(data){
         commFinish();
         console.log(data);
@@ -6802,6 +7292,22 @@
               tireServerSelShopData=data.data.store;        
             }
           }
+
+          //更新现暂存数据
+          // console.log(data.data.shoe_change_ori);
+          for(var i=0;i<data.data.shoe_change_ori.length;i++){
+            var one=data.data.shoe_change_ori[i];
+            console.log(tireFreeChangeData.caues.indexOf(one.id));
+            if(tireFreeChangeData.caues.indexOf(one.id)==-1){
+              one.seled=false;
+            }else{
+              one.seled=true;
+            }
+          }
+
+          $scope.ponyChangeFontNum=tireFreeChangeData.font;
+          $scope.ponyChangeRearNum=tireFreeChangeData.rear;
+
 
         }else if(data.code=="E0014"){
           alertMsg("确定",data.message,function(){
@@ -6979,6 +7485,8 @@
 
     var token=sessionStorage["ponyUserToken"];
 
+    // console.log(cityBD);
+
     //获取传入页面参数
     var typeId=$routeParams.typeId;
     //回退传入值
@@ -7025,7 +7533,7 @@
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_store/getList",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')+"&service_type="+typeId+(key?"&key_words="+key:'')+"&city_name="+$scope.addressCity
+        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&service_type="+typeId+(key?"&key_words="+key:'')+"&city_name="+($scope.addressCity==''?cityBD:$scope.addressCity)
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
@@ -7248,26 +7756,26 @@
           case 0:
           //默认
             $scope.shopList.sort(function(a,b){
-              return a.id>b.id?1:0;
+              return a.id-b.id;
             });
             break;
           case 1:
           //附近
             // console.log(1);
             $scope.shopList.sort(function(a,b){
-              return (parseFloat(a.value)>parseFloat(b.value))?1:0;
+              return a.value-b.value;
             });
             break;
           case 2:
           //评分
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.star_no)>parseFloat(b.star_no)?0:1;
+              return b.star_no-a.star_no;
             });
             break;
           case 3:
           //累计安装 
             $scope.shopList.sort(function(a,b){
-              return parseFloat(a.complete_no)>parseFloat(b.complete_no)?0:1;
+              return b.complete_no-a.complete_no;
             });
             break;
         }
@@ -7527,7 +8035,7 @@
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_userStore/getHome",
-      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')+"&store_id="+shopId
+      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&store_id="+shopId
     }).success(function(data){
       commFinish();
       console.log(data);
@@ -8672,7 +9180,7 @@
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_userStore/getDetails",
-      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.longitude?deviceLocation.longitude:"120.428666")+"&latitude="+(deviceLocation.latitude?deviceLocation.latitude:'36.164666')+"&store_id="+shopId
+      data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&store_id="+shopId
     }).success(function(data){
       console.log(data);
       if(data.code=="E0000"){

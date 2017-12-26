@@ -337,8 +337,9 @@
       // 百度地图API功能
       var map = new BMap.Map("ponyMap");    // 创建Map实例
       //deviceLocation.latitude deviceLocation.longitude
-      if(deviceLocation.status==1){
-        var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude)?parseFloat(deviceLocation.longitude):'120.389563',parseFloat(deviceLocation.latitude)?parseFloat(deviceLocation.latitude):'36.072198');
+      // alert(deviceLocation.state);
+      if(deviceLocation.state==1){
+        var mapPoint = new BMap.Point(parseFloat(deviceLocation.longitude),parseFloat(deviceLocation.latitude));
       }else{
         var mapPoint = new BMap.Point(lonBD,latBD);
 
@@ -352,7 +353,7 @@
         var addComp = rs.addressComponents;
         // alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
         var addressStr=addComp.city + " " + addComp.district + " " + addComp.street + " " + addComp.streetNumber;
-        $("#mapLocationAddress").html(addressStr).attr("data-lon",parseFloat(deviceLocation.longitude)).attr("data-lat",parseFloat(deviceLocation.latitude)).attr("data-mapStr",addressStr);
+        $("#mapLocationAddress").html(addressStr).attr("data-lon",deviceLocation.state==1?parseFloat(deviceLocation.longitude):lonBD).attr("data-lat",deviceLocation.state==1?parseFloat(deviceLocation.latitude):latBD).attr("data-mapStr",addressStr);
       }); 
       var marker = new BMap.Marker(mapPoint); // 创建点
       marker.enableDragging();     //设置点可以拖拽
@@ -617,6 +618,8 @@
               window.location.href="index.html#/login";
             }); 
           }else{
+            $("#registerSubmitBtn").removeAttr("style");
+            isSubmitOK=true;
             alertMsg("确定",data.message,function(){}); 
           }
         },
@@ -2035,7 +2038,7 @@
         return;
       }
       if((parseInt(makeUpFontTire)+parseInt(makeUpRearTire))<1){
-        alertMsg("确定","请选择补胎数据",function(){}); 
+        alertMsg("确定","请选择需补差轮胎数量",function(){}); 
         return;
       }
       //初始化表单
@@ -2102,7 +2105,7 @@
             commFinish();
             console.log(data);
             if(data.code=="E0000"){
-              alertMsg("确定","订单提交",function(){
+              alertMsg("确定","订单已提交",function(){
                 window.location.href="index.html#/order/finish";
               }); 
             }else if(data.code=="E0014"){
@@ -2499,17 +2502,33 @@
         // console.log(target);
         switch (target){
           case "leftFont":
-            $scope.leftFontTireNum++;
+            if($scope.leftFontTireNum<3){
+              $scope.leftFontTireNum++;
+            }else{
+              alertMsg("确定","每条轮胎最多被修补3处",function(){}); 
+            }
             // console.log($scope.leftFontTireNum);
             break;
-          case "rightFont":+
-            $scope.rightFontTireNum++;
+          case "rightFont":
+            if($scope.rightFontTireNum<3){
+              $scope.rightFontTireNum++;
+            }else{
+              alertMsg("确定","每条轮胎最多被修补3处",function(){}); 
+            }
             break;
           case "leftRear":
-            $scope.leftRearTireNum++;
+            if($scope.leftRearTireNum<3){
+              $scope.leftRearTireNum++;
+            }else{
+              alertMsg("确定","每条轮胎最多被修补3处",function(){}); 
+            }
             break;
           case "rightRear":
-            $scope.rightRearTireNum++;
+            if($scope.rightRearTireNum<3){
+              $scope.rightRearTireNum++;
+            }else{
+              alertMsg("确定","每条轮胎最多被修补3处",function(){}); 
+            }
             break;
         }     
         $scope.$apply();  
@@ -3534,6 +3553,10 @@
         if(one.hasClass('sel')){
           item.service_id=one.attr("data-serverid");
           item.price=one.children(".itemDetail").children(".price").children(".setInput").children("input").val();
+          item.price=item.price?item.price:0.00;
+          if(!item.price){
+            one.children(".itemDetail").children(".price").children(".setInput").children("input").val(0.00);
+          }
           item.description=one.children(".itemDetail").children(".describe").children(".setInput").children("textarea").val();
           item.status=1;
         }else{
@@ -3551,6 +3574,10 @@
         if(one.hasClass('sel')){
           item.service_id=one.attr("data-serverid");
           item.price=one.children(".itemDetail").children(".price").children(".setInput").children("input").val();
+          item.price=item.price?item.price:0.00;
+          if(!item.price){
+            one.children(".itemDetail").children(".price").children(".setInput").children("input").val(0.00);
+          }
           item.description=one.children(".itemDetail").children(".describe").children(".setInput").children("textarea").val();
           item.status=1;
         }else{
@@ -3568,6 +3595,10 @@
         if(one.hasClass('sel')){
           item.service_id=one.attr("data-serverid");
           item.price=one.children(".itemDetail").children(".price").children(".setInput").children("input").val();
+          item.price=item.price?item.price:0.00;
+          if(!item.price){
+            one.children(".itemDetail").children(".price").children(".setInput").children("input").val(0.00);
+          }
           item.description=one.children(".itemDetail").children(".describe").children(".setInput").children("textarea").val();
           item.status=1;
         }else{
@@ -3585,6 +3616,10 @@
         if(one.hasClass('sel')){
           item.service_id=one.attr("data-serverid");
           item.price=one.children(".itemDetail").children(".price").children(".setInput").children("input").val();
+          item.price=item.price?item.price:0.00;
+          if(!item.price){
+            one.children(".itemDetail").children(".price").children(".setInput").children("input").val(0.00);
+          }
           item.description=one.children(".itemDetail").children(".describe").children(".setInput").children("textarea").val();
           item.status=1;
         }else{
@@ -3642,17 +3677,19 @@
         var target=$(this);
         if(target.parent().hasClass("sel")){
           target.parent().removeClass("sel");
+          // target.next().children(".price").children(".setInput").children("input").val("");
         }else{
           target.parent().addClass("sel");
         }
       });
 
       //每项服务价格改变
-      $("#userShopServerSettingPage>.serverList").on("keyup","input",function(){
-        var targetVal=$(this).val();
-        if(!(/^(([0-9]*).([0-9]*))$/.test(targetVal))){
-          $(this).val("0");
+      $("#userShopServerSettingPage>.serverList").on("change","input",function(){
+        var targetVal=parseFloat($(this).val())?parseFloat($(this).val()):0;
+        if(targetVal<0){
+          $(this).val("");
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html("0");
+          alertMsg("确定","您输入的数值不合法",function(){});
         }else{
           $(this).val(parseFloat($(this).val()));
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html(parseFloat(targetVal).toFixed(2));
