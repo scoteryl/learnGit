@@ -23,7 +23,7 @@
             <p class="tireAppointment"><label>预约时间：</label><span>{{item.appointment}}</span></p>
           </div>
         </a>
-        <div class="itemRemove"><a ng-click="tireReturn(item.id)" href="">退货</a></div>
+        <div class="itemRemove"><span style="display:{{item.reject_status==1?'none':'block'}}">此订单不符退货标准</span><a ng-click="tireReturn(item.id,item.reject_status)" href="">退货</a></div>
       </li>
     </ul>
     <div class="noData">

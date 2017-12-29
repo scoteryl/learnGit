@@ -470,7 +470,7 @@
     //监听当前页面是否加载完成
     $scope.$watch("$viewContentLoaded",function(){
       //页面进行
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       //记录选择的地理位置
       $scope.addressCity=$rootScope.addressCity?$rootScope.addressCity:$rootScope.GPSAddressCity;
       //console.log($scope.addressCity);
@@ -655,7 +655,7 @@
     //监听当前页面是否加载完成
     $scope.$watch("$viewContentLoaded",function(){
       //页面进行
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
 
       //获取数据
@@ -686,7 +686,7 @@
       $http({
         method:"post",
         url:"http://api.map.baidu.com/geocoder/v2/",
-        data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+deviceLocation.latitude+","+deviceLocation.longitude
+        data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+","+(deviceLocation.state==1?deviceLocation.longitude:lonBD)
       }).success(function(data){
         //console.log(data.result.addressComponent.city);
         $scope.addressCity=data.result.addressComponent.city;
@@ -722,16 +722,87 @@
   });
 
   //用户协议页面
-  horseApp.controller("ponyAgreementCtrl",function($scope){
+  horseApp.controller("ponyAgreementCtrl",function($scope,$http){
+    var token=sessionStorage["ponyUserToken"];
+
+    $scope.height=vHeight;
+
     //返回按键
     $scope.toBack=function(){
       window.history.back(-1);
     }
 
+    // 链接网址
+    $scope.link=null;
+
+    commStart();
+    //获到数据
+    $http({
+      method:'post',
+      url:'http://180.76.243.205:8383/_API/_user/deal',
+      data:""
+    }).success(function(data){
+      // console.log(data);
+      commFinish();
+      if(data.code=="E0000"){
+        $scope.link=data.data.head_url; 
+        var html="";
+
+        html=data.data.content.replace(/<til>(.*)<\/til>/ig,function(word,$1,position){
+          if(position==0){
+            return "<div class='tit'>"+$1+"</div>";
+          }else{
+            return "<classify><div class='tit'>"+$1+"</div>";
+          }
+        });
+        // console.log(html);
+        //切分模块
+        var classIfyArr=html.split("<classify>");
+        // console.log(classIfyArr);
+        var agreementHtml="";
+        for(var i=0;i<classIfyArr.length;i++){
+          agreementHtml+="<div class='classify'>";
+          //每一个模块
+          var one=classIfyArr[i];
+          //加入模块标题
+          agreementHtml+=one.split("</\div>")[0]+"</div>";
+          // console.log(one.split("</\div>")[1]);
+          // 按模块切分段落
+          classIfyContent=one.split("</\div>")[1].split("<br>");
+          // console.log(classIfyContent);
+          var classIfyContentHtml="";
+          for(var subI=0;subI<classIfyContent.length;subI++){
+            var subOne=classIfyContent[subI];
+            if(subOne){
+              classIfyContentHtml+="<p>";
+              subOne=subOne.replace(/<red>(.*)<\/red>/ig,function(subWord,$1){
+                // console.log(subWord,$1);
+                return "<span>"+$1+"</span>";
+              });
+              // console.log(subOne);
+              classIfyContentHtml+=subOne;
+              classIfyContentHtml+="</p>";
+            }
+          }
+          //加入模块段落内容
+          agreementHtml+=classIfyContentHtml;
+          agreementHtml+="</div>";
+        }
+
+
+        $("#ponyAgreementPage>.agreementBody>.detail").html(agreementHtml);
+
+
+
+      }else{
+        console.log(data.message);
+      }
+    });
+
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
     });
 
   })
@@ -862,7 +933,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
 
       // 前往登陆
@@ -957,7 +1028,7 @@
     //监听页面加载
     $scope.$watch('$viewContentLoaded',function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       // 前往注册
       $("#userPwd").keydown(function(e){
@@ -1274,7 +1345,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
     });
 
 
@@ -1335,7 +1406,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
     });
 
   });
@@ -1748,7 +1819,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //开始加载通讯
       commStart();
@@ -2400,11 +2471,13 @@
     $scope.userMsgList=[];
 
     //获取数据 
+    commStart();
     $http({
       method:"post",
       url:"http://180.76.243.205:8383/_API/_userMessage/getList",
       data:"user_id="+ponyUserData.id+"&token="+token
     }).success(function(data){
+      commFinish();
       console.log(data);
       if(data.code=="E0000"){
         $scope.userMsgList=data.data;
@@ -2472,30 +2545,57 @@
     }
 
     //轮胎退回
-    $scope.tireReturn=function(itemId){
-      //传入要退货轮胎的ID
+    $scope.tireReturn=function(itemId,status){
+      //传入要退货轮胎的ID 是否可以退货状态
       console.log(itemId);
       confirmMsg(["确认","取消"],"您确认要退货吗？",function(){
-        console.log("确定");
+        // console.log("确定");
+        if(status==1){
+          $.ajax({
+            type:'post',
+            url:'http://180.76.243.205:8383/_API/_pendingService/reject',
+            data:{
+              user_id:ponyUserData.id,
+              token:token,
+              user_shoe_id:itemId
+            },
+            success:function(data){
+              console.log(data);
+              if(data.code=="E0000"){
+                console.log(data.data);
+                getCASTireData();
+                $scope.CASTireList=data.data;
+                alertMsg("确定","退货成功",function(){});
+              }else if(data.code=="E0014"){
+                alertMsg("确定",data.message,function(){
+                  window.location.href="index.html#/login";
+                });
+              }else{
+                alertMsg("确定",data.message,function(){});
+                // console.log(data.message);
+              }
+            }
+          });
+        }else{
+          alertMsg("确定","不满足退货条件！请查看退货协议！",function(){});
+        }
+
       },function(){
-        console.log("取消");
+        // console.log("取消");
       });
 
     }
 
-    //监听页面加载
-    $scope.$watch("$viewContentLoaded",function(){
-      //页面从头
-      $(document).scrollTop(0);
-
-      //获取数据
+    //获取数据
+    getCASTireData();
+    function getCASTireData(){
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_pendingService/get",
         data:"user_id="+ponyUserData.id+"&token="+token
       }).success(function(data){
         if(data.code=="E0000"){
-          // console.log(data.data);
+          console.log(data.data);
           $scope.CASTireList=data.data;
           if(!$scope.CASTireList.length){
             $("#CASTirePage>.CASList>.noData").css("display","block");
@@ -2511,6 +2611,15 @@
       }).error(function(err){
         console.log(err);
       });
+    }
+
+    //监听页面加载
+    $scope.$watch("$viewContentLoaded",function(){
+      //页面从头
+      $('body,html').scrollTop(0);
+
+
+
     });
 
 
@@ -2834,7 +2943,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //console.log(listTarget);
       switch (listTarget){
@@ -3580,7 +3689,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
     });
 
@@ -3686,7 +3795,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //如果不为null那就是有id，是修改用户宝驹页面，如是NULL，那就是新增宝驹页面，有推荐人一项
       if(userBolg!="null"){
@@ -3826,11 +3935,11 @@
         }
         //列表滚动
         if(num==0){
-          $("body").animate({
+          $('body,html').animate({
             scrollTop:0
           },1000);
         }else{
-          $("body").animate({
+          $('body,html').animate({
             scrollTop:sumH
           },1000);
         }
@@ -4079,7 +4188,7 @@
     //用户行驶路况选择
     $scope.userBolgSelRunRoad=function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       alertMsg("我同意","为了您的行车安全请如实填写您的行车路况！",function(){}); 
 
       $scope.selRoadHtml="";
@@ -4097,7 +4206,7 @@
     //用户选择偶尔路况
     $scope.runRoadOnceSel=function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       var roadArr=[];
       roadArr=roadArr.concat($scope.carRoadCondition);
@@ -4565,7 +4674,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
     });
 
@@ -4674,7 +4783,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       
       //获取原始数据 
       $http({
@@ -4771,7 +4880,7 @@
     //页面监听事件
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //绑定轮胎花纹选择页面每项花纹选择
       $('.tireFigureList>.listBody>ul').on("click",".itemFigureTit",function(){
@@ -4926,7 +5035,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       
       //获取数据
       $http({
@@ -5090,7 +5199,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
     });
 
@@ -5184,7 +5293,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //订单预约时间
       $("#orderReserveTime").val(nowDateYear+"-"+(nowDateMonth>10?nowDateMonth:"0"+nowDateMonth)+"-"+(nowDateDay>10?nowDateDay:"0"+nowDateDay));
@@ -5768,7 +5877,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //支付方式选择
       $("#checkoutCounterPage>.payMode").on("click",".payModeItem",function(){
@@ -6070,7 +6179,7 @@
     //监视页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       
     });
 
@@ -6115,29 +6224,29 @@
         if($scope.originalChangeFontNum<changeFontMaxNum){
           $scope.originalChangeFontNum++;
         }else{
-          if(changeFontMaxNum==2){
-            alertMsg("确定","最大可更换数量",function(){});
-          }else{
+          // if(changeFontMaxNum==2){
+          //   alertMsg("确定","最大可更换数量",function(){});
+          // }else{
             if(changeFontMaxNum<$scope.userFont.shoe_no){
               alertMsg("确定","您还未选择更换前胎",function(){});
             }else{
               alertMsg("确定","没胎了，买一个吧",function(){});
             }
-          }
+          // }
         }
       }else{
         if($scope.originalChangeRearNum<changeRearMaxNum){
           $scope.originalChangeRearNum++;
         }else{
-          if(changeRearMaxNum==2){
-            alertMsg("确定","最大可更换数量",function(){});
-          }else{
+          // if(changeRearMaxNum==2){
+          //   alertMsg("确定","最大可更换数量",function(){});
+          // }else{
             if(changeRearMaxNum<$scope.userRear.shoe_no){
               alertMsg("确定","您还未选择更换后胎",function(){});
             }else{
               alertMsg("确定","没胎了，买一个吧",function(){});
             }
-          }
+          // }
         }
       }
     }
@@ -6236,7 +6345,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       //开始加载通讯
       commStart();
       // deviceLocation.latitude+","+deviceLocation.longitude
@@ -6297,20 +6406,20 @@
           //根据tireOriginalChangeData内的暂存数据，对页面进行更新
           if(tireOriginalChangeData.font.sel){
             $("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(0).addClass("active");
-            if(data.data.font.shoe_no>2){
-              changeFontMaxNum=2;
-            }else{
+            // if(data.data.font.shoe_no>2){
+            //   changeFontMaxNum=2;
+            // }else{
               changeFontMaxNum=data.data.font.shoe_no;
-            }
+            // }
             $scope.originalChangeFontNum=tireOriginalChangeData.font.num;
           }
           if(tireOriginalChangeData.rear.sel){
             $("#originalChangeTirePage>.originalChangeTire>.changeLocation>.selLocation>ul>li").eq(1).addClass("active");
-            if(data.data.rear.shoe_no>2){
-              changeRearMaxNum=2;
-            }else{
+            // if(data.data.rear.shoe_no>2){
+            //   changeRearMaxNum=2;
+            // }else{
               changeRearMaxNum=data.data.rear.shoe_no;
-            }
+            // }
             $scope.originalChangeRearNum=tireOriginalChangeData.rear.num;
           }
 
@@ -6385,18 +6494,20 @@
           //设置最大更换数量 分前后胎
           if(indexNum==0){
             //前胎
-            if(num>2){
-              changeFontMaxNum=2
-            }else if(num>0){
+            // if(num>2){
+            //   changeFontMaxNum=2
+            // }else 
+            if(num>0){
               changeFontMaxNum=num;
             }else{
               changeFontMaxNum=0;
             }
           }else{
             //后胎
-            if(num>2){
-              changeRearMaxNum=2
-            }else if(num>0){
+            // if(num>2){
+            //   changeRearMaxNum=2
+            // }else 
+            if(num>0){
               changeRearMaxNum=num;
             }else{
               changeRearMaxNum=0;
@@ -6535,7 +6646,7 @@
     //监视页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
       
       //选择门店类型
       $("#selShopType").click(function(){
@@ -7227,7 +7338,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //开始加载通讯
       commStart();
@@ -7511,7 +7622,7 @@
           $http({
             method:"post",
             url:"http://api.map.baidu.com/geocoder/v2/",
-            data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+deviceLocation.latitude+","+deviceLocation.longitude
+            data:"ak=9lVEScaqxLpGVtVu46BWKO0Oe7ji2QRB&output=json&location="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+","+(deviceLocation.state==1?deviceLocation.longitude:lonBD)
 
           }).success(function(data){
             //console.log(data.result.addressComponent.city);
@@ -7533,7 +7644,7 @@
       $http({
         method:"post",
         url:"http://180.76.243.205:8383/_API/_store/getList",
-        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&service_type="+typeId+(key?"&key_words="+key:'')+"&city_name="+($scope.addressCity==''?cityBD:$scope.addressCity)
+        data:"user_id="+ponyUserData.id+"&token="+token+"&longitude="+(deviceLocation.state==1?deviceLocation.longitude:lonBD)+"&latitude="+(deviceLocation.state==1?deviceLocation.latitude:latBD)+"&service_type="+typeId+(key?"&key_words="+key:'')+"&city_name="+(deviceLocation.state!=1?cityBD:$scope.addressCity)
       }).success(function(data){
         console.log(data);
         if(data.code=="E0000"){
@@ -7644,7 +7755,7 @@
     //监视页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //根据传入的typeId不同，改写页头
       switch(typeId){
@@ -8516,7 +8627,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //banner图片轮播
       bannerTimer=setInterval(function(){
@@ -9186,6 +9297,7 @@
       if(data.code=="E0000"){
         $scope.shopDetail=data.data.store;
         $scope.shopCooperation=data.data.service.slice(1);
+        // console.log($scope.shopCooperation);
         $scope.shopComment=data.data.commit;
 
       }else if(data.code=="E0014"){
@@ -9215,7 +9327,7 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //banner图片轮播
       bannerTime=setInterval(function(){

@@ -7,7 +7,7 @@
     </div>
     <div ng-click="jump('/systemMsgList')" class="msg">
       <span>
-        <i style="display:{{userNewMsg>0?'block':'none'}}">{{userNewMsg}}</i>
+        <i style="display:{{userNewMsg>0?'block':'none'}}">{{userNewMsg>99?'···':userNewMsg}}</i>
       </span> 
     </div>
   </div>

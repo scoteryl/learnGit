@@ -467,7 +467,6 @@ a{
   border-radius: 5px;
   border: 1px solid #999;
   box-sizing: border-box;
-
 }
 #selCityPage>.searchCity>.search>.searchBtn{
   position: absolute;
@@ -563,6 +562,8 @@ a{
 /* 协议页面  */
 #ponyAgreementPage{
   padding: 50px 0 0 0;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 #ponyAgreementPage>.header{
   position: fixed;
@@ -602,9 +603,37 @@ a{
 }
 #ponyAgreementPage>.agreementBody{
   padding: 10px;
-  line-height: 25px;
   text-align: justify;
 }
+#ponyAgreementPage>.agreementBody>.title{
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+  text-indent: 28px;
+}
+#ponyAgreementPage>.agreementBody>.detail>.classify{
+  margin: 5px 0;
+}
+#ponyAgreementPage>.agreementBody>.detail>.classify>.tit{
+  font-size: 14px;
+  line-height: 30px;
+  color: #333;
+}
+#ponyAgreementPage>.agreementBody>.title>p,
+#ponyAgreementPage>.agreementBody>.detail>.classify>p{
+  margin-top: 5px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+}
+#ponyAgreementPage>.agreementBody>.title span,
+#ponyAgreementPage>.agreementBody>.detail>.classify span{
+  color: #ee2625;
+  font-weight: bold;
+}
+
+
+
 
 /*登陆页面*/
 #loginPage{
@@ -3291,6 +3320,9 @@ a{
   margin-bottom: 5px;
   padding: 10px;
 }
+#CASTirePage>.CASList>ul>li:last-child{
+  margin: 0;
+}
 #CASTirePage>.CASList>ul>li>a{
   display:block;
   color: #000;
@@ -3342,6 +3374,13 @@ a{
 #CASTirePage>.CASList>ul>li>.itemRemove{
   padding-top: 10px; 
   height: 30px;
+}
+#CASTirePage>.CASList>ul>li>.itemRemove>span{
+  float: left;
+  height: 26px;
+  line-height: 26px;
+  color: #ee2625;
+  font-size: 12px;
 }
 #CASTirePage>.CASList>ul>li>.itemRemove>a{
   display:block;
@@ -3427,6 +3466,7 @@ a{
 }
 #orderPage>.productList{
   background-color: #ececec;
+  overflow-y: auto;
 }
 #orderPage>.productList:before{
   content: "";
@@ -7245,14 +7285,20 @@ a{
   font-size: 14px;
 }
 #originalChangeTirePage>.originalChangeTire>.installshop>.shopDetail>.shopMsg>.shopAdd>.address{
-  float: left;
+  display: block;
+  margin-right: 65px;
   height: 30px;
   line-height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #originalChangeTirePage>.originalChangeTire>.installshop>.shopDetail>.shopMsg>.shopAdd>.distance{
   float: right;
+  width: 60px;
   height: 30px;
   line-height: 30px;
+  text-align: right;
 }
 #originalChangeTirePage>.originalChangeTire>.installshop>.shopDetail>.moreSel{
   position: absolute;
@@ -7551,6 +7597,9 @@ a{
 #selTireInstallShopPage>.installShopList>.header>.selType>ul>li.active>.subMenu>.filtrateBody>.filtrateBtn>.filtrateSet{
   background-color: #ee2625;
   color:#fff;
+}
+#selTireInstallShopPage>.installShopList>.shopList{
+  overflow-y: auto;
 }
 #selTireInstallShopPage>.installShopList>.shopList>ul>li{
   margin-top: 5px;
@@ -8323,14 +8372,19 @@ a{
   font-size: 14px;
 }
 #ponyTireChangePage>.ponyTireChange>.installshop>.shopDetail>.shopMsg>.shopAdd>.address{
-  float: left;
+  display: block;
+  margin-right: 65px;
   height: 30px;
   line-height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 #ponyTireChangePage>.ponyTireChange>.installshop>.shopDetail>.shopMsg>.shopAdd>.distance{
   float: right;
   height: 30px;
   line-height: 30px;
+  text-align: right;
 }
 #ponyTireChangePage>.ponyTireChange>.installshop>.shopDetail>.moreSel{
   position: absolute;
@@ -8822,6 +8876,10 @@ a{
 #shopListPage>.shopList>.header>.selType>ul>li.active>.subMenu>.filtrateBody>.filtrateBtn>.filtrateSet{
   background-color: #ee2625;
   color:#fff;
+}
+#shopListPage>.shopList>.shopListBody{
+  height: 100%;
+  overflow-y: auto; 
 }
 #shopListPage>.shopList>.shopListBody>ul>li{
   margin-top: 5px;
@@ -10043,7 +10101,7 @@ a{
   margin-right: 80px;
   height: 30px;
   line-height: 30px;
-  font-size: 16px;
+  font-size: 14px;
   color: #aaa;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -817,14 +817,43 @@ a{
   font-size: 16px;
 }
 #ponyShopAgreementPage>.agreementBody{
-  padding: 0 10px;
-}
-#ponyShopAgreementPage>.agreementBody>p{
-  text-indent: 28px;
+  padding: 10px;
   text-align: justify;
-  line-height: 20px;
-  padding: 10px 0;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }
+#ponyShopAgreementPage>.agreementBody>.title{
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+  text-indent: 28px;
+}
+#ponyShopAgreementPage>.agreementBody>.detail>.classify{
+  margin: 5px 0;
+}
+#ponyShopAgreementPage>.agreementBody>.detail>.classify>.tit{
+  font-size: 14px;
+  line-height: 30px;
+  color: #333;
+}
+#ponyShopAgreementPage>.agreementBody>.title>p,
+#ponyShopAgreementPage>.agreementBody>.detail>.classify>p{
+  margin-top: 5px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+}
+#ponyShopAgreementPage>.agreementBody>.title span,
+#ponyShopAgreementPage>.agreementBody>.detail>.classify span{
+  color: #ee2625;
+  font-weight: bold;
+}
+
+
 
 /* main主页面 */
 #ponyShopMainPage{

@@ -265,6 +265,9 @@
     //店铺类型
     $scope.shopType=[];
 
+    // 用户协议链接地址
+    $scope.link='';
+
     //短信验证ID
     var verifyCode=null;
     var verifyCodeId=null;
@@ -321,6 +324,70 @@
     //查看用户协议
     $scope.toAgreement=function(){
       $("#ponyShopAgreementPage").css("display","block").siblings().css("display","none");
+      commStart();
+      //获到数据
+      $http({
+        method:'post',
+        url:'http://180.76.243.205:8383/_API/_store/deal',
+        data:""
+      }).success(function(data){
+        // console.log(data);
+        commFinish();
+        if(data.code=="E0000"){
+          $scope.link=data.data.head_url; 
+          var html="";
+  
+          html=data.data.content.replace(/<til>(.*)<\/til>/ig,function(word,$1,position){
+            if(position==0){
+              return "<div class='tit'>"+$1+"</div>";
+            }else{
+              return "<classify><div class='tit'>"+$1+"</div>";
+            }
+          });
+          // console.log(html);
+          //切分模块
+          var classIfyArr=html.split("<classify>");
+          console.log(classIfyArr);
+          var agreementHtml="";
+          for(var i=0;i<classIfyArr.length;i++){
+            agreementHtml+="<div class='classify'>";
+            //每一个模块
+            var one=classIfyArr[i];
+            //加入模块标题
+            // console.log(one.split("</\div>")[0]);
+            agreementHtml+=one.split("</\div>")[0]+"</div>";
+            // 按模块切分段落
+            classIfyContent=one.split("</\div>")[1].split("<br>");
+            // console.log(classIfyContent);
+            var classIfyContentHtml="";
+            for(var subI=0;subI<classIfyContent.length;subI++){
+              var subOne=classIfyContent[subI];
+              if(subOne){
+                classIfyContentHtml+="<p>";
+                subOne=subOne.replace(/<red>(.*)<\/red>/ig,function(subWord,$1){
+                  // console.log(subWord,$1);
+                  return "<span>"+$1+"</span>";
+                });
+                // console.log(subOne);
+                classIfyContentHtml+=subOne;
+                classIfyContentHtml+="</p>";
+              }
+            }
+            //加入模块段落内容
+            agreementHtml+=classIfyContentHtml;
+            agreementHtml+="</div>";
+          }
+  
+  
+          $("#ponyShopAgreementPage>.agreementBody>.detail").html(agreementHtml);
+  
+  
+  
+        }else{
+          console.log(data.message);
+        }
+      });
+
     }
 
     //从用户协议页面返回注册页面
@@ -1401,30 +1468,35 @@
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //console.log(listTarget);
       switch (listTarget){
+        //全部订单
         case "all":
           $('.classify>ul').children().eq(0).addClass("active").siblings().removeClass("active");
           //console.log($('.productList>.productAll'));
           $('.productList>.productAll').addClass("active").siblings().removeClass("active");
           break;
+        //待发货
         case "sendOut":
           $('.classify>ul').children().eq(1).addClass("active").siblings().removeClass("active");
           //console.log($('.productList>.productToSendOut'));
           $('.productList>.productToSendOut').addClass("active").siblings().removeClass("active");
           break;
+        //待收货
         case "receive":
           $('.classify>ul').children().eq(2).addClass("active").siblings().removeClass("active");
           //console.log($('.productList>.productToReceive'));
           $('.productList>.productToReceive').addClass("active").siblings().removeClass("active");
           break;
+        //待服务
         case "server":
           $('.classify>ul').children().eq(3).addClass("active").siblings().removeClass("active");
           //console.log($('.productList>.productToServer'));
           $('.productList>.productToServer').addClass("active").siblings().removeClass("active");
           break;
+        //完成
         case "finish":
           $('.classify>ul').children().eq(4).addClass("active").siblings().removeClass("active");
           //console.log($('.productList>.productToFinish'));
@@ -1621,45 +1693,117 @@
 
     //拒绝服务
     $scope.refuseSubmit=function(){
-      refuseMsg(["确认","取消"],"请输入拒绝服务理由：",function(msg){
-        // console.log("确定");
-        // msg:输入信息
-        // console.log(msg);
-        //通讯开始等待
-        commStart();
-        $.ajax({
-          type:"post",
-          url:"http://180.76.243.205:8383/_API/_storeOrigin/denial",
-          data:{
-            producer_id:ponyUserId,
-            store_id:ponyShopId,
-            token:token,
-            order_id:orderId,
-            origin:msg
-          },
-          success:function(data){
-            commFinish();
-            console.log(data);
-            if(data.code=="E0000"){
-              alertMsg("确定","订单完结",function(){
-                window.location.href="index.html#/order/finish";
-              }); 
-            }else if(data.code=="E0014"){
-              alertMsg("确定",data.message,function(){
-                window.location.href="index.html#/login";
-              }); 
-            }else{
-              alertMsg("确定",data.message,function(){}); 
-            }
-          },
-          error:function(err){
-            commFinish();
-            console.log(err);
-          }
-        });
+      // refuseMsg(["确认","取消"],"请输入拒绝服务理由：",function(msg){
+      //   // console.log("确定");
+      //   // msg:输入信息
+      //   // console.log(msg);
+      //   //通讯开始等待
+      //   commStart();
+      //   $.ajax({
+      //     type:"post",
+      //     url:"http://180.76.243.205:8383/_API/_storeOrigin/denial",
+      //     data:{
+      //       producer_id:ponyUserId,
+      //       store_id:ponyShopId,
+      //       token:token,
+      //       order_id:orderId,
+      //       origin:msg
+      //     },
+      //     success:function(data){
+      //       commFinish();
+      //       console.log(data);
+      //       if(data.code=="E0000"){
+      //         alertMsg("确定","订单完结",function(){
+      //           window.location.href="index.html#/order/finish";
+      //         }); 
+      //       }else if(data.code=="E0014"){
+      //         alertMsg("确定",data.message,function(){
+      //           window.location.href="index.html#/login";
+      //         }); 
+      //       }else{
+      //         alertMsg("确定",data.message,function(){}); 
+      //       }
+      //     },
+      //     error:function(err){
+      //       commFinish();
+      //       console.log(err);
+      //     }
+      //   });
 
-      },function(){
-        console.log("取消");
+      // },function(){
+      //   console.log("取消");
+      // });
+      
+      //显示出拒绝服务选项
+      $("#ponyShopAffirmTireServerOriginalPage>.rejectCase").css("display",'block');
+
+    }
+
+    //回退厂家
+    $scope.returnFactory=function(){
+      commStart();
+      $.ajax({
+        type:"post",
+        url:"http://180.76.243.205:8383/_API/_storePending/return",
+        data:{
+          producer_id:ponyUserId,
+          store_id:ponyShopId,
+          token:token,
+          order_id:orderId
+        },
+        success:function(data){
+          commFinish();
+          console.log(data);
+          if(data.code=="E0000"){
+            alertMsg("确定","订单退回",function(){
+              window.location.href="index.html#/order/all";
+            }); 
+          }else if(data.code=="E0014"){
+            alertMsg("确定",data.message,function(){
+              window.location.href="index.html#/login";
+            }); 
+          }else{
+            alertMsg("确定",data.message,function(){}); 
+          }
+        },
+        error:function(err){
+          commFinish();
+          console.log(err);
+        }
+      });
+    }
+
+    //客户自提
+    $scope.arayacak=function(){
+      commStart();
+      $.ajax({
+        type:"post",
+        url:"http://180.76.243.205:8383/_API/_storeShoe/returnBySelf",
+        data:{
+          producer_id:ponyUserId,
+          store_id:ponyShopId,
+          token:token,
+          order_id:orderId
+        },
+        success:function(data){
+          commFinish();
+          console.log(data);
+          if(data.code=="E0000"){
+            alertMsg("确定","订单完结",function(){
+              window.location.href="index.html#/order/finish";
+            }); 
+          }else if(data.code=="E0014"){
+            alertMsg("确定",data.message,function(){
+              window.location.href="index.html#/login";
+            }); 
+          }else{
+            alertMsg("确定",data.message,function(){}); 
+          }
+        },
+        error:function(err){
+          commFinish();
+          console.log(err);
+        }
       });
     }
 
@@ -1724,6 +1868,12 @@
           $("#userDriveImgPic").attr('src', e.target.result);
         }
       });
+
+      //关闭拒绝服务选择
+      $("#ponyShopAffirmTireServerOriginalPage>.rejectCase").click(function(){
+        $("#ponyShopAffirmTireServerOriginalPage>.rejectCase").css('display','none');
+      });
+
 
       // 后三个禁用
       // $("#ponyShopAffirmTireServerOriginalPage>.orderDetail>.userTireImg>.picList").children().eq(2).nextAll().css("display","none").children(".setInput").children("input").attr("disabled","true");
@@ -3686,12 +3836,12 @@
       //每项服务价格改变
       $("#userShopServerSettingPage>.serverList").on("change","input",function(){
         var targetVal=parseFloat($(this).val())?parseFloat($(this).val()):0;
-        if(targetVal<0){
+        if(!/^[0-9]{0,}\.{0,1}[0-9]{0,}$/.test(targetVal)){
           $(this).val("");
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html("0");
           alertMsg("确定","您输入的数值不合法",function(){});
         }else{
-          $(this).val(parseFloat($(this).val()));
+          $(this).val(targetVal);
           $(this).parent().parent().parent().prev().children(".itemPrice").children("span").html(parseFloat(targetVal).toFixed(2));
         }
       });
@@ -4060,13 +4210,13 @@
       $location.path("/userCommodityDetail/null");
       window.location.reload();
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
     }
 
     //监听页面加载
     $scope.$watch("$viewContentLoaded",function(){
       //页面从头
-      $(document).scrollTop(0);
+      $('body,html').scrollTop(0);
 
       //商品图片
       $("#commodityDetailImgInput").change(function(e){
