@@ -1,0 +1,114 @@
+<div id="orderAffirmServerPage" style="min-height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>订单详情</h3>
+  </div>
+  <div class="orderDetail">
+    <div class="orderUserMsg">
+      <ul>
+        <li>
+          <span>订单编号：</span>
+          <p>{{orderDetail.no}}</p>
+        </li>
+        <li>
+          <span>联系人：</span>
+          <p>{{orderDetail.name}}</p>
+        </li>
+        <li>
+          <span>联系电话：</span>
+          <p>{{orderDetail.phone}}</p>
+          <a class="telBtn" href="tel:{{orderDetail.phone}}"><i></i></a>
+        </li>
+        <li class="orderUserCarNum">
+          <a href="">
+            <span>车牌号：</span>
+            <p>{{orderDetail.plat_number}}</p>
+            <!-- <i></i> -->
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="orderCommodity clearfix">
+      <ul>
+        <li ng-repeat="detailItem in orderDetailList">
+          <div class="commodityImg">
+            <img ng-src="{{orderDetail.img}}">
+          </div>
+          <div class="commodityMsg">
+            <h4>{{detailItem.title}}</h4>
+            <p>{{detailItem.description}}</p>
+            <span class="price">{{detailItem.total | currency:"￥"}}</span>
+            <span class="num" style="display:{{orderDetail.order_type_id==1?'block':'none'}}">✖{{detailItem.stock_no}}</span>
+          </div>          
+        </li>
+      </ul>
+    </div>
+    <div class="orderServerTime">
+      <span>预约服务时间</span>
+      <p>{{orderDetail.appointment}}</p>
+    </div>
+    <div class="orderServerType">
+      <span>服务类型</span>
+      <p>{{orderDetail.subtype_name}}</p>
+    </div>
+    <div class="orderCoupon" style="display:{{usedCoupon.length?'block':'none'}}">
+      <span>优惠券</span>
+      <ul>
+        <li ng-repeat="item in usedCoupon">{{item.sale_name}}<span>{{item.amount | currency:"￥"}}</span></li>
+      </ul>
+    </div>
+    <div class="orderRefuse" style="display:{{orderDetail.origin!=null?'block':'none'}}">
+      <span>拒绝服务理由</span>
+      <p>{{orderDetail.origin}}</p>
+    </div>
+    <!-- 汽车照片 -->
+    <div class="userCarImg" style="display:{{carImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>上传汽车照片</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in carImg">
+          <img ng-src="{{item.img_url}}">
+        </div>
+      </div>
+    </div>
+    <!-- 轮胎照片 -->
+    <div class="userTireImg" style="display:{{tireImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>上传轮胎照片</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in tireImg">
+          <img ng-src="{{item.img_url}}">
+        </div>
+      </div>
+    </div>
+    <!-- 车架号照片 -->
+    <div class="userFrameNumImg" style="display:{{carFrame[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>上传车架号</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in carFrame">
+          <img ng-src="{{item.img_url}}">
+        </div>
+      </div>
+    </div>
+    <!-- 行驶证照片 -->
+    <div class="userDriveImg" style="display:{{drivingImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>上传行驶证</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in drivingImg">
+          <img ng-src="{{item.img_url}}">
+        </div>
+      </div>
+    </div>   
+  </div>
+  <div class="payBtn">
+    <button id="orderAffirmBtn" ng-click="subminFun()">确认服务</button>
+  </div>
+</div>
