@@ -1,0 +1,217 @@
+<div id="selCityPage">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>选择城市</h3>
+  </div>
+  <div class="searchCity">
+    <div class="search">
+      <input ng-model="searchCity" placeholder="请输入城市名称" id="searchCityInput" type="text"/>
+      <div ng-click="searchClear()" class="searchBtn">
+        <span></span>
+      </div>
+    </div>
+    <div class="searchCityList">
+      <ul>
+        <li ng-repeat="one in searchCityArr track by $index" ng-click="selCity(one.name)">
+          <a href="">{{one.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="GPSCity">
+    <p>定位城市</p>
+    <a ng-click="selCity(addressCity)" href="">{{addressCity}}</a>
+  </div>
+  <div class="selCityList">
+    <ul>
+      <li>
+        <dl>
+          <dt>A</dt>
+          <dd ng-repeat="one in cityA track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>B</dt>
+          <dd ng-repeat="one in cityB track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>C</dt>
+          <dd ng-repeat="one in cityC track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>D</dt>
+          <dd ng-repeat="one in cityD track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>E</dt>
+          <dd ng-repeat="one in cityE track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>F</dt>
+          <dd ng-repeat="one in cityF track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>G</dt>
+          <dd ng-repeat="one in cityG track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>H</dt>
+          <dd ng-repeat="one in cityH track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>I</dt>
+          <dd ng-repeat="one in cityI track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>J</dt>
+          <dd ng-repeat="one in cityJ track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>K</dt>
+          <dd ng-repeat="one in cityK track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>L</dt>
+          <dd ng-repeat="one in cityL track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>M</dt>
+          <dd ng-repeat="one in cityM track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>N</dt>
+          <dd ng-repeat="one in cityN track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>O</dt>
+          <dd ng-repeat="one in cityO track by $index" ng-click="selCity(one.name)" ><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>P</dt>
+          <dd ng-repeat="one in cityP track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>Q</dt>
+          <dd ng-repeat="one in cityQ track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>R</dt>
+          <dd ng-repeat="one in cityR track by $index" ng-click="selCity(one.name)" ><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>S</dt>
+          <dd ng-repeat="one in cityS track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>T</dt>
+          <dd ng-repeat="one in cityT track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>U</dt>
+          <dd ng-repeat="one in cityU track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>V</dt>
+          <dd ng-repeat="one in cityV track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>W</dt>
+          <dd ng-repeat="one in cityW track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>X</dt>
+          <dd ng-repeat="one in cityX track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>Y</dt>
+          <dd ng-repeat="one in cityY track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+      <li>
+        <dl>
+          <dt>Z</dt>
+          <dd ng-repeat="one in cityZ track by $index" ng-click="selCity(one.name)"><a data-cityid="{{one.id}}" href="">{{one.name}}</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+  <div class="selCityLetter">
+    <ul>
+      <li>A</li>
+      <li>B</li>
+      <li>C</li>
+      <li>D</li>
+      <li>E</li>
+      <li>F</li>
+      <li>G</li>
+      <li>H</li>
+      <li>I</li>
+      <li>J</li>
+      <li>K</li>
+      <li>L</li>
+      <li>M</li>
+      <li>N</li>
+      <li>O</li>
+      <li>P</li>
+      <li>Q</li>
+      <li>R</li>
+      <li>S</li>
+      <li>T</li>
+      <li>U</li>
+      <li>V</li>
+      <li>W</li>
+      <li>X</li>
+      <li>Y</li>
+      <li>Z</li>
+    </ul>
+  </div>
+</div>

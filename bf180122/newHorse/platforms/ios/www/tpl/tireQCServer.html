@@ -1,0 +1,90 @@
+<div id="tireQCServerPage">
+  <!-- 品质服务页面 -->
+  <div class="QCServerPage">
+    <div class="header">
+      <div class="toBack">
+        <a ng-click="toBack()" href=""><i></i></a>
+      </div>
+      <h3>品质服务</h3>
+    </div>
+    <!-- 广告 -->
+    <div class="advert">
+      <div class="tit">
+        <p>在小马驾驾购物您可以享受到以下优质服务</p>
+        <i></i>
+      </div>
+      <div class="advertList">
+        <ul>
+          <li>
+            <div class="itemImg">
+              <img src="img/advert01.png">
+            </div>
+            <div class="itemMsg">
+              <h4>{{QCServerList[0].title}}</h4>
+              <p>{{QCServerList[0].content}}</p>
+            </div>
+          </li>
+          <li>
+            <div class="itemImg">
+              <img src="img/advert02.png">
+            </div>
+            <div class="itemMsg">
+              <h4>{{QCServerList[1].title}}</h4>
+              <p>{{QCServerList[1].content}}</p>
+            </div>
+          </li>
+          <li>
+            <div class="itemImg">
+              <img src="img/advert03.png">
+            </div>
+            <div class="itemMsg">
+              <h4>{{QCServerList[2].title}}</h4>
+              <p>{{QCServerList[2].content}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- 购物流程 -->
+    <div ng-click="toPathDetail()" class="toBuyPath">
+      <div class="tit">
+        <h3>购物流程</h3>
+        <a href=""><i></i></a>
+      </div>
+      <div class="pathImg">
+        <img src="img/toButPath.png">
+      </div>
+    </div>
+
+    <!-- 金额及下单 -->
+    <div class="total">
+      <div class="totalMoney">
+        终身免费价：<span>{{total}}</span>元
+      </div>
+      <div class="orderBtn"><a href="#/tireOrderDetail/{{tempId}}">立即购买</a></div>
+    </div>
+  </div>
+  <!-- 购物流程详情 -->
+  <div class="pathDetailPage">
+    <div class="header">
+      <div class="toBack">
+        <a ng-click="toBackQC()" href=""><i></i></a>
+      </div>
+      <h3>购物流程</h3>
+    </div>
+    <div class="pathDetail">
+      <ul>
+        <li ng-repeat="item in flowPathList">
+          <h3>{{item.title}}</h3>
+          <p>{{item.content}}</p>
+          <span class="pathItemImg">
+            <b>
+              <img src="img/pathTire.png">
+            </b>
+            <i></i>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

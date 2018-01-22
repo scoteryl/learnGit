@@ -1,0 +1,34 @@
+<div id="userEvaluatePage" style="height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>发表评价</h3>
+  </div>
+  <div class="evaluateTit">
+    <div class="itemImg">
+      <img ng-src="{{order.img}}"/>
+    </div>
+    <div class="itemBody">
+      <p class="detail">{{order.description}}</p>
+      <div class="opt clearfix">
+        <div class="total"><span >{{order.total | currency:"￥"}}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="evaluateSatisficing clearfix">
+    <p>满意度：</p>
+    <div class="star"><i></i><i></i><i></i><i></i><i></i></div>
+    <span data-starnum='0' class="starDetail">请打分</span>
+  </div>
+  <div class="evaluateMsg">
+    <textarea id="evaluateMsg" placeholder="请在此输入您对门店服务的评价"></textarea>
+    <div class="evaluateStatus">
+      <p class=""><i></i>匿名评价</p>
+      <span>您的评价将以匿名的形式展现</span>
+    </div>
+  </div>
+  <div class="evaluateBtn">
+    <button ng-click="submitUserComment()">提交</button>
+  </div>
+</div>

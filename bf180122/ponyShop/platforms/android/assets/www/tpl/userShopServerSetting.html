@@ -1,0 +1,152 @@
+<div id="userShopServerSettingPage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a href="#/userSetting"><i></i></a>
+    </div>
+    <h3>我的服务</h3>
+  </div>
+  <!-- 服务分类 -->
+  <div class="serverClassify">
+    <ul class="clearfix">
+      <li class="active">
+        <a href="">保养</a>
+      </li>
+      <li>
+        <a href="">美容清洗</a>
+      </li>
+      <li>
+        <a href="">安装</a>
+      </li>
+      <li>
+        <a href="">改装</a>
+      </li>
+    </ul>
+  </div>
+  <!-- 服务列表 -->
+  <div class="serverList" style="max-height:{{height-(50+60)}}px">
+    <!-- 保养 -->
+    <div class="upkeep active">
+      <ul>
+        <li ng-repeat="item in upkeepServerList" data-serverid="{{item.id}}" class="{{item.status==1?'sel':''}}">
+          <div class="itemTit">
+            <span class="itemName">{{item.name}}</span>
+            <i></i>
+            <p class="itemPrice">
+              ￥<span>{{item.price}}</span>
+            </p>
+          </div>
+          <div class="itemDetail">
+            <div class="price">
+              <label>价格：￥</label>
+              <div class="setInput">
+                <input min="0" value="{{item.price=='0.00'?'':item.price}}" type="number">
+              </div>
+            </div>
+            <div class="describe">
+              服务内容包含：
+              <div class="setInput">
+                <textarea>{{item.description}}</textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="serverSettingBtn" style="display:{{upkeepServerList.length?'block':'none'}}">
+        <button ng-click="submitServerList()">保存</button>
+      </div>
+    </div>
+     <!-- 美容清洗 -->
+    <div class="beauty">
+      <ul>
+        <li ng-repeat="item in cleanServerList" data-serverid="{{item.id}}"  class="{{item.status==1?'sel':''}}">
+          <div class="itemTit">
+            <span class="itemName">{{item.name}}</span>
+            <i></i>
+            <p class="itemPrice">
+              ￥<span>{{item.price}}</span>
+            </p>
+          </div>
+          <div class="itemDetail">
+            <div class="price">
+              <label>价格：￥</label>
+              <div class="setInput">
+                <input min="0" value="{{item.price=='0.00'?'':item.price}}" type="number">
+              </div>
+            </div>
+            <div class="describe">
+              服务内容包含：
+              <div class="setInput">
+                <textarea>{{item.description}}</textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="serverSettingBtn"  style="display:{{cleanServerList.length?'block':'none'}}">
+        <button ng-click="submitServerList()">保存</button>
+      </div>
+    </div>
+    <!-- 安装 -->
+    <div class="install">
+      <ul>
+        <li ng-repeat="item in installServerList" data-serverid="{{item.id}}"  class="{{item.status==1?'sel':''}}">
+          <div class="itemTit">
+            <span class="itemName">{{item.name}}</span>
+            <i></i>
+            <p class="itemPrice">
+              ￥<span>{{item.price}}</span>
+            </p>
+          </div>
+          <div class="itemDetail">
+            <div class="price">
+              <label>价格：￥</label>
+              <div class="setInput">
+                <input min="0" value="{{item.price=='0.00'?'':item.price}}" type="number">
+              </div>
+            </div>
+            <div class="describe">
+              服务内容包含：
+              <div class="setInput">
+                <textarea>{{item.description}}</textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="serverSettingBtn" style="display:{{installServerList.length?'block':'none'}}">
+        <button ng-click="submitServerList()">保存</button>
+      </div>
+    </div>
+    <!-- 改装 -->
+    <div class="refit">
+      <ul>
+        <li ng-repeat="item in refitServerList" data-serverid="{{item.id}}"  class="{{item.status==1?'sel':''}}">
+          <div class="itemTit">
+            <span class="itemName">{{item.name}}</span>
+            <i></i>
+            <p class="itemPrice">
+              ￥<span>{{item.price}}</span>
+            </p>
+          </div>
+          <div class="itemDetail">
+            <div class="price">
+              <label>价格：￥</label>
+              <div class="setInput">
+                <input min="0" value="{{item.price=='0.00'?'':item.price}}" type="number">
+              </div>
+            </div>
+            <div class="describe">
+              服务内容包含：
+              <div class="setInput">
+                <textarea>{{item.description}}</textarea>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="serverSettingBtn" style="display:{{refitServerList.length?'block':'none'}}">
+        <button ng-click="submitServerList()">保存</button>
+      </div>
+    </div>
+  </div>
+</div>

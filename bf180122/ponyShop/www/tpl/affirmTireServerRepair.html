@@ -1,0 +1,235 @@
+<div id="ponyShopAffirmTireServerRepairPage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>服务确认</h3>
+  </div>
+  <div class="orderDetail">
+    <div class="orderUserMsg">
+      <ul>
+        <li>
+          <span>订单编号：</span>
+          <p>{{orderDate.no}}</p>
+        </li>
+        <li>
+          <span>联系人：</span>
+          <p>{{orderDate.name}}</p>
+        </li>
+        <li>
+          <span>联系电话：</span>
+          <p>{{orderDate.phone}}</p>
+          <a class="telBtn" href="tel:{{orderDate.phone}}"><i></i></a>
+        </li>
+        <li ng-click="toTireRecord(orderDate.user_car_id)" class="orderUserCarNum">
+          <a href="">
+            <span>车牌号：</span>
+            <p>{{orderDate.plat_number}}</p>
+            <i></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="orderCommodity clearfix">
+      <div class="commodityImg">
+        <img ng-src="{{orderDate.img}}">
+      </div>
+      <div class="commodityMsg">
+        <h4>{{orderDate.subtype_name}}</h4>
+        <p>{{orderDate.description}}</p>
+        <span class="price">{{orderDate.total | currency:"￥"}}</span>
+        <!-- <span class="num">✖{{orderListDetail[0].stock_no}}</span> -->
+      </div>
+    </div>
+    <div class="orderServerTime">
+      <span>预约服务时间</span>
+      <p>{{orderDate.appointment}}</p>
+    </div>
+    <div class="orderServerType">
+      <span>服务类型</span>
+      <p>轮胎修补</p>
+    </div>
+    <div class="orderTireRepairNum">
+      <span>补胎位置数量</span>
+      <ul>
+        <li>
+          <span>左前轮</span>      
+          <div class="setNum"><i data-location="leftFont" class="supplementMinus fa fa-minus"></i><span>{{leftFontTireNum}}</span><i data-location="leftFont" class="supplementAdd fa fa-plus"></i>处</div>
+        </li>
+        <li>
+          <span>右前轮</span>      
+          <div class="setNum"><i data-location="rightFont" class="supplementMinus fa fa-minus"></i><span>{{rightFontTireNum}}</span><i data-location="rightFont" class="supplementAdd fa fa-plus"></i>处</div>
+        </li>
+        <li>
+          <span>左后轮</span>      
+          <div class="setNum"><i data-location="leftRear" class="supplementMinus fa fa-minus"></i><span>{{leftRearTireNum}}</span><i data-location="leftRear" class="supplementAdd fa fa-plus"></i>处</div>
+        </li>
+        <li>
+          <span>右后轮</span>      
+          <div class="setNum"><i data-location="rightRear" class="supplementMinus fa fa-minus"></i><span>{{rightRearTireNum}}</span><i data-location="rightRear" class="supplementAdd fa fa-plus"></i>处</div>
+        </li>
+      </ul>
+    </div>
+    <form id="affirmTireServerRepairOrder" enctype="multipart/form-data">
+      <!-- 上传汽车照片 -->
+      <div class="userCarImg">
+        <div class="tit">
+          <h4>上传汽车照片</h4>
+          <i ng-click="toExamplePage('userCarPicExamplePage')"></i>
+        </div>
+        <div class="picList">
+          <div class="picItem">
+            <label for="userCarImgInput"><img id="userCarImgPic" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userCarImgInput" name="img_url_4" type="file"></div>
+          </div>
+        </div>
+        <p class="hint">（照片大小不大于3M）</p>
+      </div>
+      <!-- 上传轮胎照片 -->
+      <div class="userTireImg">
+        <div class="tit">
+          <h4>上传轮胎照片</h4>
+          <i ng-click="toExamplePage('userCarTirePicExamplePage')"></i>
+        </div>
+        <div class="picList">
+          <div class="picItem">
+            <label for="userTireImgInput1"><img id="userTireImgPic1" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput1" name="img_url_1[0]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput2"><img id="userTireImgPic2" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput2" name="img_url_1[1]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput3"><img id="userTireImgPic3" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput3" name="img_url_1[2]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput4"><img id="userTireImgPic4" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput4" name="img_url_1[3]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput5"><img id="userTireImgPic5" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput5" name="img_url_1[4]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput6"><img id="userTireImgPic6" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput6" name="img_url_1[5]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput7"><img id="userTireImgPic7" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput7" name="img_url_1[6]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput8"><img id="userTireImgPic8" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput8" name="img_url_1[7]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput9"><img id="userTireImgPic9" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput9" name="img_url_1[8]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput10"><img id="userTireImgPic10" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput10" name="img_url_1[9]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput11"><img id="userTireImgPic11" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput11" name="img_url_1[10]" type="file"></div>
+          </div>
+          <div class="picItem">
+            <label for="userTireImgInput12"><img id="userTireImgPic12" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userTireImgInput12" name="img_url_1[11]" type="file"></div>
+          </div>
+        </div>
+        <p class="hint">（照片大小不大于3M）</p>
+      </div>
+      <!-- 上传车架号照片 -->
+      <div class="userFrameNumImg">
+        <div class="tit">
+          <h4>上传车架号</h4>
+        </div>
+        <div class="picList">
+          <div class="picItem">
+            <label for="userFrameNumImgInput"><img id="userFrameNumImgPic" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userFrameNumImgInput" name="img_url_2" type="file"></div>
+          </div>
+        </div>
+        <p class="hint">（照片大小不大于3M）</p>
+      </div>
+      <!-- 上传行驶证照片 -->
+      <div class="userDriveImg">
+        <div class="tit">
+          <h4>上传行驶证</h4>
+        </div>
+        <div class="picList">
+          <div class="picItem">
+            <label for="userDriveImgInput"><img id="userDriveImgPic" src="img/addImg.jpg"></label>
+            <div class="setInput"><input id="userDriveImgInput" name="img_url_3" type="file"></div>
+          </div>
+        </div>
+        <p class="hint">（照片大小不大于3M）</p>
+      </div>  
+    </form>
+    <!-- 补差换胎数量 -->
+    <!-- <div class="supplementTireNum">
+      <span>补差换胎数量</span>
+      <div class="setNum"><i ng-click="supplementMinusNum()" class="supplementMinus fa fa-minus"></i><span>{{supplementTireNum}}</span><i ng-click="supplementPlusNum()" class="supplementAdd fa fa-plus"></i></div>
+    </div>  -->
+  </div>
+  <!-- 按钮组 -->
+  <div class="affirmBtn">
+    <a ng-click="submitServer()" class="affirmServer" href="">符合要求，确认服务</a>
+    <!-- <a class="balanceServer" href="">不符合要求，需要补差服务</a> -->
+    <a ng-click="submitRefuse()" class="rejectServer" href="">客户拒绝服务</a>
+  </div>
+</div>
+<!-- 汽车拍照事例页面 -->
+<div id="userCarPicExamplePage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a ng-click="toBackMain()" href=""><i></i></a>
+    </div>
+    <h3>拍摄示例</h3>
+  </div>
+  <div class="example">
+    <div class="exampleImg">
+      <img src="img/carExample.png">
+    </div>
+    <div class="exampleMsg">
+      <ul>
+        <li><i></i>从车前左侧45°角拍摄</li>
+        <li><i></i>机动车影像应占照片的三分之二</li>
+        <li><i></i>机动车照片应当能够清晰辨认车身颜色及外观特征</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- 轮胎拍照事例页面 -->
+<div id="userCarTirePicExamplePage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a ng-click="toBackMain()" href=""><i></i></a>
+    </div>
+    <h3>拍摄示例</h3>
+  </div>    
+  <div class="example">
+    <div class="exampleImgList">
+      <ul class="clearfix">
+        <li><img src="img/tireExample1.jpg"></li>
+        <li><img src="img/tireExample2.jpg"></li>
+        <li><img src="img/tireExample3.jpg"></li>
+        <!-- <li><img src="img/tireExample4.jpg"></li>
+        <li><img src="img/tireExample5.jpg"></li> -->
+      </ul>
+    </div>
+    <div class="exampleMsg">
+      <ul>
+        <li><i></i>轮胎含条形码的侧面照</li>
+        <li><i></i>轮胎破损部位特写照</li>
+        <li><i></i>轮胎条形码特写照</li>
+        <li><i></i>每条轮胎拍三张照片</li>
+      </ul>
+    </div>
+  </div>
+</div>
+

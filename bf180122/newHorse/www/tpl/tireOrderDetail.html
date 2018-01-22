@@ -1,0 +1,49 @@
+<div id="tireOrderDetailPage" style="min-height:{{height}}px;">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>订单确认</h3>
+  </div>
+  <div class="orderUser">
+    <label>联系人：</label><span class="orderUserName"><input value="{{userData.name}}" id="ponyTireOrderUserName" type="text"></span>
+  </div>
+  <div class="orderUserTel">
+    <label>联系电话：</label><span class="orderUserTel"><input value="{{userData.phone}}" id="ponyTireOrderUserTel" type="tel"></span>
+  </div>
+  <div class="orderUserPlateNumber">
+    <label>车牌号：</label><span class="plateNumber">{{userData.plat_number}}</span>
+  </div>
+  <div class="orderList">
+    <ul>
+      <li>
+        <div class="orderItemImg">
+          <img ng-src="{{userData.shoe_img}}">
+        </div>
+        <div class="orderItemDetail">
+          <h4>{{userData.shoe_name}}</h4> 
+          <p>{{userData.description}}</p>
+          <span class=orderItemNum>✖{{userData.shoe_no}}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="orderReserveTime">
+    <label>预约时间：</label>
+    <span><input id="orderReserveTime" type="date"></span>
+  </div>
+  <div class="orderPay">
+    <label>支付方式</label>
+    <span>在线支付</span>
+  </div>
+  <!-- 下单 -->
+  <div class="submitOrder">
+    <div class="orderMoney">
+      合计：<span>{{userData.total_price}}</span>元
+    </div>
+    <div class="orderBtn"><a ng-click="submitTireOrder()" href="">提交订单</a></div>
+  </div>
+</div>
+
+
+

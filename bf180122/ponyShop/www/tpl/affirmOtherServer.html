@@ -1,0 +1,128 @@
+<div id="ponyShopAffirmOtherServerPage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>订单详情</h3>
+  </div>
+  <div class="orderDetail">
+    <div class="orderUserMsg">
+      <ul>
+        <li>
+          <span>订单编号：</span>
+          <p>{{orderDate.no}}</p>
+        </li>
+        <li>
+          <span>联系人：</span>
+          <p>{{orderDate.name}}</p>
+        </li>
+        <li>
+          <span>联系电话：</span>
+          <p>{{orderDate.phone}}</p>
+          <a class="telBtn" href="tel:{{orderDate.phone}}"><i></i></a>
+        </li>
+        <li ng-click="toTireRecord(orderDate.user_car_id)" class="orderUserCarNum">
+          <a href="">
+            <span>车牌号：</span>
+            <p>{{orderDate.plat_number}}</p>
+            <i></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="orderCommodity">
+      <ul>
+        <li ng-repeat="item in orderListDetail" class="clearfix">
+          <div class="commodityImg">
+            <img ng-src="{{orderDate.img}}">
+          </div>
+          <div class="commodityMsg">
+            <h4>{{orderDate.subtype_name}}</h4>
+            <p>{{item.description}}</p>
+            <span class="price">{{item.total | currency:"￥"}}</span>
+            <span class="num" style="display:{{orderDate.order_type_id==1?'block':'none'}}">✖{{item.stock_no}}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="orderServerTime">
+      <span>预约服务时间</span>
+      <p>{{orderDate.appointment}}</p>
+    </div>
+    <div class="orderRefuse" style="display:{{(orderDate.origin!=null&&orderDate.origin!='')?'block':'none'}}">
+      <span>拒绝服务原因：</span>
+      <p>{{orderDate.origin}}</p>
+    </div>
+    <div class="orderServerType">
+      <span>服务类型</span>
+      <p>{{orderDate.subtype_name}}</p>
+    </div>
+    <div class="orderCoupon" style="display:{{usedCoupon.length?'block':'none'}}">
+      <span>优惠券</span>
+      <ul>
+        <li ng-repeat="item in usedCoupon">{{item.sale_name}}<span>{{item.amount | currency:"￥"}}</span></li>
+      </ul>
+    </div>
+    <!-- 上传汽车照片 -->
+    <div class="userCarImg"  style="display:{{carImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>汽车照片</h4>
+        <!-- <i ng-click="toExamplePage('userCarPicExamplePage')"></i> -->
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in carImg">
+          <img ng-src="{{item.img_url}}"/>
+          <!-- <label for="userCarImgInput"><img id="userCarImgPic" src="img/addImg.jpg"></label>
+          <div class="setInput"><input id="userCarImgInput" type="file"></div> -->
+        </div>
+      </div>
+    </div>
+    <!-- 上传轮胎照片 -->
+    <div class="userTireImg" style="display:{{tireImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>轮胎照片</h4>
+        <!-- <i ng-click="toExamplePage('userCarTirePicExamplePage')"></i> -->
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in tireImg">
+          <img ng-src="{{item.img_url}}"/>
+          <!-- <label for="userTireImgInput1"><img id="userTireImgPic1" src="img/addImg.jpg"></label>
+          <div class="setInput"><input id="userTireImgInput1" type="file"></div> -->
+        </div>
+      </div>
+    </div>
+    <!-- 上传车架号照片 -->
+    <div class="userFrameNumImg" style="display:{{carFrame[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>车架号</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in carFrame">
+          <img ng-src="{{item.img_url}}"/>
+          <!-- <label for="userFrameNumImgInput"><img id="userFrameNumImgPic" src="img/addImg.jpg"></label>
+          <div class="setInput"><input id="userFrameNumImgInput" type="file"></div> -->
+        </div>
+      </div>
+    </div>
+    <!-- 上传行驶证照片 -->
+    <div class="userDriveImg" style="display:{{drivingImg[0]==null?'none':'block'}}">
+      <div class="tit">
+        <h4>行驶证</h4>
+      </div>
+      <div class="picList">
+        <div class="picItem" ng-repeat="item in drivingImg">
+          <img ng-src="{{item.img_url}}"/>
+          <!-- <label for="userDriveImgInput"><img id="userDriveImgPic" src="img/addImg.jpg"></label>
+          <div class="setInput"><input id="userDriveImgInput" type="file"></div> -->
+        </div>
+      </div>
+    </div>  
+  </div>
+  <!-- 按钮组 -->
+  <div class="affirmBtn">
+    <a class="affirmServer" ng-click="submitFun()" id="affirmServerSubmitBtn" href="">确认服务</a>
+  </div>
+</div>
+
+
+
