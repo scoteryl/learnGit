@@ -1,0 +1,157 @@
+<div id="userCenterPage">
+  <div class="userMsg clearfix">
+    <div class="userBasic">
+      <a href="#/userInfoSet">
+        <i></i><span>{{userAccounts}}</span>
+      </a>
+    </div>
+    <div ng-click="jump('/systemMsgList')" class="msg">
+      <span>
+        <i style="display:{{userNewMsg>0?'block':'none'}}">{{userNewMsg>99?'···':userNewMsg}}</i>
+      </span> 
+    </div>
+  </div>
+  <div ng-click="jump('/userAmount')" class="currency">
+    <h4>可用额度</h4>
+    <p class="currencyDetail"><a href="">{{userML}}<i></i></a></p>
+  </div>
+  <!-- 待服务轮胎 -->
+  <div ng-click="jump('/CASTire')" class="CASTire">
+    <div class="tit clearfix">
+      <a class="titName" href="">待更换轮胎</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+  </div>
+  <!-- 畅行无忧 -->
+  <div ng-click="jump('/cxwyServer')" class="cxwyServer">
+    <div class="tit clearfix">
+      <a class="titName" href="">畅行无忧</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+  </div>
+  <!--用户订单-->
+  <div class="userOrder">
+    <div ng-click="jump('/order/all')" class="tit clearfix">
+      <a class="titName" href="">我的订单</a>
+      <a class="more" href=""><span>查看全部订单 </span><i></i></a>
+    </div>
+    <div class="orderList">
+      <ul class="clearfix">
+        <li>
+          <a href="#/order/sendOut">
+            <i></i>
+            <span>待发货</span>
+          </a>
+        </li>
+        <li>
+          <a href="#/order/receive">
+            <i></i>
+            <span>待收货</span>
+          </a>
+        </li>
+        <li>
+          <a href="#/order/server">
+            <i></i>
+            <span>待服务</span>
+          </a>
+        </li>
+        <li>
+          <a href="#/order/finish">
+            <i></i>
+            <span>已完成</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--用户宝驹-->
+  <div class="userBoge">
+    <div ng-click="jump('/userBolgList')" class="tit clearfix">
+      <a class="titName" href="">我的宝驹</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+    <div class="bogeList">
+      <ul class="clearfix">
+        <li ng-repeat="item in carList">
+          <a href="#/userBolgConfig/{{item.id}}">
+            <i>
+              <img ng-src="{{item.img_url}}">
+            </i>
+            {{item.car_name.split("-")[0]}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--优惠卷-->
+  <div ng-click="jump('/userCoupon')" class="coupon">
+    <div class="tit clearfix">
+      <a class="titName" href="">我的优惠券</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+  </div>
+  <!--推广有礼-->
+  <div ng-click="jump('/userExpand')" class="expand">
+    <div class="tit clearfix">
+      <a class="titName" href="">推广有礼</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+  </div>
+  <!--用户评价-->
+  <div class="userEvaluate">
+    <div ng-click="jump('/userCommentList')" class="tit clearfix">
+      <a class="titName" href="">我的评价</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+    <div class="evaluateList" style="display:{{commentList?'block':'none'}}">
+      <ul>
+        <li ng-repeat="item in commentList">
+          <a href="">
+            <div class="evalUser clearfix">
+              <div class="userHeader">
+                <i>
+                  <img ng-src="{{item.header}}"/>
+                </i>
+                <span>{{item.name}}</span>
+              </div>
+              <div class="evalTime">
+                <span>{{item.time.split(' ')[0]}}</span>
+              </div>
+            </div>
+            <p class="evalDetail">{{item.content}}</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--关于我们-->
+  <div ng-click="jump('/aboutPony')" class="about">
+    <div class="tit clearfix">
+      <a class="titName" href="">关于我们</a>
+      <a class="more" href=""><i></i></a>
+    </div>
+  </div>
+  <!--页脚-->
+  <div class="footer">
+    <ul class="clearfix">
+      <li>
+        <a href="#/main">
+          <i></i>
+          <span>首页</span>
+        </a>
+      </li>
+      <li>
+        <a href="#/shopList/1">
+          <i></i>
+          <span>附近门店</span>
+        </a>
+      </li>
+      <li>
+        <a>
+          <i></i>
+          <span>我的</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

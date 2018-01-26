@@ -1,0 +1,88 @@
+<div id="shopDetailPage">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>门店详情</h3>
+  </div>
+  <!-- 商铺banner图片 -->
+  <div class="shopBanner">
+    <div class="imgList">
+      <ul>
+        <li class="active">
+          <img ng-src="{{shopDetail.location_img_url}}">
+        </li>
+        <li>
+          <img ng-src="{{shopDetail.indoor_img_url}}">
+        </li>
+        <li>
+          <img ng-src="{{shopDetail.factory_img_url}}">
+        </li>
+      </ul>
+    </div>
+    <div class="imgListNum">
+      <ul class="clearfix">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+  </div>
+  <!-- 商铺信息  -->
+  <div class="shopDetail clearfix">
+    <div class="shopMap">
+      <a ng-click="toShopMap(shopDetail.longitude,shopDetail.latitude)" href="">
+        <i></i>
+        <p>
+          <span>{{shopDetail.distance}}</span>
+          进入导航
+        </p> 
+      </a>
+    </div>
+    <div class="shopInfo">
+      <div class="shopTit"><span style="background-color:{{shopDetail.color}}">{{shopDetail.type_name}}</span><h4>{{shopDetail.name}}</h4></div>
+      <div class="shopStarLevel"><label>星级：</label><span style="opacity:{{shopDetail.star_no>=1?1:0}}"></span><span style="opacity:{{shopDetail.star_no>=2?1:0}}"></span><span style="opacity:{{shopDetail.star_no>=3?1:0}}"></span><span style="opacity:{{shopDetail.star_no>=4?1:0}}"></span><span style="opacity:{{shopDetail.star_no>=5?1:0}}"></span></div>
+      <div class="shopServerType"><span ng-repeat="item in shopCooperation" style="color: {{item.color}};border:1px solid {{item.color}};">{{item.name.substr(0,2)}}</span></div>
+    </div>
+  </div>
+  <!-- 商铺联系方式 -->
+  <div class="shopContact">
+    <div class="shopTel">
+      <a href="tel:{{shopDetail.tel}}">
+        <i></i>
+      </a>
+    </div>
+    <div class="shopAddress">
+      <i></i>
+      地址：
+      <span>{{shopDetail.address}}</span>
+    </div>
+  </div>
+  <!-- 门店概况 -->
+  <div class="shopOverview">
+    <h4>门店概况</h4>
+    <p>{{shopDetail.situation}}</p>
+  </div>
+  <!-- 门店评论 -->
+  <div class="shopComment">
+    <h4>门店评论</h4>
+    <div class="commentList">
+      <ul>
+        <li ng-repeat="item in shopComment track by $index">
+          <div class="evalUser clearfix">
+            <div class="userHeader">
+              <i>
+                <img ng-src="{{item.header}}"/>
+              </i>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="evalTime">
+              <span>{{item.time.split(' ')[0]}}</span>
+            </div>
+          </div>
+          <p class="evalDetail">{{item.content}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

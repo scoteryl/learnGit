@@ -1,0 +1,59 @@
+<div id="ponyShopOrderDetailPage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>订单详情</h3>
+  </div>
+  <div class="orderDetail">
+    <div class="orderUserMsg">
+      <ul>
+        <li>
+          <span>订单编号：</span>
+          <p>{{orderDate.no}}</p>
+        </li>
+        <li>
+          <span>联系人：</span>
+          <p>{{orderDate.name}}</p>
+        </li>
+        <li>
+          <span>联系电话：</span>
+          <p>{{orderDate.phone}}</p>
+          <a class="telBtn" href="tel:{{orderDate.phone}}"><i></i></a>
+        </li>
+        <li ng-click="toTireRecord(orderDate.user_car_id)" class="orderUserCarNum">
+          <a href="">
+            <span>车牌号：</span>
+            <p>{{orderDate.plat_number}}</p>
+            <i></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="orderCommodity clearfix">
+      <ul>
+        <li ng-repeat="item in orderDetail">
+          <div class="commodityImg">
+            <img ng-src="{{item.img}}">
+          </div>
+          <div class="commodityMsg">
+            <h4>{{item.title}}</h4>
+            <p>{{item.description}}</p>
+            <span class="price">￥{{item.total}}</span>
+            <span class="num" style="display:{{(item.no>0||item.stock_no>0)?'block':'none'}}">✖{{item.no?item.no:item.stock_no}}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="orderServerTime">
+      <span>预约服务时间</span>
+      <p>{{orderDate.appointment}}</p>
+    </div>
+    <div class="orderCoupon" style="display:{{usedCoupon.length?'block':'none'}}">
+      <span>优惠券</span>
+      <ul>
+        <li ng-repeat="item in usedCoupon">{{item.sale_name}}<span>{{item.amount | currency:"￥"}}</span></li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-alipay-v2": {
+            "APP_ID": "2017101909383809",
+            "PACKAGE_NAME": "horse.com"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "horse.com"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "horse.com"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "horse.com"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "horse.com"
+        },
+        "cordova.custom.plugins.exitapp": {
+            "PACKAGE_NAME": "horse.com"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "horse.com"
+        }
+    }
+}

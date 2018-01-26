@@ -1,0 +1,29 @@
+<div id="userPayPwdPage">
+  <div class="header">
+    <div class="toBack">
+      <a href="#/userInfoSet"><i></i></a>
+    </div>
+    <h3>支付密码</h3>
+  </div>
+  <!-- 输入支付密码主体 -->
+  <div class="payPwdBody">
+    <label for="userPayPwdInput">
+      <b><i></i></b>
+      <b><i></i></b>
+      <b><i></i></b>
+      <b><i></i></b>
+      <b><i></i></b>
+      <b><i></i></b>
+    </label>
+    <div class="payPwdInput">
+      <input id="userPayPwdInput" ng-model="userPayPwd" type="password">
+    </div>
+    <div class="payPwdHelp">
+      <span>请确认支付密码</span>
+      <b></b>
+    </div>
+  </div>
+  <div class="payPwdBtn">
+    <button ng-click="submitPayPwd(userPayPwd)">确认</button>
+  </div>
+</div>

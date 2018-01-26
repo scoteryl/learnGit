@@ -1,0 +1,60 @@
+<div id="systemMsgListPage" style="min-height:{{height}}px">
+  <div class="header">
+    <div class="toBack">
+      <a href="#/userCenter"><i></i></a>
+    </div>
+    <h3>信息列表</h3>
+  </div>
+  <div class="msgList">
+    <ul>
+      <li ng-repeat="item in userMsgList" class="{{item.title=='订单已完成'?'server':'sysMsg'}} {{item.status==2?'unRead':''}} ">
+        <h3 class="itemTit">{{item.title}}<span class="msgTime">{{item.time.split(' ')[0]}}</span></h3>
+        <div class="itemDetail clearfix">
+          <div class="itemImg">
+            <img ng-src="{{item.img}}">
+          </div>
+          <div class="itemMsg">
+            <p>{{item.content}}</p>
+            <div class="msgSign">
+              <span class="msgLabel"style="display:{{item.order_no!=null?'block':'none'}}">订单编号：{{item.order_no}}</span>
+              
+            </div>
+          </div>
+        </div>
+        <i class="itemSign">未读</i>
+      </li>
+      <!-- <li class="server">
+        <h3 class="itemTit">您的订单已发货</h3>
+        <div class="itemDetail clearfix">
+          <div class="itemImg">
+            <img src="">
+          </div>
+          <div class="itemMsg">
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam sequi fuga aspernatur iste repellat. Nihil aut architecto in consequuntur suscipit vitae eligendi, quas fugiat veniam, ducimus, quibusdam ipsam. Eos, vero?</p>
+            <div class="msgSign">
+              <span class="msgLabel">订单编号：0123456789</span>
+              <span class="msgTime">2017.10.10</span>
+            </div>
+          </div>
+        </div>
+        <i class="itemSign">未读</i>
+      </li>
+      <li class="sysMsg">
+        <h3 class="itemTit">您的订单已发货</h3>
+        <div class="itemDetail clearfix">
+          <div class="itemImg">
+            <img src="">
+          </div>
+          <div class="itemMsg">
+            <p>Quod earum eligendi voluptates eos? Nemo alias harum ex incidunt aut, optio, facere aliquid, expedita aliquam labore recusandae eligendi. Non dolores voluptate, quidem nesciunt doloremque veritatis ipsum qui neque quaerat!</p>
+            <div class="msgSign">
+              <span class="msgLabel"></span>
+              <span class="msgTime">2017.10.11</span>
+            </div>
+          </div>
+        </div>
+        <i class="itemSign">未读</i>
+      </li> -->
+    </ul>
+  </div>
+</div>

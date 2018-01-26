@@ -1,0 +1,3851 @@
+/* 去默认样式 */
+select,input[type=date],input[type=time]{
+  background:rgba(0,0,0,0);
+  background:tansparent;
+  background:none;
+}
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* alert自定义弹窗 */
+.alertMsg{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 2000;
+
+}
+.alertMsg>.msgBody{
+  width: 300px;
+  height: 216px;
+  box-sizing: border-box;
+  padding: 50px 30px 70px 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  background: url("../img/alertBG.png") no-repeat;
+  background-size: 100% 100%;
+}
+.alertMsg>.msgBody>.detail{
+  line-height: 48px;
+  height: 96px;
+  font-size: 20px;
+  text-align: center;
+  overflow: hidden;
+
+}
+.alertMsg>.msgBody>#alertMsgOff{
+  position: absolute;
+  top:0;
+  right: 0;
+  width: 28px;
+  height:28px;
+}
+.alertMsg>.msgBody>#alertAffirmBtn{
+  position: absolute;
+  bottom:20px;
+  left: 50%;
+  width: 50%;
+  height:35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  margin-left: -80px;
+  background-color: #f46e31; 
+  border-radius: 20px;
+}
+
+/* 拒绝服务输入信息弹窗 */
+.refuseMsg{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 2000;
+
+}
+.refuseMsg>.msgBody{
+  width: 300px;
+  height: 216px;
+  box-sizing: border-box;
+  padding: 30px 30px 70px 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  background: url("../img/alertBG.png") no-repeat;
+  background-size: 100% 100%;
+}
+.refuseMsg>.msgBody>.tit{
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px; 
+}
+.refuseMsg>.msgBody>.detail{
+  line-height: 48px;
+  height: 96px;
+  font-size: 20px;
+  text-align: center;
+  overflow: hidden;
+
+}
+.refuseMsg>.msgBody>.detail>textarea{
+  width: 100%;
+  height: 100%;
+  line-height: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  resize: none;
+
+}
+.refuseMsg>.msgBody>#refuseMsgOff{
+  position: absolute;
+  top:0;
+  right: 0;
+  width: 28px;
+  height:28px;
+}
+.refuseMsg>.msgBody>#refuseAffirmBtn{
+  position: absolute;
+  bottom:20px;
+  left: 80%;
+  width: 33%;
+  height:35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  margin-left: -80px;
+  background-color: #f46e31; 
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.refuseMsg>.msgBody>#refuseCancelBtn{
+  position: absolute;
+  bottom:20px;
+  left: 40%;
+  width: 33%;
+  height:35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #f46e31;
+  margin-left: -80px;
+  background-color: #fff; 
+  border-radius: 20px;
+  border: 1px solid #f46e31;
+  box-sizing: border-box;
+}
+/* confirm自定义弹窗 */
+.confirmMsg{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 2000;
+
+}
+.confirmMsg>.msgBody{
+  width: 300px;
+  height: 216px;
+  box-sizing: border-box;
+  padding: 50px 30px 70px 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  background: url("../img/alertBG.png") no-repeat;
+  background-size: 100% 100%;
+}
+.confirmMsg>.msgBody>.detail{
+  line-height: 48px;
+  height: 96px;
+  font-size: 20px;
+  text-align: center;
+  overflow: hidden;
+
+}
+.confirmMsg>.msgBody>#confirmMsgOff{
+  position: absolute;
+  top:0;
+  right: 0;
+  width: 28px;
+  height:28px;
+}
+.confirmMsg>.msgBody>#confirmAffirmBtn{
+  position: absolute;
+  bottom:20px;
+  left: 80%;
+  width: 33%;
+  height:35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  margin-left: -80px;
+  background-color: #f46e31; 
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+.confirmMsg>.msgBody>#confirmCancelBtn{
+  position: absolute;
+  bottom:20px;
+  left: 40%;
+  width: 33%;
+  height:35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #f46e31;
+  margin-left: -80px;
+  background-color: #fff; 
+  border-radius: 20px;
+  border: 1px solid #f46e31;
+  box-sizing: border-box;
+}
+
+/* 通信加载中 */
+.commLoad{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* background-color: rgba(0,0,0,0.4); */
+  z-index: 2000;
+}
+.commLoad>img{
+  position: absolute;
+  width:50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+
+/******************************************************/
+/* 分页样式 */
+
+ /* 登陆页面 */
+#ponyShopLoginPage{
+  padding: 0 0 30px 0;
+  position: relative;
+  box-sizing: border-box;
+}
+#ponyShopLoginPage>.logo{
+  height: 50%;
+  background: url("../img/loginBG.jpg") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+#ponyShopLoginPage>.logo>img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+#ponyShopLoginPage>.loginInput{
+  padding: 10% 0 0;
+}
+#ponyShopLoginPage>.loginInput>.formGroup{
+  margin: 20px auto 0;
+  width: 60%;
+  min-width: 250px;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #aaa;
+}
+#ponyShopLoginPage>.loginInput>.formGroup:first-child{
+  margin: 0 auto;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>label{
+  float: left;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>label>i{
+  display: block;
+  margin: 5px auto;
+  width: 30px;
+  height: 30px;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>.userAccounts>i{
+  background: url("../img/userAccount.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>.userPwd>i{
+  background: url("../img/userPwd.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>.msgInput{
+  margin-left: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopLoginPage>.loginInput>.formGroup>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  padding-left: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  font-size: 16px;
+}
+#ponyShopLoginPage>.loginInput>.btnGroup{
+  margin: 0 auto;
+  width: 60%;
+  min-width: 250px;
+}
+#ponyShopLoginPage>.loginInput>.btnGroup>.restPwd{
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopLoginPage>.loginInput>.btnGroup>.restPwd>a{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  color: #FC7C27;
+  font-size: 12px;
+}
+#ponyShopLoginPage>.loginInput>.btnGroup>button{
+  display: block;
+  margin: 20px 0 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #FC7C27;
+  border-radius: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+#ponyShopLoginPage>.loginInput>.btnGroup>a{
+  display: block;
+  
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #999;
+  border: 1px solid #aaa;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+#ponyShopLoginPage>.explain{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#ponyShopLoginPage>.explain>p{
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+ /* 忘记密码页面 */
+ #ponyShopRestPwdPage{
+  padding: 0 0 30px 0;
+  position: relative;
+  box-sizing: border-box;
+}
+#ponyShopRestPwdPage>.logo{
+  height: 50%;
+  background: url("../img/loginBG.jpg") no-repeat;
+  background-size: 100% 100%;
+  position: relative;
+}
+#ponyShopRestPwdPage>.logo>img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+}
+#ponyShopRestPwdPage>.logo>.toBack{
+  position: absolute;
+  top:20px;
+  left: 20px;
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+  color: #fff;
+  opacity: 0.8;
+}
+#ponyShopRestPwdPage>.loginInput{
+  padding: 10% 0 0;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup{
+  margin: 20px auto 0;
+  width: 60%;
+  min-width: 250px;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #aaa;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup:first-child{
+  margin: 0 auto;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>label{
+  float: left;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>label>i{
+  display: block;
+  margin: 10px auto;
+  width: 16px;
+  height: 22px;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>.userAccounts>i{
+  background: url("../img/userTel.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>.userVerifyCode>i,
+#ponyShopRestPwdPage>.loginInput>.formGroup>.userPwd>i{
+  background: url("../img/userRestPwd.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>.msgInput{
+  margin-left: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopRestPwdPage>.loginInput>.verify>.msgInput{
+  margin-right: 100px;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>.verifyCodeBtn{
+  float: right;
+  margin-top: 5px;
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #fff;
+  background-color: #FC7C27;
+  border-radius: 5px;
+}
+#ponyShopRestPwdPage>.loginInput>.formGroup>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  padding-left: 20px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  font-size: 16px;
+}
+#ponyShopRestPwdPage>.loginInput>.btnGroup{
+  margin: 0 auto;
+  width: 60%;
+  min-width: 250px;
+}
+
+#ponyShopRestPwdPage>.loginInput>.btnGroup>button{
+  display: block;
+  margin: 13% 0 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #FC7C27;
+  border-radius: 20px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+#ponyShopRestPwdPage>.explain{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#ponyShopRestPwdPage>.explain>p{
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* 注册页面 */
+#ponyShopRegisterPage{
+  padding: 50px 0 0 0;
+  background-color: #ececec;
+  box-sizing: border-box;
+}
+#ponyShopRegisterPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#ponyShopRegisterPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopRegisterPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopRegisterPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopRegisterPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userAppOperate,
+#ponyShopRegisterPage>.registerForm>form>.userCooperation,
+#ponyShopRegisterPage>.registerForm>form>.userIDPic,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic,
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo{
+  margin-top: 5px;
+  background-color: #fff;
+  padding: 5px 10px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userInfo{
+  background-color: #fff;
+  padding:5px 10px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.formGroup{
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #aaa;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup::after,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.formGroup::after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup>label,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.formGroup>label{
+  float: left;
+  width: 80px;
+  height: 50px;
+  line-height: 50px;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup>.msgInput,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.formGroup>.msgInput{
+  margin-left: 80px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup>.msgInput>select,
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.formGroup>.msgInput>input,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.formGroup>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding-left: 10px;
+  background-color: transparent;
+}
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.userVerify>a{
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  width: 100px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.userTel>a{
+  float: right;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  color: #fff;  
+  background-color: #ee2625;
+}
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.userVerify>.msgInput,
+#ponyShopRegisterPage>.registerForm>form>.userInfo>.userTel>.msgInput{
+  margin-right: 100px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopWorkTime>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100px;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: transparent;
+  text-align: center;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopCity>.msgInput>div{
+  float: left;
+  width: 33.33%;
+  height: 50px;
+  line-height: 50px;
+}
+/* #ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopCity>.msgInput>div>span{
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  width: 20px;
+} */
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopCity>.msgInput>div>div{
+  /* margin-right: 20px; */
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopCity>.msgInput>div>div>select{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopGPS>.msgInput>a{
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#ponyShopRegisterPage>.registerForm>form>.userShopInfo>.shopGPS>.msgInput>a>i{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url("../img/GPS.png") no-repeat;
+  background-size: 100% 100%;
+  vertical-align: text-bottom;
+  margin-right: 10px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userAppOperate>.tit>h4,
+#ponyShopRegisterPage>.registerForm>form>.userCooperation>.tit>h4,
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.tit>h4,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.tit>h4,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.tit>h4{
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userAppOperate>.operateList>ul:after,
+#ponyShopRegisterPage>.registerForm>form>.userCooperation>.cooperationList>ul:after,
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup:after,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup:after,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.hint,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.hint,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup>.imgItem,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup>.imgItem,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup>.imgItem{
+  float: left;
+  width: 50%;
+  height: 120px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup>.imgItem>label,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup>.imgItem>label,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup>.imgItem>label{
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup>.imgItem>label>img,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup>.imgItem>label>img,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup>.imgItem>label>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopRegisterPage>.registerForm>form>.userIDPic>.imgGroup>.imgItem>.imgFileInput,
+#ponyShopRegisterPage>.registerForm>form>.userShopPic>.imgGroup>.imgItem>.imgFileInput,
+#ponyShopRegisterPage>.registerForm>form>.userCharterPic>.imgGroup>.imgItem>.imgFileInput{
+  display: none;
+}
+#ponyShopRegisterPage>.registerForm>form>.userAppOperate>.operateList>ul>li,
+#ponyShopRegisterPage>.registerForm>form>.userCooperation>.cooperationList>ul>li{
+  margin: 10px 10px 10px 0;
+  float: left;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  color: #666;
+  background-color: #ececec;
+  text-align: center;
+  border-radius: 5px;
+}
+#ponyShopRegisterPage>.registerForm>form>.userAppOperate>.operateList>ul>li.active,
+#ponyShopRegisterPage>.registerForm>form>.userCooperation>.cooperationList>ul>li.active{
+  color: #fff;
+  background-color: #ee2625;
+}
+#ponyShopRegisterPage>.registerForm>form>.ponyShopAgreement{
+  padding: 0 10px;
+}
+#ponyShopRegisterPage>.registerForm>form>.ponyShopAgreement>p{
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+#ponyShopRegisterPage>.registerForm>form>.ponyShopAgreement>p>a{
+  color: #3D93DB;
+}
+#ponyShopRegisterPage>.registerForm>.submitBtn{
+  padding: 10px 10px 30px;
+}
+#ponyShopRegisterPage>.registerForm>.submitBtn>button{
+  display: block;
+  margin: 0 auto;
+  padding: 0; 
+  border: 0;
+  width: 60%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #ee2625;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+/* 注册页面-----用户协议页面 */
+#ponyShopAgreementPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  display: none;
+}
+#ponyShopAgreementPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#ponyShopAgreementPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopAgreementPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopAgreementPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopAgreementPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopAgreementPage>.agreementBody{
+  padding: 10px;
+  text-align: justify;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+#ponyShopAgreementPage>.agreementBody>.title{
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+  text-indent: 28px;
+}
+#ponyShopAgreementPage>.agreementBody>.detail>.classify{
+  margin: 5px 0;
+}
+#ponyShopAgreementPage>.agreementBody>.detail>.classify>.tit{
+  font-size: 14px;
+  line-height: 30px;
+  color: #333;
+}
+#ponyShopAgreementPage>.agreementBody>.title>p,
+#ponyShopAgreementPage>.agreementBody>.detail>.classify>p{
+  margin-top: 5px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+}
+#ponyShopAgreementPage>.agreementBody>.title span,
+#ponyShopAgreementPage>.agreementBody>.detail>.classify span{
+  color: #ee2625;
+  font-weight: bold;
+}
+
+
+
+/* main主页面 */
+#ponyShopMainPage{
+  padding: 0 0 50px 0;
+  box-sizing: border-box;
+}
+#ponyShopMainPage>.header{
+  background: url("../img/headerBG.png") no-repeat;
+  background-size: 100% 100%;
+  padding-bottom: 50px;
+}
+#ponyShopMainPage>.header>.top>h3{
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopMainPage>.header>.orderMsg{
+  padding-top: 20px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopMainPage>.header>.orderMsg>h1{
+  height: 50px;
+  line-height: 50px;
+  font-size: 40px;
+}
+#ponyShopMainPage>.header>.orderMsg>p{
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+#ponyShopMainPage>.orderCollect{
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 55px;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify{
+  position: absolute;
+  top:-50px;
+  left: 50%;
+  width: 90%;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 5px #ccc;
+  -webkit-transform: translate(-50%,0);
+  -moz-transform: translate(-50%,0);
+  -ms-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul{
+  height: 100%;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul>li{
+  float: left;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul>li:first-child{
+  border-right: 1px solid #ccc;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul>li>span{
+  display: block;
+  height: 45px;
+  line-height: 45px;
+  font-size: 16px;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul>li>p{
+  height: 30px;
+  line-height: 30px;
+  color: #ee2625;
+  font-size: 14px;
+}
+#ponyShopMainPage>.orderCollect>.orderClassify>ul>li>p>span{
+  font-size: 20px;
+  margin-right: 5px;
+}
+#ponyShopMainPage>.orderCollect>.orderTimeList{
+  padding: 0 5%;
+  border-bottom: 1px solid #ccc; 
+}
+#ponyShopMainPage>.orderCollect>.orderTimeList>ul>li{
+  float: left;
+  width: 25%;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+#ponyShopMainPage>.orderCollect>.orderTimeList>ul>li>span{
+  display: inline-block;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-bottom: 1px solid transparent;
+}
+#ponyShopMainPage>.orderCollect>.orderTimeList>ul>li.active>span{
+  color: #ee2625;
+  border-bottom: 1px solid #ee2625;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList{
+  padding: 0 10px;
+  overflow-y: auto;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li{
+  border-bottom: 1px solid #aaa;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a{
+  display: block;
+  height: 100%;
+  color: #000;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>*{
+  float: left;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>i{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  top: 7px;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>i>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.serverName{
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.userCarNum{
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+  color: #aaa;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.sign{
+  float: right;
+  height: 40px;
+  line-height: 40px;
+  padding-top: 5px;
+  box-sizing: border-box;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.sign>b{
+  display: none;
+  width: 18px;
+  height: 20px;
+  background: url("../img/remind.png") no-repeat;
+  background-size: 100% 100%;
+  margin-right: 10px;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.sign>b.active{
+  display: inline-block;
+}
+#ponyShopMainPage>.orderCollect>.orderDetailList>.detailList>ul>li>a>.sign>i{
+  display: inline-block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/next.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#ponyShopMainPage>.footer{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+#ponyShopMainPage>.footer>ul>li{
+  float: left;
+  width: 33.33%;
+  height: 49px;
+}
+#ponyShopMainPage>.footer>ul>li>a{
+  display:block;
+  padding:2px 0;
+  color: #777;
+}
+#ponyShopMainPage>.footer>ul>li>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  font-size: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+#ponyShopMainPage>.footer>ul>.userOrder>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  background-color: #ee2625;
+  border-radius: 50%;
+}
+#ponyShopMainPage>.footer>ul>li>a>span:before{
+  content: "";
+  display: table;
+}
+#ponyShopMainPage>.footer>ul>li>a>span>i{
+  display:block;
+  width: 22px;
+  height: 22px;
+  margin: 5px auto 0;
+
+}
+#ponyShopMainPage>.footer>ul>li>a>span>b{
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  
+}
+#ponyShopMainPage>.footer>ul>.userOrder>a>span>i{
+  background: url("../img/orderW.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopMainPage>.footer>ul>.userOrder>a>span>b{
+  color: #fff;
+}
+#ponyShopMainPage>.footer>ul>.userShop>a>span>i{
+  background: url("../img/shopB.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopMainPage>.footer>ul>.userCenter>a>span>i{
+  background: url("../img/userB.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* 订单详情页面 */
+#ponyShopOrderDetailPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#ponyShopOrderDetailPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#ponyShopOrderDetailPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopOrderDetailPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopOrderDetailPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderDetailPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg{
+  background-color: #fff;
+  padding: 0 10px;
+}
+
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ececec;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li:last-child{
+  border:0;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>span{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  width: 80px;
+  padding: 0 10px;
+  font-weight: bold;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>p{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>a{
+  display: block;
+  height: 40px;
+  color: #000;
+  text-align: left;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>.telBtn{
+  float: right;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i{
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  background: url("../img/tel.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#ponyShopOrderDetailPage>.orderDetail>.orderUserMsg>ul>li>a>i{
+  float: right;;
+  width: 12px;
+  height: 20px;
+  margin-top: 10px;
+  background: url("../img/next.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity{
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #fff;
+}
+
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityImg{
+  float: left;
+  width: 100px;
+  height: 130px;
+  box-sizing: border-box;
+  /* border: 1px solid #000; */
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li{
+  margin-top: 5px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li:first-child{
+  margin: 0;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg{
+  margin-left: 110px;
+  padding-bottom: 30px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4{
+  height: 25px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p{
+  height: 80px;
+  line-height: 16px;
+  overflow: hidden;
+  color:#787878;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price{
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  color:#383838;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderServerTime{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderServerTime>span{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderServerTime>p{
+  float: right;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCoupon{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCoupon>span{
+  display: block;
+  padding: 0 10px;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCoupon>ul{
+  padding: 0 10px 10px;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCoupon>ul>li{
+  height: 20px;
+  line-height: 20px;
+  color: #aaa;
+}
+#ponyShopOrderDetailPage>.orderDetail>.orderCoupon>ul>li>span{
+  float: right;
+  height: 20px; 
+  line-height: 20px;
+}
+
+
+/* 轮胎服务记录页面 */
+#tireServerRecordPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#tireServerRecordPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+  z-index: 1000;
+}
+#tireServerRecordPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#tireServerRecordPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#tireServerRecordPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#tireServerRecordPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#tireServerRecordPage>.recordList>ul>li{
+  position: relative;
+  padding: 10px 20px;
+
+}
+#tireServerRecordPage>.recordList>ul>li>i{
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 50px;
+  height: 29px;
+}
+#tireServerRecordPage>.recordList>ul>.change>i{
+  background: url("../img/recordB.png") no-repeat;
+  background-size: 100% 100%; 
+}
+#tireServerRecordPage>.recordList>ul>.original>i{
+  background: url("../img/recordP.png") no-repeat;
+  background-size: 100% 100%; 
+}
+#tireServerRecordPage>.recordList>ul>.repair>i{
+  background: url("../img/recordY.png") no-repeat;
+  background-size: 100% 100%; 
+}
+#tireServerRecordPage>.recordList>ul>li>a{
+  display: block;
+  background-color: #fff;
+  padding: 10px 10px 10px 60px;
+  border-radius: 5px;
+  color: #787878;
+}
+#tireServerRecordPage>.recordList>ul>li>a>p{
+  height: 30px;
+  line-height: 30px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* 店铺页面 */
+#ponyShopEarningsListPage{
+  padding: 0 0 50px 0;
+  box-sizing: border-box;
+}
+#ponyShopEarningsListPage>.header{
+  background: url("../img/headerBG.png") no-repeat;
+  background-size: 100% 100%;
+  padding-bottom: 50px;
+}
+#ponyShopEarningsListPage>.header>.top>h3{
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopEarningsListPage>.header>.shopMsg{
+  padding-top: 20px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopEarningsListPage>.header>.shopMsg>a{
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  color: #fff;
+}
+#ponyShopEarningsListPage>.header>.shopMsg>a>.shopImg{
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+#ponyShopEarningsListPage>.header>.shopMsg>a>.shopImg>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopEarningsListPage>.header>.shopMsg>a>.shopName{
+  display: blick;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#ponyShopEarningsListPage>.earningsCollect{
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 55px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify{
+  position: absolute;
+  top:-50px;
+  left: 50%;
+  width: 90%;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 5px #ccc;
+  -webkit-transform: translate(-50%,0);
+  -moz-transform: translate(-50%,0);
+  -ms-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul{
+  height: 100%;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul>li{
+  float: left;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul>li:first-child{
+  border-right: 1px solid #ccc;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul>li>span{
+  display: block;
+  height: 45px;
+  line-height: 45px;
+  font-size: 16px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul>li>p{
+  height: 40px;
+  line-height: 20px;
+  color: #ee2625;
+  font-size: 14px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsClassify>ul>li>p>span{
+  font-size: 20px;
+  margin-right: 5px;
+  word-wrap: break-word;
+}
+
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList{
+  padding: 0 10px;
+  overflow-y: auto;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li{
+  border-bottom: 1px solid #aaa;
+  padding: 10px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a{
+  display: block;
+  height: 100%;
+  color: #000;
+  position: relative;
+  padding-left:40px;
+}
+#ponyShopEarningsListPage>.orderCollect>.earningsDetailList>.earningsList>ul>li>a:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>i{
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translate(0,-50%);
+  -moz-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>i>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverEarnings{
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 14px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverEarnings>.serverName{
+  float: left;
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverEarnings>.serverPrice{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverDate{
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  color: #aaa;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverDate>.serverDate{
+  float: left;
+  height: 20px;
+  line-height: 20px;
+}
+#ponyShopEarningsListPage>.earningsCollect>.earningsDetailList>.earningsList>ul>li>a>.serverDate>.serverState{
+  float: right;
+  height: 20px;
+  line-height: 20px;
+}
+#ponyShopEarningsListPage>.footer{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+#ponyShopEarningsListPage>.footer>ul>li{
+  float: left;
+  width: 33.33%;
+  height: 49px;
+}
+#ponyShopEarningsListPage>.footer>ul>li>a{
+  display:block;
+  padding:2px 0;
+  color: #777;
+}
+#ponyShopEarningsListPage>.footer>ul>li>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  font-size: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+#ponyShopEarningsListPage>.footer>ul>.userShop>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  background-color: #ee2625;
+  border-radius: 50%;
+}
+#ponyShopEarningsListPage>.footer>ul>li>a>span:before{
+  content: "";
+  display: table;
+}
+#ponyShopEarningsListPage>.footer>ul>li>a>span>i{
+  display:block;
+  width: 22px;
+  height: 22px;
+  margin: 5px auto 0;
+
+}
+#ponyShopEarningsListPage>.footer>ul>li>a>span>b{
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  
+}
+#ponyShopEarningsListPage>.footer>ul>.userOrder>a>span>i{
+  background: url("../img/orderB.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopEarningsListPage>.footer>ul>.userShop>a>span>i{
+  background: url("../img/shopW.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopEarningsListPage>.footer>ul>.userShop>a>span>b{
+  color: #fff;
+}
+#ponyShopEarningsListPage>.footer>ul>.userCenter>a>span>i{
+  background: url("../img/userB.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* 用户设置页面 */
+#ponyShopUserSettingPage{
+  padding: 0 0 50px 0;
+  box-sizing: border-box;
+}
+#ponyShopUserSettingPage>.header{
+  background: url("../img/headerBG.png") no-repeat;
+  background-size: 100% 100%;
+  padding-bottom: 50px;
+}
+#ponyShopUserSettingPage>.header>.top>h3{
+  margin: 0 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopUserSettingPage>.header>.top>.userExit{
+  float: right;
+  height: 50px;
+  width: 50px;
+  padding: 16px 10px;
+  box-sizing: border-box;
+}
+#ponyShopUserSettingPage>.header>.top>.userExit>i{
+  display: block;
+  width: 18px;
+  height: 18px;
+  background: url("../img/exit.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.header>.shopMsg{
+  padding-top: 20px;
+  text-align: center;
+  color: #fff;
+}
+#ponyShopUserSettingPage>.header>.shopMsg>a{
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  color: #fff;
+}
+#ponyShopUserSettingPage>.header>.shopMsg>a>.shopImg{
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+#ponyShopUserSettingPage>.header>.shopMsg>a>.shopImg>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopUserSettingPage>.header>.shopMsg>a>.shopName{
+  display: blick;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#ponyShopUserSettingPage>.settingCollect{
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 55px;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify{
+  position: absolute;
+  top:-50px;
+  left: 50%;
+  width: 90%;
+  height: 100px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 5px #ccc;
+  -webkit-transform: translate(-50%,0);
+  -moz-transform: translate(-50%,0);
+  -ms-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul{
+  height: 100%;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>li{
+  float: left;
+  width: 50%;
+  height: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>li:first-child{
+  border-right: 1px solid #ccc;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>li>a{
+  display: block;
+  height: 100%;
+  color:#000;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>li>a:before{
+  content: "";
+  display: table;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>li>a>h4{
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>.userOrder>a>i{
+  display: block;
+  margin: 0 auto;
+  width: 35px;
+  height: 35px;
+  margin-top: 10px;
+  background: url("../img/userOrder.png") no-repeat;
+  background-size: 100% 100%; 
+}
+#ponyShopUserSettingPage>.settingCollect>.settingClassify>ul>.userShop>a>i{
+  display: block;
+  margin: 0 auto;
+  width: 35px;
+  height: 32px;
+  margin-top: 14px;
+  background: url("../img/userShop.png") no-repeat;
+  background-size: 100% 100%; 
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList{
+  padding: 0 10px;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>li{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #aaa;
+  padding: 10px;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>li:last-child{
+  border: 0;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>li>a{
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color:#000;
+  text-align: left;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>li>a>b{
+  float: left;
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
+  position: relative;
+  top: 6px;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopServer>a>b{
+  background: url("../img/userShopServer.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopCommodity>a>b{
+  top: 7px;
+  background: url("../img/userShopCommodity.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>li>a>i{
+  float: right;
+  width: 12px;
+  height: 20px;
+  margin-top: 10px;
+  background: url("../img/next.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopCommodity>a>span,
+#ponyShopUserSettingPage>.settingCollect>.settingDetailList>.settingList>ul>.userShopServer>a>span{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+}
+
+#ponyShopUserSettingPage>.footer{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+  padding: 0 10px;
+}
+#ponyShopUserSettingPage>.footer>ul>li{
+  float: left;
+  width: 33.33%;
+  height: 49px;
+}
+#ponyShopUserSettingPage>.footer>ul>li>a{
+  display:block;
+  padding:2px 0;
+  color: #777;
+}
+#ponyShopUserSettingPage>.footer>ul>li>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  font-size: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+}
+#ponyShopUserSettingPage>.footer>ul>.userCenter>a>span{
+  display: block;
+  margin: 0 auto;
+  width: 45px;
+  height: 45px;
+  background-color: #ee2625;
+  border-radius: 50%;
+}
+#ponyShopUserSettingPage>.footer>ul>li>a>span:before{
+  content: "";
+  display: table;
+}
+#ponyShopUserSettingPage>.footer>ul>li>a>span>i{
+  display:block;
+  width: 22px;
+  height: 22px;
+  margin: 5px auto 0;
+}
+#ponyShopUserSettingPage>.footer>ul>li>a>span>b{
+  display: block;
+  height: 20px;
+  line-height: 20px;
+  
+}
+#ponyShopUserSettingPage>.footer>ul>.userOrder>a>span>i{
+  background: url("../img/orderB.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.footer>ul>.userShop>a>span>i{
+  background: url("../img/shopB.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+#ponyShopUserSettingPage>.footer>ul>.userCenter>a>span>i{
+  background: url("../img/userW.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserSettingPage>.footer>ul>.userCenter>a>span>b{
+  color: #fff;
+}
+
+/* 订单列表页面 */
+#ponyShopOrderPage{
+  padding: 100px 0 0px 0;
+}
+#ponyShopOrderPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+#ponyShopOrderPage>.header>.top{
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+  color: #fff;
+  text-align: center;
+}
+#ponyShopOrderPage>.header>.top>.toBack{
+  float: left;
+  width: 50px;
+  height: 100%;
+  line-height: 50px;
+}
+#ponyShopOrderPage>.header>.top>.toBack>a{
+  display: block;
+  height: 100%;
+  color: #fff;
+  font-size: 20px;
+  box-sizing: border-box;
+  padding: 15px ;
+}
+#ponyShopOrderPage>.header>.top>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderPage>.header>.top>h3{
+  padding: 0 50px;
+}
+#ponyShopOrderPage>.header>.classify{
+  background-color: #fff;
+}
+#ponyShopOrderPage>.header>.classify>ul>li{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 20%;
+  text-align: center;
+}
+#ponyShopOrderPage>.header>.classify>ul>li>a{
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  color: #000;
+  border-bottom: 2px solid transparent;
+}
+#ponyShopOrderPage>.header>.classify>ul>li.active>a{
+  color: #ee2625;
+  border-bottom: 2px solid #ee2625;
+}
+#ponyShopOrderPage>.productList{
+  background-color: #ececec;
+}
+#ponyShopOrderPage>.productList:before{
+  content: "";
+  display: table;
+}
+#ponyShopOrderPage>.productList>div{
+  display: none;
+}
+#ponyShopOrderPage>.productList>.active{
+  display: block;
+}
+#ponyShopOrderPage>.productList .orderItem{
+  margin-top: 5px;
+  padding: 10px 5px;
+  background-color: #fff;
+
+}
+#ponyShopOrderPage>.productList .orderItem>.itemImg{
+  float: left;
+  box-sizing: border-box;
+  width: 100px;
+  height: 120px;
+  /* border:1px solid #aaa; */
+  overflow: hidden;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemImg>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody{
+  margin-left: 110px;
+  height: 130px;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.detail{
+  overflow: hidden;
+  height: 80px;
+  line-height: 20px;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.orderNum{
+  overflow: hidden;
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+  color: #999;
+  font-size: 12px;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.opt{
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.opt>.total{
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.opt>.btn{
+  float: right;
+  width: 50%;
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopOrderPage>.productList .orderItem>.itemBody>.opt>.btn>.orderItemBtn{
+  display: block;
+  height: 100%;
+  background-color: #ee2625;
+  color: #fff;
+  border-radius: 5px;
+}
+
+/* 服务确认页面(轮胎服务与其他服务  订单详情查看页面) (原厂更换，免费再换，免费修补)*/
+#ponyShopOrderListDetailPage,
+#ponyShopAffirmOtherServerPage,
+#ponyShopAffirmTireServerFreeChangePage,
+#ponyShopAffirmTireServerRepairPage,
+#ponyShopAffirmTireServerOriginalPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#ponyShopOrderListDetailPage>.header,
+#ponyShopAffirmOtherServerPage>.header,
+#ponyShopAffirmTireServerFreeChangePage>.header,
+#ponyShopAffirmTireServerRepairPage>.header,
+#ponyShopAffirmTireServerOriginalPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+  z-index: 1000;
+}
+#ponyShopOrderListDetailPage>.header>.toBack,
+#ponyShopAffirmOtherServerPage>.header>.toBack,
+#ponyShopAffirmTireServerRepairPage>.header>.toBack,
+#ponyShopAffirmTireServerFreeChangePage>.header>.toBack,
+#ponyShopAffirmTireServerOriginalPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopOrderListDetailPage>.header>.toBack>a,
+#ponyShopAffirmOtherServerPage>.header>.toBack>a,
+#ponyShopAffirmTireServerRepairPage>.header>.toBack>a,
+#ponyShopAffirmTireServerFreeChangePage>.header>.toBack>a,
+#ponyShopAffirmTireServerOriginalPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopOrderListDetailPage>.header>.toBack>a>i,
+#ponyShopAffirmOtherServerPage>.header>.toBack>a>i,
+#ponyShopAffirmTireServerRepairPage>.header>.toBack>a>i,
+#ponyShopAffirmTireServerFreeChangePage>.header>.toBack>a>i,
+#ponyShopAffirmTireServerOriginalPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderListDetailPage>.header>h3,
+#ponyShopAffirmOtherServerPage>.header>h3,
+#ponyShopAffirmTireServerRepairPage>.header>h3,
+#ponyShopAffirmTireServerFreeChangePage>.header>h3,
+#ponyShopAffirmTireServerOriginalPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg{
+  background-color: #fff;
+  padding: 0 10px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ececec;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li:after,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li:after,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li:after,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li:after,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li:last-child,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li:last-child,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li:last-child,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li:last-child,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li:last-child{
+  border:0;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>span,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>span,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>a>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>span{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  width: 80px;
+  padding: 0 10px;
+  font-weight: bold;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>p,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>p,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>a>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>p{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>a,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>a,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>a,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>a,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>a{
+  display: block;
+  height: 40px;
+  color: #000;
+  text-align: left;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>.telBtn,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>.telBtn,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>.telBtn,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>.telBtn,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>.telBtn{
+  float: right;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 10px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>.telBtn>i{
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  background: url("../img/tel.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderUserMsg>ul>li>a>i,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderUserMsg>ul>li>a>i,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderUserMsg>ul>li>a>i,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderUserMsg>ul>li>a>i,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderUserMsg>ul>li>a>i{
+  float: right;;
+  width: 12px;
+  height: 20px;
+  margin-top: 10px;
+  background: url("../img/next.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li{
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #fff;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityImg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityImg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityImg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityImg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityImg{
+  float: left;
+  width: 100px;
+  height: 130px;
+  box-sizing: border-box;
+  /* border: 1px solid #000; */ 
+  overflow: hidden;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityImg>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityImg>img,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityImg>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityMsg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityMsg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityMsg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg{
+  margin-left: 110px;
+  padding-bottom: 30px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityMsg>h4,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityMsg>h4,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>h4{
+  height: 25px;
+  line-height: 25px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityMsg>p,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityMsg>p,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>p{
+  height: 80px;
+  line-height: 16px;
+  overflow: hidden;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityMsg>.price,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityMsg>.price,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.price{
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderCommodity>.commodityMsg>.num,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderCommodity>.commodityMsg>.num,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderCommodity>ul>li>.commodityMsg>.num{
+  float: right;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+}
+
+/* 优惠券 */
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCoupon{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+
+}
+
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCoupon>span{
+  display: block;
+  padding: 0 10px;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCoupon>ul{
+  padding: 0 10px 10px;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCoupon>ul>li{
+  height: 20px;
+  line-height: 20px;
+  color: #aaa;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderCoupon>ul>li>span{
+  float: right;
+  height: 20px; 
+  line-height: 20px;
+}
+
+
+
+#ponyShopOrderListDetailPage>.orderDetail>.supplementTireNum,
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerType,
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerTime,
+#ponyShopAffirmOtherServerPage>.orderDetail>.supplementTireNum,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerType,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerTime,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerType,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerTime,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.supplementTireNum,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerType,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireNum,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerTime,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.supplementTireNum,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerType,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderTireNum,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerTime{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderRefuse{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+  line-height: 30px;
+  font-weight: bold;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderRefuse>p{
+  line-height: 20px;
+  font-weight: normal;
+  padding: 0px 0 10px;
+  text-indent: 30px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.supplementTireNum>span,
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerType>span,
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerTime>span,
+#ponyShopAffirmOtherServerPage>.orderDetail>.supplementTireNum>span,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerType>span,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerTime>span,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerType>span,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerTime>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireNum>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.supplementTireNum>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerType>span,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerTime>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderTireNum>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.supplementTireNum>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerType>span,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerTime>span{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 10px;
+}
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerType>p,
+#ponyShopOrderListDetailPage>.orderDetail>.orderServerTime>p,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerType>p,
+#ponyShopAffirmOtherServerPage>.orderDetail>.orderServerTime>p,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerType>p,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderServerTime>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireNum>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerType>p,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderServerTime>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderTireNum>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerType>p,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderServerTime>p{
+  float: right;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>.orderTireNum>p>span{
+  margin-left: 10px;
+  color:#787878;
+  font-weight: normal;
+}
+/* 轮胎更换编号选择设置 */
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum{
+  margin-top: 5px;
+  padding: 10px 0;
+  background-color: #fff;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum>div{
+  float: left;
+  width: 50%;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum>div>h4{
+  height: 20px;
+  line-height: 20px;
+  padding: 0 10px;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum>div>ul>li{
+  height: 30px;
+  line-height: 30px;
+  padding-left: 5px;
+  padding-right: 30px;
+  font-size: 10px;
+  color:#787878;
+  position: relative;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum>div>ul>li>i{
+  position: absolute;
+  right: 10px;
+  top:7px;
+  width: 15px;
+  height: 15px;
+  border: 1px solid  #ececec;
+  border-radius: 5px;
+  overflow: hidden;
+  /* background: url("../img/selF.png") no-repeat;
+  background-size: 100% 100%; */
+  box-sizing: border-box;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.orderSelTireNum>div>ul>li.sel>i{
+  border: 1px solid transparent;
+  background: url("../img/selF.png") no-repeat;
+  background-size: 100% 100%;
+}
+/* 补胎数量设置 */
+/* 免费再换--补差数量 */
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+  font-weight: bold;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>.tit{
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>.tit>h4{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li{
+  height: 40px;
+  line-height: 40px;
+  font-weight: normal; 
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum{
+  float: right;
+  padding: 7px 0;
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum>*{
+  float: left;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum>i{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border: 1px solid #787878;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum>i.supplementAdd{
+  color:#ee2625;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum>i.supplementMinus{
+  color:#787878;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>.supplementTireNum>ul>li>.setNum>span{
+  width: 30px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-top:  1px solid #787878;
+  border-bottom:  1px solid #787878;
+  box-sizing: border-box;
+}
+/* 轮胎位置数量选择设置 */
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum{
+  margin-top: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>span{
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  font-weight: bold;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul{
+  padding-left: 10px;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li{
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum{
+  float: right;
+  padding: 7px 0;
+  height: 40px;
+  line-height: 26px;
+  box-sizing: border-box;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum>*{
+  float: left;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum>i{
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border: 1px solid #787878;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum>i.supplementAdd{
+  color:#ee2625;
+  margin-right: 5px
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum>i.supplementMinus{
+  color:#787878;
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>.orderTireRepairNum>ul>li>.setNum>span{
+  width: 30px;
+  height: 25px;
+  line-height: 25px;
+  text-align: center;
+  border-top:  1px solid #787878;
+  border-bottom:  1px solid #787878;
+  box-sizing: border-box;
+}
+/* 通用照片设置 */
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg{
+  margin-top: 5px;
+  background-color: #fff;
+  padding:10px 10px 0; 
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.tit,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.tit,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.tit,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.tit,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.tit,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.tit,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.tit,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.tit,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.tit,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.tit,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.tit,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.tit,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.tit,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.tit,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.tit,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.tit{
+  position: relative;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.tit>h4,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.tit>h4,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.tit>h4,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.tit>h4,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.tit>h4,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.tit>h4,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.tit>h4,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.tit>h4,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.tit>h4,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.tit>h4,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.tit>h4,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.tit>h4,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.tit>h4,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.tit>h4,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.tit>h4,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.tit>h4{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.tit>i,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.tit>i,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.tit>i,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.tit>i,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.tit>i,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.tit>i,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.tit>i,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.tit>i{
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  background: url("../img/help.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList:after,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList:after,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList:after,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList:after,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.picList:after,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.picList:after,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList:after,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.picList:after,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.picList:after,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.picList:after,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList:after,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.picList:after,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.picList:after,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.picList:after,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList:after,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.picList:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.hint,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
+}
+
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList>.picItem,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.picList>.picItem,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.picList>.picItem,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList>.picItem,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.picList>.picItem,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.picList>.picItem,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList>.picItem,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.picList>.picItem,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.picList>.picItem,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList>.picItem,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.picList>.picItem{
+  float: left;
+  width: 50%;
+  height: 120px;
+  box-sizing: border-box;
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList>.picItem>img{
+  width: 100%;
+  height: 100%
+}
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList>.picItem{
+  display: none;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem>label,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem>label,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem>label,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList>.picItem>label,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.picList>.picItem>label{
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem>label>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem>label>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem>label>img,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList>.picItem>label>img,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.picList>.picItem>label>img{
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  -webkit-transform: translate(-50%,0);
+  -moz-transform: translate(-50%,0);
+  -ms-transform: translate(-50%,0);
+  transform: translate(-50%,0);
+  height: 100%;
+  min-width: 100%;
+}
+#ponyShopAffirmOtherServerPage>.orderDetail>.userDriveImg>.picList>.picItem>.setInput,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userFrameNumImg>.picList>.picItem>.setInput,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userTireImg>.picList>.picItem>.setInput,
+#ponyShopAffirmOtherServerPage>.orderDetail>.userCarImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userDriveImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userTireImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerFreeChangePage>.orderDetail>form>.userCarImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userDriveImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userTireImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerRepairPage>.orderDetail>form>.userCarImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userDriveImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userFrameNumImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userTireImg>.picList>.picItem>.setInput,
+#ponyShopAffirmTireServerOriginalPage>.orderDetail>form>.userCarImg>.picList>.picItem>.setInput{
+  display: none;
+}
+#ponyShopOrderListDetailPage>.affirmBtn,
+#ponyShopAffirmOtherServerPage>.affirmBtn,
+#ponyShopAffirmTireServerFreeChangePage>.affirmBtn,
+#ponyShopAffirmTireServerRepairPage>.affirmBtn,
+#ponyShopAffirmTireServerOriginalPage>.affirmBtn{
+  padding: 20px 0;
+}
+#ponyShopOrderListDetailPage>.affirmBtn>a,
+#ponyShopAffirmOtherServerPage>.affirmBtn>a,
+#ponyShopAffirmTireServerFreeChangePage>.affirmBtn>a,
+#ponyShopAffirmTireServerRepairPage>.affirmBtn>a,
+#ponyShopAffirmTireServerOriginalPage>.affirmBtn>a{
+  display: block;
+  margin: 20px auto 0;
+  width: 80%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #ee2625;
+  border: 1px solid #ee2625;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+#ponyShopOrderListDetailPage>.affirmBtn>.affirmServer,
+#ponyShopAffirmOtherServerPage>.affirmBtn>.affirmServer,
+#ponyShopAffirmTireServerRepairPage>.affirmBtn>.affirmServer,
+#ponyShopAffirmTireServerFreeChangePage>.affirmBtn>.affirmServer,
+#ponyShopAffirmTireServerOriginalPage>.affirmBtn>.affirmServer{
+  color:#fff;
+  background-color: #ee2625;
+}
+  /* 拒绝服务选项菜单 */
+#ponyShopAffirmTireServerOriginalPage>.rejectCase{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+#ponyShopAffirmTireServerOriginalPage>.rejectCase>ul{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+}
+#ponyShopAffirmTireServerOriginalPage>.rejectCase>ul>li{
+  margin: 5px;
+  height: 40px;
+  line-height: 40px;
+  color:#878787;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #ececec;
+}
+
+
+/* 汽车照片事例、轮胎照片事例假页面 */
+#userCarPicExamplePage,
+#userCarTirePicExamplePage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  z-index: 1000;
+  display: none;
+}
+#userCarPicExamplePage>.header,
+#userCarTirePicExamplePage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+  z-index: 1000;
+}
+#userCarPicExamplePage>.header>.toBack,
+#userCarTirePicExamplePage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#userCarPicExamplePage>.header>.toBack>a,
+#userCarTirePicExamplePage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#userCarPicExamplePage>.header>.toBack>a>i,
+#userCarTirePicExamplePage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userCarPicExamplePage>.header>h3,
+#userCarTirePicExamplePage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#userCarPicExamplePage>.example>.exampleImg>img{
+  width: 100%;
+}
+#userCarTirePicExamplePage>.example>.exampleImgList{
+  padding:10px;
+}
+#userCarTirePicExamplePage>.example>.exampleImgList>ul>li{
+  float: left;
+  width: 44%;
+  margin: 0 3% 10px;
+  height: 120px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#userCarTirePicExamplePage>.example>.exampleImgList>ul>li>img{
+  width: 100%;
+  height: 100%;
+}
+
+#userCarPicExamplePage>.example>.exampleMsg,
+#userCarTirePicExamplePage>.example>.exampleMsg{
+  padding: 20px;
+}
+#userCarPicExamplePage>.example>.exampleMsg>ul>li,
+#userCarTirePicExamplePage>.example>.exampleMsg>ul>li{
+  position: relative;
+  padding-left: 40px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 18px;
+}
+#userCarPicExamplePage>.example>.exampleMsg>ul>li>i,
+#userCarTirePicExamplePage>.example>.exampleMsg>ul>li>i{
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 18px;
+  height: 18px;
+  background: url("../img/exampleSign.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+/* 我的店铺设置页面 */
+#ponyShopUserShopSettingPage{
+  padding: 100px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#ponyShopUserShopSettingPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+#ponyShopUserShopSettingPage>.header>.top{
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#ponyShopUserShopSettingPage>.header>.top>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopUserShopSettingPage>.header>.top>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopUserShopSettingPage>.header>.top>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopUserShopSettingPage>.header>.top>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopUserShopSettingPage>.header>.settingClassify{
+  height: 50px;
+  line-height: 50px;
+  background-color: #fff;
+  overflow: hidden;
+}
+#ponyShopUserShopSettingPage>.header>.settingClassify>ul>li{
+  float: left;
+  width: 50%;
+  height: 50px;
+  line-height: 50px;
+}
+#ponyShopUserShopSettingPage>.header>.settingClassify>ul>li>a{
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  color: #000;
+  text-align: center;
+}
+#ponyShopUserShopSettingPage>.header>.settingClassify>ul>li>a>span{
+  display: inline-block;
+  padding: 0 5px;
+  height: 48px;
+  line-height: 50px;
+  border-bottom: 2px solid transparent;
+}
+#ponyShopUserShopSettingPage>.header>.settingClassify>ul>.active>a>span{
+  border-bottom: 2px solid #ee2625;
+}
+
+#ponyShopUserShopSettingPage>.settingDetail{
+  background-color: #ececec; 
+}
+#ponyShopUserShopSettingPage>.settingDetail>div{
+  display: none;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.active{
+  display: block;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userCooperation,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo{
+  margin-top: 5px;
+  background-color: #fff;
+  padding: 5px 10px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo{
+  background-color: #fff;
+  padding:5px 10px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.formGroup{
+  height: 50px;
+  line-height: 50px;
+  border-bottom: 1px solid #aaa;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup::after,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.formGroup::after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup>label,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.formGroup>label{
+  float: left;
+  width: 80px;
+  height: 50px;
+  line-height: 50px;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup>.msgInput,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.formGroup>.msgInput{
+  margin-left: 80px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup>.msgInput>select,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.formGroup>.msgInput>input,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.formGroup>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding-left: 10px;
+  background-color: transparent;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.userVerify>a{
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  width: 100px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.userTel>a{
+  float: right;
+  width: 100px;
+  height: 50px;
+  line-height: 50px;
+  color: #fff;  
+  background-color: #ee2625;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.userVerify>.msgInput,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userInfo>.userTel>.msgInput{
+  margin-right: 100px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopWorkTime>.msgInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100px;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: transparent;
+  text-align: center;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopCity>.msgInput>div{
+  float: left;
+  width: 33.33%;
+  height: 50px;
+  line-height: 50px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopCity>.msgInput>div>span{
+  float: right;
+  height: 50px;
+  line-height: 50px;
+  width: 20px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopCity>.msgInput>div>div{
+  /* margin-right: 20px; */
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopCity>.msgInput>div>div>select{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 50px;;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: transparent;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopGPS>.msgInput>a{
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopInfo>.shopGPS>.msgInput>a>i{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url("../img/GPS.png") no-repeat;
+  background-size: 100% 100%;
+  vertical-align: text-bottom;
+  margin-right: 10px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userCooperation>.tit>h4,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.tit>h4{
+  height: 30px;
+  line-height: 30px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userCooperation>.cooperationList>ul:after,
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.hint{
+  height: 30px;
+  line-height: 30px;
+  color: #777;
+  font-size: 12px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup>.imgItem{
+  float: left;
+  width: 50%;
+  height: 120px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup>.imgItem>label{
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup>.imgItem>label>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userShopPic>.imgGroup>.imgItem>.imgFileInput{
+  display: none;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userCooperation>.cooperationList>ul>li{
+  margin: 10px 10px 10px 0;
+  float: left;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  color: #666;
+  background-color: #ececec;
+  text-align: center;
+  border-radius: 5px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>form>.userCooperation>.cooperationList>ul>li.active{
+  color: #fff;
+  background-color: #ee2625;
+}
+
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>.submitBtn{
+  padding: 30px 10px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.shopDetail>.submitBtn>button{
+  display: block;
+  margin: 0 auto;
+  padding: 0; 
+  border: 0;
+  width: 60%;
+  height: 35px;
+  line-height: 35px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #ee2625;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail{
+  padding-top:5px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul{
+  padding: 0 20px;
+  background-color: #fff;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li{
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0; 
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg{
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg>.userInfo{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg>.userInfo>i{
+  float: left;
+  width: 30px;
+  height: 30px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #000;
+  margin-top: 5px;
+
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg>.userInfo>i>img{
+  width: 100%;
+  height: 100%;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg>.userInfo>span{
+  display: block;
+  margin-left: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.userMsg>.publishTime{
+  float: right;
+  height: 40px;
+  line-height: 40px;
+  color: #aaa;
+  font-size: 12px;
+}
+#ponyShopUserShopSettingPage>.settingDetail>.commentDetail>ul>li>.commentMsg>p{
+  line-height: 20px;
+  font-size: 14px;
+  text-align: justify;
+  color: #999;
+}
+
+/* 店铺详情编辑和注册时店铺，百度地图定位  两个假页通用样式*/
+#ponyShopLocationPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  display: none;
+}
+#ponyShopLocationPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+
+#ponyShopLocationPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#ponyShopLocationPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#ponyShopLocationPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#ponyShopLocationPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#ponyShopLocationPage>.mapLocation>.help{
+  padding: 10px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 14px;
+  color: #333;
+  background-color: #ececec;
+}
+#ponyShopLocationPage>.mapLocation>#ponyMap{
+  overflow: hidden;
+  position: relative;
+}
+#ponyShopLocationPage>.mapLocation>.submitBtn{
+  padding: 10px 0 20px;
+}
+#ponyShopLocationPage>.mapLocation>.submitBtn>p{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color:#999;
+  margin-bottom: 10px;
+}
+#ponyShopLocationPage>.mapLocation>.submitBtn>button{
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  background-color: #ee2625;
+  width: 50%;
+  height: 35px;
+  line-height: 35px;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+/* 用户店铺服务设置页面 */
+#userShopServerSettingPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#userShopServerSettingPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#userShopServerSettingPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#userShopServerSettingPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#userShopServerSettingPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userShopServerSettingPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#userShopServerSettingPage>.serverClassify{
+  margin-top: 5px;
+  background-color: #fff;
+}
+#userShopServerSettingPage>.serverClassify>ul>li{
+  float: left;
+  width: 25%;
+  height: 40px;
+  line-height: 40px;
+}
+#userShopServerSettingPage>.serverClassify>ul>li>a{
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color: #383838;
+}
+#userShopServerSettingPage>.serverClassify>ul>.active>a{
+  color: #fff;
+  background-color: #ee2625;
+}
+#userShopServerSettingPage>.serverList{
+  margin-top: 5px;
+  overflow-y: auto;
+}
+#userShopServerSettingPage>.serverList>div{
+  display: none;
+}
+#userShopServerSettingPage>.serverList>.active{
+  display: block;
+}
+#userShopServerSettingPage>.serverList>div>ul>li{
+  margin-bottom: 5px;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemTit{
+  height: 40px;
+  line-height: 40px;
+  background-color: #fff;
+  padding: 0 20px;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemTit>.itemName{
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemTit>i{
+  margin-left: 10px;
+  margin-top: 12px;
+  float: right;
+  width: 15px;
+  height: 15px;
+  background: url("../img/noSel.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userShopServerSettingPage>.serverList>div>ul>.sel>.itemTit>i{
+  background: url("../img/sel.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemTit>p{
+  float: right;
+  height: 40px;
+  line-height: 40px;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail{
+  display:none;
+  padding: 10px 20px;
+  color: #787878;
+}
+#userShopServerSettingPage>.serverList>div>ul>.sel>.itemDetail{
+  display:block;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.price{
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.price>label{
+  float: left;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.price>.setInput{
+  float: left;
+  margin-top: 2px;
+  margin-left: 10px;
+  width: 100px;
+  overflow: hidden;
+  border-radius: 5px;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #787878
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.price>.setInput>input{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
+
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.describe{
+  line-height: 20px;
+  font-size: 12px;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.describe>.setInput{
+  height: 60px;
+  border-radius: 5px;
+  border: 1px solid #787878;
+  overflow: hidden;
+}
+#userShopServerSettingPage>.serverList>div>ul>li>.itemDetail>.describe>.setInput>textarea{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+}
+#userShopServerSettingPage>.serverList>div>.serverSettingBtn{
+  padding: 20px 0;
+}
+#userShopServerSettingPage>.serverList>div>.serverSettingBtn>button{
+  display: block;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  width: 60%;
+  height: 35px;
+  line-height: 35pg;
+  font-size: 16px;
+  color: #fff;
+  background-color: #ee2625;
+  box-sizing: border-box;
+  border-radius: 5px;
+} 
+
+/* 用户商品设置页面 */
+#userCommoditySettingPage{
+  padding: 50px 0 50px 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#userCommoditySettingPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+}
+#userCommoditySettingPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#userCommoditySettingPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#userCommoditySettingPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userCommoditySettingPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#userCommoditySettingPage>.commodityClassify{
+  margin-top: 5px;
+  background-color: #fff;
+}
+#userCommoditySettingPage>.commodityClassify>ul>li{
+  float: left;
+  width: 50%;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+#userCommoditySettingPage>.commodityClassify>ul>li>a{
+  display: inline-block;
+  padding: 0 10px;
+  height: 38px;
+  line-height: 38px;
+  color: #383838;
+  border-bottom: 2px solid transparent;
+  font-size: 16px;
+}
+#userCommoditySettingPage>.commodityClassify>ul>.active>a{
+  border-bottom: 2px solid #ee2625;
+}
+#userCommoditySettingPage>.commodityList{
+  margin-top: 5px;
+  overflow-y: auto;
+}
+#userCommoditySettingPage>.commodityList>div{
+  display: none;
+}
+#userCommoditySettingPage>.commodityList>.active{
+  display: block;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li{
+  margin-bottom: 5px;
+  background-color: #fff; 
+  padding: 10px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail{
+  border-bottom: 1px solid #ececec;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemImg{
+  float: left;
+  height: 100px;
+  width: 100px;
+  /* border: 1px solid #000; */
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemImg>img{
+  width: 100%;
+  height: 100%;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemMsg{
+  margin-left: 110px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemMsg>h4{
+  height: 40px;
+  line-height: 20px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemMsg>p{
+  height: 20px;
+  line-height: 20px;
+  color: #787878;
+  font-size: 12px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemMsg>.itemPrice{
+  height: 30px;
+  line-height: 30px;
+  color: #383838;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemDetail>.itemMsg>.itemPrice>span{
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+  color: #ee2625;
+  font-size: 18px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemBtn{
+  margin-left: 110px;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemBtn:after{
+  content: "";
+  display: table;
+  clear: both;
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemBtn>a{
+  float: left;
+  width: 44%;
+  margin: 10px 3% 0;
+  height: 35px;
+  line-height: 35px;
+  font-size: 16px;
+  color:#ee2625;
+  border: 1px solid #ee2625;
+  box-sizing: border-box;
+  border-radius: 5px; 
+}
+#userCommoditySettingPage>.commodityList>div>ul>li>.itemBtn>.itemEdit{
+  background-color: #ee2625;
+  color: #fff;
+}
+#userCommoditySettingPage>.footerBtn{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom:0;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup{
+  height: 50px;
+  line-height: 50px;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li{
+  float: left;
+  width: 50%;
+  height: 50px;
+  line-height: 50px;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li>a{
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  color: #fff;
+  background-color: #ff6434;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>.commodityType>a{
+  background-color: #ee2625;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>.commodityType>a>b{
+  float: left;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-weight: normal;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>.commodityType>a>i{
+  float: right;
+  margin-top: 19px;
+  margin-right: 10px;
+  width: 25px;
+  height: 12px;
+  background: url("../img/toDown.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>.commodityType>a>span{
+  display: block;
+  margin: 0 40px 0 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 16px;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li>.subMenu{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  background-color: rgba(0,0,0,0.5);
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>.on>.subMenu{
+  display: block;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li>.subMenu>ul{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li>.subMenu>ul>li{
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  text-align: center;
+  background-color: #fff; 
+  border-bottom: 1px solid #000;
+}
+#userCommoditySettingPage>.footerBtn>.btnGroup>ul>li>.subMenu>ul>li:last-child{
+  border: 0;
+}
+
+/* 用户服务依赖商品信息详情页面 */
+#userCommodityDetailPage{
+  padding: 50px 0 0 0;
+  box-sizing: border-box;
+  background-color: #ececec;
+}
+#userCommodityDetailPage>.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  line-height: 50px;
+  background-color: #ee2625;
+  z-index: 1000;
+}
+#userCommodityDetailPage>.header>.toBack{
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+}
+#userCommodityDetailPage>.header>.toBack>a{
+  display:block;
+  height: 50px;
+  padding:15px 17px;
+  box-sizing: border-box;
+}
+#userCommodityDetailPage>.header>.toBack>a>i{
+  display: block;
+  width: 12px;
+  height: 20px;
+  background: url("../img/back.png") no-repeat;
+  background-size: 100% 100%;
+}
+#userCommodityDetailPage>.header>h3{
+  margin: 0 60px;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+}
+#userCommodityDetailPage>.commodityDetailForm{
+  background-color: #fff;
+  border-radius: 10px;
+  margin: 80px 10px 10px; 
+  padding: 100px 20px 50px;
+  position: relative;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.commodityImg{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  -webkit-transform: translate(-50%,-50%);
+  -moz-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  width: 120px;
+  height: 120px;
+  border: 5px solid #ececec;
+  border-radius: 50%;
+  overflow: hidden;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.commodityImg>label{
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #fff; 
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.commodityImg>label>img{
+  width: 100%;
+  height: 100%;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.commodityImg>.commodityDetailInput{
+  display: none;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.formGroup{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ececec;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.formGroup>label{
+  float: left;
+  width: 80px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: bold;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.formGroup>.setInput{
+  margin-left: 80px;
+  height: 40px;
+  line-height: 40px;
+}
+#userCommodityDetailPage>.commodityDetailForm>form>.formGroup>.setInput>input,
+#userCommodityDetailPage>.commodityDetailForm>form>.formGroup>.setInput>select{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  padding-left: 10px;
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  background-color: transparent;
+  box-sizing: border-box;
+}
+#userCommodityDetailPage>.commodityBtn{
+  padding: 50px 0;
+}
+#userCommodityDetailPage>.commodityBtn>a{
+  display: block;
+  margin: 0 auto 20px;
+  width: 80%;
+  height: 35px;
+  line-height: 35px;
+  color: #fff;
+  background-color: #ee2625;
+  border: 1px solid #ee2625;
+  border-radius: 5px;
+}
+#userCommodityDetailPage>.commodityBtn>.addItem{
+  margin: 0 auto;
+  color: #ee2625;
+  background-color: transparent;
+  border: 1px solid #ee2625;
+}
+
+
+
+
+
+
+
+
+
+

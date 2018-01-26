@@ -1,0 +1,86 @@
+<div id="userCommoditySettingPage" style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="toBack">
+       <a href="#/userSetting"><i></i></a>
+    </div>
+    <h3>商品管理</h3>
+  </div>
+  <!--商品状态分类 -->
+  <div class="commodityClassify">
+    <ul class="clearfix">
+      <li class="active">
+        <a href="">出售中</a>
+      </li>
+      <li>
+        <a href="">已下架</a>
+      </li>
+    </ul>
+  </div>
+  <!-- 商品列表 -->
+  <div class="commodityList" style="height:{{height-(50+50+50)}}px">
+    <div class="sellIn active">
+      <ul>
+        <li ng-repeat="item in commodityOnList">
+          <div class="itemDetail">
+            <div class="itemImg">
+              <img ng-src="{{item.img_url}}">
+            </div>
+            <div class="itemMsg">
+              <h4>{{item.name}}</h4>
+              <p>库存：<span>{{item.amount}}</span></p>
+              <p>已售：<span>{{item.sold_no}}</span></p>
+              <p class="itemPrice">￥<span>{{item.price}}</span></p>
+            </div>
+          </div>
+          <div class="itemBtn">
+            <a class="itemRemove" ng-click="commodityRemove(item.id,'on')" href="">删除商品</a>
+            <a class="itemEdit" href="#/userCommodityDetail/{{item.id}}">重新编辑</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="soldOut">
+      <ul>
+        <li ng-repeat="item in commodityOffList">
+          <div class="itemDetail">
+            <div class="itemImg">
+              <img ng-src="{{item.img_url}}">
+            </div>
+            <div class="itemMsg">
+              <h4>{{item.name}}</h4>
+              <p>库存：<span>{{item.amount}}</span></p>
+              <p>已售：<span>{{item.sold_no}}</span></p>
+              <p class="itemPrice">￥<span>{{item.price}}</span></p>
+            </div>
+          </div>
+          <div class="itemBtn">
+            <a class="itemRemove" ng-click="commodityRemove(item.id,'off')" href="">删除商品</a>
+            <a class="itemEdit" href="#/userCommodityDetail/{{item.id}}">重新编辑</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- 底部按钮 -->
+  <div class="footerBtn">
+    <div class="btnGroup">
+      <ul class="clearfix">
+        <li>
+          <a href="#/userCommodityDetail/null">添加商品</a>
+        </li>
+        <li class="commodityType">
+          <a href=""><b>分类</b><i></i><span>全部分类</span></a>
+          <div class="subMenu">
+            <ul>
+              <li>全部分类</li>
+              <li>汽车保养</li>
+              <li>美容清洗</li>
+              <li>安装</li>
+              <li>改装</li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

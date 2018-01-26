@@ -1,0 +1,195 @@
+<!-- 我的店铺设置页面 -->
+<div id="ponyShopUserShopSettingPage">
+  <div class="header">
+    <div class="top">
+      <div class="toBack">
+        <a ng-click="toBack()" href=""><i></i></a>
+      </div>
+      <h3>我的店铺</h3>
+    </div>
+    <div class="settingClassify">
+      <ul class="clearfix">
+        <li class="active">
+          <a href=""> 
+            <span>店铺详情</span>
+          </a>
+        </li>
+        <li>
+          <a href=""> 
+            <span>店铺评价</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="settingDetail">
+    <div class="shopDetail active">
+      <form id="ponyShopSettingForm" enctype="multipart/form-data">
+        <!-- 用户店铺基本信息 -->
+        <div class="userShopInfo">
+          <div class="formGroup">
+            <label for="userShopName">门店名称</label>
+            <div class="msgInput">
+              <input id="userShopName" placeholder="输入门店名称" value="{{userShopDate.store_name}}" name="store_name" type="text">
+            </div>
+          </div>    
+          <div class="formGroup shopType">
+            <label for="userShopType">门店类型</label>
+            <div class="msgInput">
+              <select id="userShopType" name="type">
+                <option ng-repeat="typeItem in shopType" value="{{typeItem.id}}">{{typeItem.name}}</option>
+              </select>
+            </div>
+          </div>          
+          <div class="formGroup">
+            <label for="userShopTel">联系电话</label>
+            <div class="msgInput">
+              <input id="userShopTel" placeholder="输入门店里的电话" name="tel" value="{{userShopDate.tel}}" type type="tel">
+            </div>
+          </div> 
+          <div class="formGroup shopWorkTime">
+            <label>营业时间</label>
+            <div class="msgInput">
+              <input id="workStartTime" name="start_time" type="time">
+              <i>-</i>
+              <input id="workEndTime" name="end_time" type="time">
+            </div>
+          </div> 
+          <div class="formGroup shopCity">
+            <label>所在城市</label>
+            <div class="msgInput clearfix">
+              <div class="province">
+                <div class="selectInput">
+                  <select id="shopAddressProvince">
+                    <option ng-repeat="provinceItem in provinceArr" value="{{provinceItem.id}}">{{provinceItem.name}}</option>
+                  </select>
+                </div> 
+              </div>
+              <div class="city">
+                <div class="selectInput">
+                  <select id="shopAddressCity">
+                    <option ng-repeat="cityItem in cityArr" value="{{cityItem.id}}">{{cityItem.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="district">
+                <div class="selectInput">
+                  <select id="shopAddressDistrict" name="position_id">
+                    <option ng-repeat="areaItem in areaArr" value="{{areaItem.id}}">{{areaItem.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div> 
+          <div class="formGroup">
+            <label for="userShopAddress">门店位置</label>
+            <div class="msgInput">
+              <input id="userShopAddress" placeholder="补充您的详细地址" name="address" value="{{userShopDate.address}}" type="text">
+            </div>
+          </div> 
+          <div class="formGroup shopGPS">
+            <label>门店定位</label>
+            <div class="msgInput">
+              <a id="mapLocationInput" data-lon="{{userShopDate.longitude}}" data-lat="{{userShopDate.latitude}}" data-mapStr="{{userShopGPS}}" ng-click="toMapLocation()" href=""><i></i><span class="GPSAddress">{{userShopGPS}}</span></a>
+            </div>
+          </div> 
+        </div>
+        <!-- 用户合作项目 -->
+        <div class="userCooperation">
+          <div class="tit">
+            <h4>希望合作项目</h4>
+          </div>
+          <div class="cooperationList">
+            <ul>
+              <li class="active">轮胎服务</li>
+              <li class="{{userShopDate.service_type_iii==1?'active':''}}">美容清洗</li>
+              <li class="{{userShopDate.service_type_ii==1?'active':''}}">保养维护</li>
+              <li class="{{userShopDate.service_type_v==1?'active':''}}">安装</li>
+              <li class="{{userShopDate.service_type_iv==1?'active':''}}">改装</li>
+            </ul>
+          </div>
+        </div>
+        <!-- 用户店铺照片 -->
+        <div class="userShopPic">
+          <div class="tit">
+            <h4>上传门店照片</h4>
+          </div>
+          <div class="imgGroup">
+            <!-- 第一张门店照 -->
+            <div class="imgItem"> 
+              <label for="userShopImg1Input">
+                <img id="userShopImg1Pic" ng-src="{{userShopDate.location_img_url}}">
+              </label>
+              <div class="imgFileInput">
+                <input id="userShopImg1Input" name="location_img_url" type="file">
+              </div>
+            </div>
+            <!-- 第二张门店照 -->
+            <div class="imgItem"> 
+              <label for="userShopImg2Input">
+                <img id="userShopImg2Pic" ng-src="{{userShopDate.indoor_img_url}}">
+              </label>
+              <div class="imgFileInput">
+                <input id="userShopImg2Input" name="indoor_img_url" type="file">
+              </div>
+            </div>
+            <!-- 第三张门店照 -->
+            <div class="imgItem"> 
+              <label for="userShopImg3Input">
+                <img id="userShopImg3Pic" ng-src="{{userShopDate.factory_img_url}}">
+              </label>
+              <div class="imgFileInput">
+                <input id="userShopImg3Input" name="factory_img_url" type="file">
+              </div>
+            </div>
+          </div>
+          <p class="hint">（照片大小不大于3M）</p>
+        </div>
+      </form>
+      <!-- 提交按钮 -->
+      <div class="submitBtn">
+        <button ng-click="submitChangeShopSetting()">保存</button>
+      </div>
+    </div>
+    <div class="commentDetail">
+      <ul>
+        <li ng-repeat="item in userShopComment">
+          <div class="userMsg">
+            <div class="userInfo">
+              <i><img ng-src="{{item.header}}"></i>
+              <span>{{item.name}}</span>
+            </div>
+            <div class="publishTime">
+              <span>{{item.time.split(' ')[0]}}</span>
+            </div>
+          </div>
+          <div class="commentMsg">
+            <p>{{item.content}}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- 店铺设置时的百度定位页面 -->
+<div id="ponyShopLocationPage">
+  <div class="header">
+    <div class="toBack">
+       <a ng-click="toBackMain()" href=""><i></i></a>
+    </div>
+    <h3>选择地图定位</h3>
+  </div>
+  <div class="mapLocation">
+    <p class="help">请拖拽标记进行位置选取</p>
+    <div id="ponyMap" style="height:{{height-(50+105+40)}}px">
+
+    </div>
+    <div class="submitBtn">
+      <p id="mapLocationAddress"></p>
+      <button ng-click="confirmMapAddress()">确认选择</button>
+    </div>
+  </div>
+</div>
+
+
+
