@@ -1,0 +1,120 @@
+<div id="ponyShopOrderPage"  style="height:{{height}}px;overflow:auto;">
+  <div class="header">
+    <div class="top clearfix">
+      <div class="toBack">
+        <a ng-click="toBack()" href=""><i></i></a>
+      </div>
+      <h3>我的订单</h3>
+    </div>
+    <div class="classify">
+      <ul class="clearfix">
+        <li class="active">
+          <a href="">全部</a>
+        </li>
+        <li>
+          <a href="">待发货</a>
+        </li>
+        <li>
+          <a href="">待收货</a>
+        </li>
+        <li>
+          <a href="">待服务</a>
+        </li>
+        <li>
+          <a href="">完成</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="productList" style="height:{{height-100}}px;overflow:auto;">
+    <!-- 所有订单列表 -->
+    <div class="productAll active">
+      <ul>
+        <li ng-repeat="itemAll in orderListAll track by $index" ng-click="orderListDetail(itemAll.id,itemAll.status,itemAll.stage,itemAll.subtype_id,itemAll.order_type_id)"  class="orderItem">
+          <div class="itemImg">
+            <img ng-src="{{itemAll.img}}"/>
+          </div>
+          <div class="itemBody">
+            <p class="detail">{{itemAll.description}}</p>
+            <p class="orderNum">订单编号：{{itemAll.no}}</p>
+            <div class="opt clearfix">
+              <div class="total"><span >{{itemAll.total | currency:"￥"}}</span></div>
+              <div class="btn"><a class="orderItemBtn" ng-click="orderListBtn($event,itemAll.id,itemAll.status,itemAll.stage,itemAll.subtype_id,itemAll.order_type_id)" style="background-color:{{itemAll.btnColor}};display:{{itemAll.btnStatus}};">{{itemAll.btnName}}</a></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- 待发货列表 -->
+    <div class="productToSendOut">
+      <ul>
+        <li ng-repeat="itemDelivery in orderListIsDelivery track by $index" ng-click="orderListDetail(itemDelivery.id,itemDelivery.status,itemDelivery.stage,itemDelivery.subtype_id,itemDelivery.order_type_id)" class="orderItem">
+          <div class="itemImg">
+            <img ng-src="{{itemDelivery.img}}"/>
+          </div>
+          <div class="itemBody">
+            <p class="detail">{{itemDelivery.description}}</p>
+            <p class="orderNum">订单编号：{{itemDelivery.no}}</p>
+            <div class="opt clearfix">
+              <div class="total"><span>{{itemDelivery.total | currency:"￥"}}</span></div>
+              <div class="btn"><a class="orderItemBtn"  ng-click="orderListBtn($event,itemDelivery.id,itemDelivery.status,itemDelivery.stage,itemDelivery.subtype_id,itemDelivery.order_type_id)"  style="background-color:{{itemDelivery.btnColor}};display:{{itemDelivery.btnStatus}};">{{itemDelivery.btnName}}</a></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- 待收货列表 -->
+    <div class="productToReceive">
+      <ul>
+        <li ng-repeat="itemReceiving in orderListIsReceiving track by $index" ng-click="orderListDetail(itemReceiving.id,itemReceiving.status,itemReceiving.stage,itemReceiving.subtype_id,itemReceiving.order_type_id)" class="orderItem">
+          <div class="itemImg">
+            <img ng-src="{{itemReceiving.img}}"/>
+          </div>
+          <div class="itemBody">
+            <p class="detail">{{itemReceiving.description}}</p>
+            <p class="orderNum">订单编号：{{itemReceiving.no}}</p>
+            <div class="opt clearfix">
+              <div class="total"><span>{{itemReceiving.total | currency:"￥"}}</span></div>
+              <div class="btn"><a class="orderItemBtn" ng-click="orderListBtn($event,itemReceiving.id,itemReceiving.status,itemReceiving.stage,itemReceiving.subtype_id,itemReceiving.order_type_id)"  style="background-color:{{itemReceiving.btnColor}};display:{{itemReceiving.btnStatus}};">{{itemReceiving.btnName}}</a></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- 待服务列表 -->
+    <div class="productToServer">
+      <ul>
+        <li ng-repeat="itemServer in orderListIsServer track by $index" ng-click="orderListDetail(itemServer.id,itemServer.status,itemServer.stage,itemServer.subtype_id,itemServer.order_type_id)" class="orderItem">
+          <div class="itemImg">
+            <img ng-src="{{itemServer.img}}"/>
+          </div>
+          <div class="itemBody">
+            <p class="detail">{{itemServer.description}}</p>
+            <p class="orderNum">订单编号：{{itemServer.no}}</p>
+            <div class="opt clearfix">
+              <div class="total"><span>{{itemServer.total | currency:"￥"}}</span></div>
+              <div class="btn"><a href="" class="orderItemBtn" ng-click="orderListBtn($event,itemServer.id,itemServer.status,itemServer.stage,itemServer.subtype_id,itemServer.order_type_id)" style="background-color:{{itemServer.btnColor}};display:{{itemServer.btnStatus}};">{{itemServer.btnName}}</a></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="productToFinish">
+      <ul>
+        <li ng-repeat="itemFinist in orderListFinish track by $index" ng-click="orderListDetail(itemFinist.id,itemFinist.status,itemFinist.stage,itemFinist.subtype_id,itemFinist.order_type_id)" class="orderItem">
+          <div class="itemImg">
+            <img ng-src="{{itemFinist.img}}"/>
+          </div>
+          <div class="itemBody">
+            <p class="detail">{{itemFinist.description}}</p>
+            <p class="orderNum">订单编号：{{itemFinist.no}}</p>
+            <div class="opt clearfix">
+              <div class="total"><span>{{itemFinist.total | currency:"￥"}}</span></div>
+              <div class="btn"><a class="orderItemBtn" ng-click="orderListBtn($event,itemFinist.id,itemFinist.status,itemFinist.stage,itemFinist.subtype_id,itemFinist.order_type_id)" style="background-color:{{itemFinist.btnColor}};display:{{itemFinist.btnStatus}};">{{itemFinist.btnName}}</a></a></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

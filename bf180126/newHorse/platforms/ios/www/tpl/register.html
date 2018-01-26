@@ -1,0 +1,48 @@
+<div id="registerPage">
+  <div class="header">
+    <div class="toBack">
+      <a ng-click="toBack()" href=""><i></i></a>
+    </div>
+    <h3>注册</h3>
+  </div>
+  <div class="logoImg">
+    <img src="img/ponyLogo.png"/>
+  </div>
+  <div class="registerForm">
+    <div class="formGroup">
+      <label class="userName" for="userName">
+        <i></i>
+      </label>
+      <input id="userName" placeholder="请输入您的手机号" ng-model="$userN" type="number"/>
+    </div>
+    <div class="formGroup">
+      <label class="" for="verify">
+        <i></i>
+      </label>
+      <input id="verify" placeholder="请输入验证码" ng-model="$verify" type="number" maxlength="4"/>
+      <a ng-click="verifyTime()" class="verifyBth" href="">获取验证码</a>
+    </div>
+    <div class="formGroup">
+      <label class="userPwd" for="userPwd">
+        <i></i>
+      </label>
+      <input id="userPwd" placeholder="请设置您的密码" ng-model="$userP" type="password"/>
+    </div>
+    <p class="hint">未注册小马驾驾帐号的手机号，登陆时将自动完成注册，且代表您已阅读并同意<a ng-click="toAgreement()" href="">《小马驾驾用户协议》</a></p>
+    <div class="formBtn">
+      <button ng-click="registerBtn($userN,$verify,$userP)">注册</button>
+      <a ng-click="toLogin()" href="#/login">立即登录</a>
+    </div>
+  </div>
+  <div class="successAlert">
+    <div class="successAlertBody">
+      <span ng-click="toMain()" class="successAlertClean"></span>
+      <!-- <p class="tit"><i></i>恭喜您注册成功</p>
+      <p>价值300元的专享券已送到您的帐户中</p>
+      <div class="buttonGroup">
+        <a ng-click="toCoupon()" href="">查看优惠卷</a>
+        <a ng-click="toMain()" class="toMain" href="">先去逛逛</a>
+      </div> -->
+    </div>
+  </div>
+</div>

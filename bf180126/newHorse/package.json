@@ -1,0 +1,40 @@
+{
+  "name": "horse.com",
+  "displayName": "horse",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-android": "^6.2.3",
+    "cordova-ios": "^4.4.0",
+    "cordova-plugin-alipay-v2": "0.0.4",
+    "cordova-plugin-compat": "^1.0.0",
+    "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-dialogs": "^1.3.3",
+    "cordova-plugin-exitapp": "^1.0.0",
+    "cordova-plugin-geolocation": "^2.4.3",
+    "cordova-plugin-wechat": "^2.1.0",
+    "cordova-plugin-whitelist": "^1.3.2",
+    "cordova.custom.plugins.exitapp": "~1.0.0"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-geolocation": {
+        "GEOLOCATION_USAGE_DESCRIPTION": " "
+      },
+      "cordova.custom.plugins.exitapp": {},
+      "cordova-plugin-dialogs": {}
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  }
+}
